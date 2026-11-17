@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<glyph name="greater.lig_ge" format="2">
+  <advance width="600"/>
+  <outline>
+    <contour>
+      <point x="122" y="132" type="line"/>
+      <point x="600" y="230" type="line"/>
+      <point x="600" y="306" type="line"/>
+      <point x="106" y="208" type="line"/>
+    </contour>
+    <contour>
+      <point x="106" y="512" type="line"/>
+      <point x="600" y="414" type="line"/>
+      <point x="600" y="490" type="line"/>
+      <point x="122" y="588" type="line"/>
+    </contour>
+    <contour>
+      <point x="86" y="44" type="line"/>
+      <point x="600" y="44" type="line"/>
+      <point x="600" y="120" type="line"/>
+      <point x="86" y="120" type="line"/>
+    </contour>
+  </outline>
+</glyph>

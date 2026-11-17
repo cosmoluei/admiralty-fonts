@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<glyph name="one.tnum" format="2">
+  <advance width="600"/>
+  <outline>
+    <contour>
+      <point x="126" y="0" type="line"/>
+      <point x="474" y="0" type="line"/>
+      <point x="474" y="72" type="line"/>
+      <point x="342" y="72" type="line"/>
+      <point x="342" y="690" type="line"/>
+      <point x="262" y="690" type="line"/>
+      <point x="116" y="566" type="line"/>
+      <point x="156" y="504" type="line"/>
+      <point x="260" y="594" type="line"/>
+      <point x="260" y="72" type="line"/>
+      <point x="126" y="72" type="line"/>
+    </contour>
+  </outline>
+</glyph>

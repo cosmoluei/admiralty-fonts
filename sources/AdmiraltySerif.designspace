@@ -1,0 +1,49 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<designspace format="5.0">
+  <axes>
+    <axis tag="wght" name="Weight" minimum="400" maximum="700" default="400"/>
+  </axes>
+  <sources>
+    <source filename="AdmiraltySerif-Regular.ufo" familyname="Admiralty Serif" stylename="Regular">
+      <lib copy="1"/>
+      <groups copy="1"/>
+      <features copy="1"/>
+      <info copy="1"/>
+      <location>
+        <dimension name="Weight" xvalue="400"/>
+      </location>
+    </source>
+    <source filename="AdmiraltySerif-Medium.ufo" familyname="Admiralty Serif" stylename="Medium">
+      <location>
+        <dimension name="Weight" xvalue="500"/>
+      </location>
+    </source>
+    <source filename="AdmiraltySerif-Bold.ufo" familyname="Admiralty Serif" stylename="Bold">
+      <location>
+        <dimension name="Weight" xvalue="700"/>
+      </location>
+    </source>
+  </sources>
+  <instances>
+    <instance name="Admiralty Serif Regular" familyname="Admiralty Serif" stylename="Regular" filename="instance_ufos/AdmiraltySerif-Regular.ufo" postscriptfontname="AdmiraltySerif-Regular" stylemapfamilyname="Admiralty Serif" stylemapstylename="regular">
+      <location>
+        <dimension name="Weight" xvalue="400"/>
+      </location>
+    </instance>
+    <instance name="Admiralty Serif Medium" familyname="Admiralty Serif" stylename="Medium" filename="instance_ufos/AdmiraltySerif-Medium.ufo" postscriptfontname="AdmiraltySerif-Medium" stylemapfamilyname="Admiralty Serif Medium" stylemapstylename="regular">
+      <location>
+        <dimension name="Weight" xvalue="500"/>
+      </location>
+    </instance>
+    <instance name="Admiralty Serif SemiBold" familyname="Admiralty Serif" stylename="SemiBold" filename="instance_ufos/AdmiraltySerif-SemiBold.ufo" postscriptfontname="AdmiraltySerif-SemiBold" stylemapfamilyname="Admiralty Serif SemiBold" stylemapstylename="regular">
+      <location>
+        <dimension name="Weight" xvalue="600"/>
+      </location>
+    </instance>
+    <instance name="Admiralty Serif Bold" familyname="Admiralty Serif" stylename="Bold" filename="instance_ufos/AdmiraltySerif-Bold.ufo" postscriptfontname="AdmiraltySerif-Bold" stylemapfamilyname="Admiralty Serif" stylemapstylename="bold">
+      <location>
+        <dimension name="Weight" xvalue="700"/>
+      </location>
+    </instance>
+  </instances>
+</designspace>

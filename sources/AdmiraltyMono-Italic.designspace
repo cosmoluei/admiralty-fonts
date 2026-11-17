@@ -1,0 +1,49 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<designspace format="5.0">
+  <axes>
+    <axis tag="wght" name="Weight" minimum="400" maximum="700" default="400"/>
+  </axes>
+  <sources>
+    <source filename="AdmiraltyMono-Italic.ufo" familyname="Admiralty Mono" stylename="Italic">
+      <lib copy="1"/>
+      <groups copy="1"/>
+      <features copy="1"/>
+      <info copy="1"/>
+      <location>
+        <dimension name="Weight" xvalue="400"/>
+      </location>
+    </source>
+    <source filename="AdmiraltyMono-MediumItalic.ufo" familyname="Admiralty Mono" stylename="Medium Italic">
+      <location>
+        <dimension name="Weight" xvalue="500"/>
+      </location>
+    </source>
+    <source filename="AdmiraltyMono-BoldItalic.ufo" familyname="Admiralty Mono" stylename="Bold Italic">
+      <location>
+        <dimension name="Weight" xvalue="700"/>
+      </location>
+    </source>
+  </sources>
+  <instances>
+    <instance name="Admiralty Mono Italic" familyname="Admiralty Mono" stylename="Italic" filename="instance_ufos/AdmiraltyMono-Italic.ufo" postscriptfontname="AdmiraltyMono-Italic" stylemapfamilyname="Admiralty Mono" stylemapstylename="italic">
+      <location>
+        <dimension name="Weight" xvalue="400"/>
+      </location>
+    </instance>
+    <instance name="Admiralty Mono Medium Italic" familyname="Admiralty Mono" stylename="Medium Italic" filename="instance_ufos/AdmiraltyMono-MediumItalic.ufo" postscriptfontname="AdmiraltyMono-MediumItalic" stylemapfamilyname="Admiralty Mono Medium" stylemapstylename="italic">
+      <location>
+        <dimension name="Weight" xvalue="500"/>
+      </location>
+    </instance>
+    <instance name="Admiralty Mono SemiBold Italic" familyname="Admiralty Mono" stylename="SemiBold Italic" filename="instance_ufos/AdmiraltyMono-SemiBoldItalic.ufo" postscriptfontname="AdmiraltyMono-SemiBoldItalic" stylemapfamilyname="Admiralty Mono SemiBold" stylemapstylename="italic">
+      <location>
+        <dimension name="Weight" xvalue="600"/>
+      </location>
+    </instance>
+    <instance name="Admiralty Mono Bold Italic" familyname="Admiralty Mono" stylename="Bold Italic" filename="instance_ufos/AdmiraltyMono-BoldItalic.ufo" postscriptfontname="AdmiraltyMono-BoldItalic" stylemapfamilyname="Admiralty Mono" stylemapstylename="bold italic">
+      <location>
+        <dimension name="Weight" xvalue="700"/>
+      </location>
+    </instance>
+  </instances>
+</designspace>

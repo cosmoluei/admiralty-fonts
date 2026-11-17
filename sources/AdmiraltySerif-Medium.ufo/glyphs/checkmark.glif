@@ -1,0 +1,16 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<glyph name="checkmark" format="2">
+  <advance width="616"/>
+  <unicode hex="2713"/>
+  <outline>
+    <contour>
+      <point x="52" y="286" type="line"/>
+      <point x="210" y="70" type="line"/>
+      <point x="271" y="70" type="line"/>
+      <point x="566" y="581.5" type="line"/>
+      <point x="487.5" y="635" type="line"/>
+      <point x="237" y="208.5" type="line"/>
+      <point x="120" y="352" type="line"/>
+    </contour>
+  </outline>
+</glyph>

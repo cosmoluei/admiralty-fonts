@@ -1,0 +1,38 @@
+languagesystem DFLT dflt;
+languagesystem latn dflt;
+languagesystem arab dflt;
+languagesystem hebr dflt;
+
+feature rtlm {
+    sub send by send.rtl;
+    sub reply by reply.rtl;
+    sub forward_message by forward_message.rtl;
+    sub task_list by task_list.rtl;
+    sub handoff by handoff.rtl;
+    sub back by back.rtl;
+    sub forward by forward.rtl;
+    sub chevron_left by chevron_left.rtl;
+    sub chevron_right by chevron_right.rtl;
+    sub arrow_up_right by arrow_up_right.rtl;
+    sub arrow_down_left by arrow_down_left.rtl;
+    sub arrow_up_left by arrow_up_left.rtl;
+    sub arrow_down_right by arrow_down_right.rtl;
+    sub double_chevron_left by double_chevron_left.rtl;
+    sub double_chevron_right by double_chevron_right.rtl;
+    sub sidebar_left by sidebar_left.rtl;
+    sub sidebar_right by sidebar_right.rtl;
+    sub list by list.rtl;
+    sub new_window by new_window.rtl;
+    sub share by share.rtl;
+    sub export by export.rtl;
+    sub import by import.rtl;
+    sub restore by restore.rtl;
+    sub history by history.rtl;
+    sub sort_ascending by sort_ascending.rtl;
+    sub sort_descending by sort_descending.rtl;
+    sub audit_log by audit_log.rtl;
+    sub restore_backup by restore_backup.rtl;
+    sub sign_in by sign_in.rtl;
+    sub sign_out by sign_out.rtl;
+    sub share_app by share_app.rtl;
+} rtlm;

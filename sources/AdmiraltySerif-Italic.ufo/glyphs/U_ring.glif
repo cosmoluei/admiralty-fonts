@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<glyph name="Uring" format="2">
+  <advance width="672"/>
+  <unicode hex="016E"/>
+  <anchor x="442" y="892" name="top"/>
+  <anchor x="292" y="0" name="bottom"/>
+  <anchor x="373" y="4" name="ogonek"/>
+  <outline>
+    <component base="U"/>
+    <component base="ringabovecomb.cap" xOffset="336"/>
+  </outline>
+</glyph>

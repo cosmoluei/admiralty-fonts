@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<glyph name="greater.lig_fatarrow" format="2">
+  <advance width="600"/>
+  <outline>
+    <contour>
+      <point x="-17.5" y="156" type="line"/>
+      <point x="278.5" y="156" type="line"/>
+      <point x="204" y="92" type="line"/>
+      <point x="245.5" y="42" type="line"/>
+      <point x="515.5" y="268" type="line"/>
+      <point x="518" y="284" type="line"/>
+      <point x="324" y="510" type="line"/>
+      <point x="265.5" y="460" type="line"/>
+      <point x="319" y="396" type="line"/>
+      <point x="23" y="396" type="line"/>
+      <point x="12" y="332" type="line"/>
+      <point x="372" y="332" type="line"/>
+      <point x="418.5" y="276" type="line"/>
+      <point x="353.5" y="220" type="line"/>
+      <point x="-6.5" y="220" type="line"/>
+    </contour>
+  </outline>
+</glyph>

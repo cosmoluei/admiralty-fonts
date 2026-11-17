@@ -1,0 +1,85 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<designspace format="5.0">
+  <axes>
+    <axis tag="wght" name="Weight" minimum="400" maximum="700" default="400"/>
+  </axes>
+  <rules>
+    <rule name="sym_med_to_bold">
+      <conditionset>
+        <condition name="Weight" minimum="450" maximum="700"/>
+      </conditionset>
+      <sub name="profile" with="profile.rvrn500"/>
+      <sub name="incognito" with="incognito.rvrn500"/>
+      <sub name="whats_new" with="whats_new.rvrn500"/>
+    </rule>
+    <rule name="sym_med_band">
+      <conditionset>
+        <condition name="Weight" minimum="450" maximum="599"/>
+      </conditionset>
+      <sub name="paste" with="paste.rvrn500"/>
+      <sub name="account" with="account.rvrn500"/>
+    </rule>
+    <rule name="sym_bold_band">
+      <conditionset>
+        <condition name="Weight" minimum="600" maximum="700"/>
+      </conditionset>
+      <sub name="camera" with="camera.rvrn700"/>
+      <sub name="paste" with="paste.rvrn700"/>
+      <sub name="team" with="team.rvrn700"/>
+      <sub name="audio_file" with="audio_file.rvrn700"/>
+      <sub name="video_file" with="video_file.rvrn700"/>
+      <sub name="code_file" with="code_file.rvrn700"/>
+      <sub name="unlink" with="unlink.rvrn700"/>
+      <sub name="clipboard" with="clipboard.rvrn700"/>
+      <sub name="trash" with="trash.rvrn700"/>
+      <sub name="find_in_page" with="find_in_page.rvrn700"/>
+      <sub name="saved_search" with="saved_search.rvrn700"/>
+      <sub name="advanced_search" with="advanced_search.rvrn700"/>
+      <sub name="accessibility" with="accessibility.rvrn700"/>
+      <sub name="notification_settings" with="notification_settings.rvrn700"/>
+      <sub name="account" with="account.rvrn700"/>
+      <sub name="two_factor" with="two_factor.rvrn700"/>
+      <sub name="auto_sync" with="auto_sync.rvrn700"/>
+      <sub name="sync_error" with="sync_error.rvrn700"/>
+      <sub name="switch_account" with="switch_account.rvrn700"/>
+    </rule>
+  </rules>
+  <sources>
+    <source filename="AdmiraltySymbols-Regular.ufo" familyname="Admiralty Symbols" stylename="Regular">
+      <lib copy="1"/>
+      <groups copy="1"/>
+      <features copy="1"/>
+      <info copy="1"/>
+      <location>
+        <dimension name="Weight" xvalue="400"/>
+      </location>
+    </source>
+    <source filename="AdmiraltySymbols-Medium.ufo" familyname="Admiralty Symbols" stylename="Medium">
+      <location>
+        <dimension name="Weight" xvalue="500"/>
+      </location>
+    </source>
+    <source filename="AdmiraltySymbols-Bold.ufo" familyname="Admiralty Symbols" stylename="Bold">
+      <location>
+        <dimension name="Weight" xvalue="700"/>
+      </location>
+    </source>
+  </sources>
+  <instances>
+    <instance name="Admiralty Symbols Regular" familyname="Admiralty Symbols" stylename="Regular" postscriptfontname="AdmiraltySymbols-Regular" stylemapfamilyname="Admiralty Symbols" stylemapstylename="regular">
+      <location>
+        <dimension name="Weight" xvalue="400"/>
+      </location>
+    </instance>
+    <instance name="Admiralty Symbols Medium" familyname="Admiralty Symbols" stylename="Medium" postscriptfontname="AdmiraltySymbols-Medium" stylemapfamilyname="Admiralty Symbols Medium" stylemapstylename="regular">
+      <location>
+        <dimension name="Weight" xvalue="500"/>
+      </location>
+    </instance>
+    <instance name="Admiralty Symbols Bold" familyname="Admiralty Symbols" stylename="Bold" postscriptfontname="AdmiraltySymbols-Bold" stylemapfamilyname="Admiralty Symbols" stylemapstylename="bold">
+      <location>
+        <dimension name="Weight" xvalue="700"/>
+      </location>
+    </instance>
+  </instances>
+</designspace>

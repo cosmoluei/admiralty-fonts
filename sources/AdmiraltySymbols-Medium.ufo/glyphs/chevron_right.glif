@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<glyph name="chevron_right" format="2">
+  <advance width="840"/>
+  <unicode hex="E035"/>
+  <outline>
+    <contour>
+      <point x="282" y="572" type="curve" smooth="yes"/>
+      <point x="504" y="350" type="line"/>
+      <point x="282" y="128" type="line" smooth="yes"/>
+      <point x="274.5" y="120.5"/>
+      <point x="269.5" y="109.5"/>
+      <point x="269.5" y="98" type="curve" smooth="yes"/>
+      <point x="269.5" y="74.5"/>
+      <point x="288.5" y="55.5"/>
+      <point x="312" y="55.5" type="curve" smooth="yes"/>
+      <point x="323.5" y="55.5"/>
+      <point x="334.5" y="60.5"/>
+      <point x="342" y="68" type="curve" smooth="yes"/>
+      <point x="594" y="320" type="line" smooth="yes"/>
+      <point x="601.5" y="327.5"/>
+      <point x="606.5" y="338.5"/>
+      <point x="606.5" y="350" type="curve" smooth="yes"/>
+      <point x="606.5" y="360"/>
+      <point x="602.5" y="369.5"/>
+      <point x="596.5" y="377" type="curve"/>
+      <point x="596" y="378"/>
+      <point x="595" y="379"/>
+      <point x="594" y="380" type="curve" smooth="yes"/>
+      <point x="342" y="632" type="line" smooth="yes"/>
+      <point x="334.5" y="639.5"/>
+      <point x="323.5" y="644.5"/>
+      <point x="312" y="644.5" type="curve" smooth="yes"/>
+      <point x="288.5" y="644.5"/>
+      <point x="269.5" y="625.5"/>
+      <point x="269.5" y="602" type="curve" smooth="yes"/>
+      <point x="269.5" y="590.5"/>
+      <point x="274.5" y="579.5"/>
+    </contour>
+  </outline>
+</glyph>

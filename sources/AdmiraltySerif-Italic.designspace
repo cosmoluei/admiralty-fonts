@@ -1,0 +1,49 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<designspace format="5.0">
+  <axes>
+    <axis tag="wght" name="Weight" minimum="400" maximum="700" default="400"/>
+  </axes>
+  <sources>
+    <source filename="AdmiraltySerif-Italic.ufo" familyname="Admiralty Serif" stylename="Italic">
+      <lib copy="1"/>
+      <groups copy="1"/>
+      <features copy="1"/>
+      <info copy="1"/>
+      <location>
+        <dimension name="Weight" xvalue="400"/>
+      </location>
+    </source>
+    <source filename="AdmiraltySerif-MediumItalic.ufo" familyname="Admiralty Serif" stylename="Medium Italic">
+      <location>
+        <dimension name="Weight" xvalue="500"/>
+      </location>
+    </source>
+    <source filename="AdmiraltySerif-BoldItalic.ufo" familyname="Admiralty Serif" stylename="Bold Italic">
+      <location>
+        <dimension name="Weight" xvalue="700"/>
+      </location>
+    </source>
+  </sources>
+  <instances>
+    <instance name="Admiralty Serif Italic" familyname="Admiralty Serif" stylename="Italic" filename="instance_ufos/AdmiraltySerif-Italic.ufo" postscriptfontname="AdmiraltySerif-Italic" stylemapfamilyname="Admiralty Serif" stylemapstylename="italic">
+      <location>
+        <dimension name="Weight" xvalue="400"/>
+      </location>
+    </instance>
+    <instance name="Admiralty Serif Medium Italic" familyname="Admiralty Serif" stylename="Medium Italic" filename="instance_ufos/AdmiraltySerif-MediumItalic.ufo" postscriptfontname="AdmiraltySerif-MediumItalic" stylemapfamilyname="Admiralty Serif Medium" stylemapstylename="italic">
+      <location>
+        <dimension name="Weight" xvalue="500"/>
+      </location>
+    </instance>
+    <instance name="Admiralty Serif SemiBold Italic" familyname="Admiralty Serif" stylename="SemiBold Italic" filename="instance_ufos/AdmiraltySerif-SemiBoldItalic.ufo" postscriptfontname="AdmiraltySerif-SemiBoldItalic" stylemapfamilyname="Admiralty Serif SemiBold" stylemapstylename="italic">
+      <location>
+        <dimension name="Weight" xvalue="600"/>
+      </location>
+    </instance>
+    <instance name="Admiralty Serif Bold Italic" familyname="Admiralty Serif" stylename="Bold Italic" filename="instance_ufos/AdmiraltySerif-BoldItalic.ufo" postscriptfontname="AdmiraltySerif-BoldItalic" stylemapfamilyname="Admiralty Serif" stylemapstylename="bold italic">
+      <location>
+        <dimension name="Weight" xvalue="700"/>
+      </location>
+    </instance>
+  </instances>
+</designspace>

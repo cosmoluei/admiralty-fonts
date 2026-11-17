@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<glyph name="emdash.case" format="2">
+  <advance width="986"/>
+  <outline>
+    <contour>
+      <point x="24.5" y="303" type="line"/>
+      <point x="975.5" y="303" type="line"/>
+      <point x="991.5" y="397" type="line"/>
+      <point x="40.5" y="397" type="line"/>
+    </contour>
+  </outline>
+</glyph>

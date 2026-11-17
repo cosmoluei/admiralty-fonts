@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<glyph name="equal.lig_ge" format="2">
+  <advance width="600"/>
+  <outline>
+    <contour>
+      <point x="0" y="240" type="line"/>
+      <point x="514" y="344" type="line"/>
+      <point x="514" y="404" type="line"/>
+      <point x="0" y="508" type="line"/>
+      <point x="0" y="422" type="line"/>
+      <point x="328" y="374" type="line"/>
+      <point x="0" y="326" type="line"/>
+    </contour>
+    <contour>
+      <point x="0" y="38" type="line"/>
+      <point x="514" y="38" type="line"/>
+      <point x="514" y="126" type="line"/>
+      <point x="0" y="126" type="line"/>
+    </contour>
+  </outline>
+</glyph>

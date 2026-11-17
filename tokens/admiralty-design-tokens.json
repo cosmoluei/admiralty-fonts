@@ -1,0 +1,135 @@
+{
+  "$schema": "https://github.com/cosmoluei/admiralty-fonts/tokens/v0.300",
+  "meta": {
+    "familyPrefix": "Admiralty",
+    "version": "0.300",
+    "license": "SIL Open Font License 1.1 (No Reserved Font Name)",
+    "designer": "Lei Yutian",
+    "scriptCoverage": "Latin Core + Latin Extended-A (128/128) + Pinyin + 218 Symbols"
+  },
+  "metrics": {
+    "unitsPerEm": 1000,
+    "xHeight": 520,
+    "capHeight": 700,
+    "ascender": 740,
+    "descender": -220,
+    "typoAscender": 980,
+    "typoDescender": -320,
+    "typoLineGap": 0,
+    "italicAngle": -9.5,
+    "monoAdvanceWidth": 600,
+    "tabularFigureWidth": 580,
+    "symbolAdvanceWidth": 840
+  },
+  "families": {
+    "sans": {
+      "name": "Admiralty Sans",
+      "cssStack": "'Admiralty Sans', 'PingFang HK', 'PingFang TC', 'PingFang SC', 'Noto Sans CJK TC', 'Noto Sans CJK SC', -apple-system, BlinkMacSystemFont, sans-serif",
+      "fallbackByLocale": {
+        "zh-Hant-HK": ["PingFang HK", "Noto Sans CJK HK", "Noto Sans CJK TC"],
+        "zh-Hant-TW": ["PingFang TC", "Noto Sans CJK TC"],
+        "zh-Hans": ["PingFang SC", "Noto Sans CJK SC"]
+      }
+    },
+    "serif": {
+      "name": "Admiralty Serif",
+      "cssStack": "'Admiralty Serif', 'Noto Serif CJK TC', 'Noto Serif CJK SC', 'Songti TC', 'Songti SC', Georgia, serif",
+      "fallbackByLocale": {
+        "zh-Hant-HK": ["Noto Serif CJK TC", "Songti TC"],
+        "zh-Hant-TW": ["Noto Serif CJK TC", "Songti TC"],
+        "zh-Hans": ["Noto Serif CJK SC", "Songti SC"]
+      }
+    },
+    "mono": {
+      "name": "Admiralty Mono",
+      "cssStack": "'Admiralty Mono', 'PingFang HK', 'Noto Sans Mono CJK TC', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace"
+    },
+    "symbols": {
+      "name": "Admiralty Symbols",
+      "cssStack": "'Admiralty Symbols', sans-serif",
+      "puaRange": "U+E000-U+E0D9",
+      "count": 218
+    }
+  },
+  "roles": {
+    "default": {
+      "agent": "serif",
+      "user": "sans",
+      "code": "mono",
+      "icons": "symbols"
+    },
+    "swapped": {
+      "agent": "sans",
+      "user": "serif",
+      "code": "mono",
+      "icons": "symbols"
+    },
+    "weightByRole": {
+      "body": 400,
+      "button": 500,
+      "label": 500,
+      "emphasis": 700,
+      "heading": 700,
+      "quoteStyle": "italic",
+      "darkModeBodyVariableOptical": 420
+    }
+  },
+  "textStyles": {
+    "caption": {
+      "fontSizePx": 12,
+      "lineHeight": 1.42,
+      "fontWeight": 400,
+      "labelWeight": 500
+    },
+    "code": {
+      "fontFamily": "mono",
+      "fontSizePx": 14,
+      "lineHeight": 1.5,
+      "fontWeight": 400,
+      "fontFeatureSettings": "\"zero\" 1, \"ss01\" 0",
+      "optionalLigatures": "\"zero\" 1, \"ss01\" 1"
+    },
+    "button": {
+      "fontFamily": "sans",
+      "fontSizePx": 15,
+      "lineHeight": 1.25,
+      "fontWeight": 500,
+      "iconFamily": "symbols",
+      "iconFontWeight": 500,
+      "iconScaleToText": 1.0,
+      "iconGapEm": 0.38
+    },
+    "chatBody": {
+      "fontSizePx": 16,
+      "lineHeight": 1.5,
+      "fontWeight": 400,
+      "fontFeatureSettings": "\"kern\" 1, \"pnum\" 1, \"ccmp\" 1, \"locl\" 1"
+    },
+    "quote": {
+      "fontSizePx": 16,
+      "lineHeight": 1.5,
+      "fontWeight": 400,
+      "fontStyle": "italic"
+    },
+    "subheading": {
+      "fontSizePx": 18,
+      "lineHeight": 1.4,
+      "fontWeight": 500
+    },
+    "title": {
+      "fontSizePx": 22,
+      "minPx": 20,
+      "maxPx": 24,
+      "lineHeight": 1.3,
+      "fontWeight": 700
+    }
+  },
+  "openTypeFeatures": {
+    "proseDefault": ["kern", "pnum", "lnum", "ccmp", "locl", "mark", "mkmk"],
+    "numericTables": ["tnum", "zero", "lnum"],
+    "allCapsHeadings": ["case", "kern"],
+    "codeDefault": ["zero", "ccmp", "locl", "mark", "mkmk"],
+    "codeLigaturesOptional": ["ss01", "zero"],
+    "symbolsRtl": ["rtlm"]
+  }
+}

@@ -1,0 +1,20 @@
+[project]
+name = "font-admiralty"
+version = "0.300"
+description = "Admiralty Sans, Serif, Mono and Symbols: font sources and build scripts"
+requires-python = ">=3.12,<3.14"
+dependencies = [
+    "fontmake>=3.10.0",
+    "fonttools[woff,ufo]>=4.53.0",
+    "ufoLib2>=0.16.0",
+    "skia-pathops>=0.8.0",
+    "uharfbuzz>=0.39.0",
+    "freetype-py>=2.4.0",
+    "pillow>=10.3.0",
+    "numpy>=1.26.0",
+    "scipy>=1.13.0",
+]
+
+[tool.uv]
+cache-dir = ".uv-cache"
+link-mode = "copy"

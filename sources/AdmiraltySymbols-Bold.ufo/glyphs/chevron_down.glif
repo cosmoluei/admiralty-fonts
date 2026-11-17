@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<glyph name="chevron_down" format="2">
+  <advance width="840"/>
+  <unicode hex="E037"/>
+  <outline>
+    <contour>
+      <point x="384.5" y="170.5" type="line"/>
+      <point x="393.5" y="161.0"/>
+      <point x="406.0" y="155.5"/>
+      <point x="420.0" y="155.5" type="curve"/>
+      <point x="432.229" y="155.5"/>
+      <point x="443.313" y="159.696"/>
+      <point x="451.92" y="167.089" type="curve"/>
+      <point x="453.167" y="168.16"/>
+      <point x="454.361" y="169.298"/>
+      <point x="455.5" y="170.5" type="curve"/>
+      <point x="707.5" y="422.5" type="line"/>
+      <point x="717.0" y="431.5"/>
+      <point x="722.5" y="444.0"/>
+      <point x="722.5" y="458.0" type="curve"/>
+      <point x="722.5" y="486.0"/>
+      <point x="700.0" y="508.5"/>
+      <point x="672.0" y="508.5" type="curve"/>
+      <point x="658.0" y="508.5"/>
+      <point x="645.5" y="503.0"/>
+      <point x="636.5" y="493.5" type="curve"/>
+      <point x="420.0" y="277.5" type="line"/>
+      <point x="203.5" y="493.5" type="line"/>
+      <point x="194.5" y="503.0"/>
+      <point x="182.0" y="508.5"/>
+      <point x="168.0" y="508.5" type="curve"/>
+      <point x="140.0" y="508.5"/>
+      <point x="117.5" y="486.0"/>
+      <point x="117.5" y="458.0" type="curve"/>
+      <point x="117.5" y="444.0"/>
+      <point x="123.0" y="431.5"/>
+      <point x="132.5" y="422.5" type="curve"/>
+    </contour>
+  </outline>
+</glyph>

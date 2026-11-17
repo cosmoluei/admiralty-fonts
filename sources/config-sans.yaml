@@ -1,0 +1,12 @@
+# Google Fonts build of Admiralty Sans:  cd sources && gftools builder config-sans.yaml
+# The UFO masters in this folder are written by scripts/build_fonts.py. Run that first
+# after any change to the scripts.
+sources:
+  - AdmiraltySans.designspace
+  - AdmiraltySans-Italic.designspace
+familyName: Admiralty Sans
+outputDir: ../build/gf/sans
+buildVariable: true
+buildStatic: true
+buildOTF: false
+buildWebfont: true

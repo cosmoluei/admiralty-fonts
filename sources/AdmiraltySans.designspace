@@ -1,0 +1,49 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<designspace format="5.0">
+  <axes>
+    <axis tag="wght" name="Weight" minimum="400" maximum="700" default="400"/>
+  </axes>
+  <sources>
+    <source filename="AdmiraltySans-Regular.ufo" familyname="Admiralty Sans" stylename="Regular">
+      <lib copy="1"/>
+      <groups copy="1"/>
+      <features copy="1"/>
+      <info copy="1"/>
+      <location>
+        <dimension name="Weight" xvalue="400"/>
+      </location>
+    </source>
+    <source filename="AdmiraltySans-Medium.ufo" familyname="Admiralty Sans" stylename="Medium">
+      <location>
+        <dimension name="Weight" xvalue="500"/>
+      </location>
+    </source>
+    <source filename="AdmiraltySans-Bold.ufo" familyname="Admiralty Sans" stylename="Bold">
+      <location>
+        <dimension name="Weight" xvalue="700"/>
+      </location>
+    </source>
+  </sources>
+  <instances>
+    <instance name="Admiralty Sans Regular" familyname="Admiralty Sans" stylename="Regular" filename="instance_ufos/AdmiraltySans-Regular.ufo" postscriptfontname="AdmiraltySans-Regular" stylemapfamilyname="Admiralty Sans" stylemapstylename="regular">
+      <location>
+        <dimension name="Weight" xvalue="400"/>
+      </location>
+    </instance>
+    <instance name="Admiralty Sans Medium" familyname="Admiralty Sans" stylename="Medium" filename="instance_ufos/AdmiraltySans-Medium.ufo" postscriptfontname="AdmiraltySans-Medium" stylemapfamilyname="Admiralty Sans Medium" stylemapstylename="regular">
+      <location>
+        <dimension name="Weight" xvalue="500"/>
+      </location>
+    </instance>
+    <instance name="Admiralty Sans SemiBold" familyname="Admiralty Sans" stylename="SemiBold" filename="instance_ufos/AdmiraltySans-SemiBold.ufo" postscriptfontname="AdmiraltySans-SemiBold" stylemapfamilyname="Admiralty Sans SemiBold" stylemapstylename="regular">
+      <location>
+        <dimension name="Weight" xvalue="600"/>
+      </location>
+    </instance>
+    <instance name="Admiralty Sans Bold" familyname="Admiralty Sans" stylename="Bold" filename="instance_ufos/AdmiraltySans-Bold.ufo" postscriptfontname="AdmiraltySans-Bold" stylemapfamilyname="Admiralty Sans" stylemapstylename="bold">
+      <location>
+        <dimension name="Weight" xvalue="700"/>
+      </location>
+    </instance>
+  </instances>
+</designspace>

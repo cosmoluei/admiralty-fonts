@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<glyph name="exclam.lig_neq" format="2">
+  <advance width="600"/>
+  <outline>
+    <contour>
+      <point x="96" y="156" type="line"/>
+      <point x="368" y="156" type="line"/>
+      <point x="325.5" y="48" type="line"/>
+      <point x="386.5" y="24" type="line"/>
+      <point x="439" y="156" type="line"/>
+      <point x="600" y="156" type="line"/>
+      <point x="600" y="220" type="line"/>
+      <point x="464" y="220" type="line"/>
+      <point x="508.5" y="332" type="line"/>
+      <point x="600" y="332" type="line"/>
+      <point x="600" y="396" type="line"/>
+      <point x="534" y="396" type="line"/>
+      <point x="576.5" y="504" type="line"/>
+      <point x="515.5" y="528" type="line"/>
+      <point x="463" y="396" type="line"/>
+      <point x="96" y="396" type="line"/>
+      <point x="96" y="332" type="line"/>
+      <point x="438" y="332" type="line"/>
+      <point x="393.5" y="220" type="line"/>
+      <point x="96" y="220" type="line"/>
+    </contour>
+  </outline>
+</glyph>

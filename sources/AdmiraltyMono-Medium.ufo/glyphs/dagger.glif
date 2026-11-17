@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<glyph name="dagger" format="2">
+  <advance width="600"/>
+  <unicode hex="2020"/>
+  <outline>
+    <contour>
+      <point x="259" y="-32" type="line"/>
+      <point x="341" y="-32" type="line"/>
+      <point x="341" y="459.5" type="line"/>
+      <point x="477" y="459.5" type="line"/>
+      <point x="477" y="535.5" type="line"/>
+      <point x="341" y="535.5" type="line"/>
+      <point x="341" y="700" type="line"/>
+      <point x="259" y="700" type="line"/>
+      <point x="259" y="535.5" type="line"/>
+      <point x="123" y="535.5" type="line"/>
+      <point x="123" y="459.5" type="line"/>
+      <point x="259" y="459.5" type="line"/>
+    </contour>
+  </outline>
+</glyph>

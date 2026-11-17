@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<glyph name="greater.lig_arrow" format="2">
+  <advance width="600"/>
+  <outline>
+    <contour>
+      <point x="0" y="238" type="line"/>
+      <point x="395" y="238" type="line"/>
+      <point x="234" y="82" type="line"/>
+      <point x="290" y="26" type="line"/>
+      <point x="524" y="266" type="line"/>
+      <point x="524" y="286" type="line"/>
+      <point x="290" y="526" type="line"/>
+      <point x="234" y="470" type="line"/>
+      <point x="395" y="314" type="line"/>
+      <point x="0" y="314" type="line"/>
+    </contour>
+  </outline>
+</glyph>

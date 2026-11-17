@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<glyph name="hungarumlaut" format="2">
+  <advance width="390"/>
+  <unicode hex="02DD"/>
+  <outline>
+    <contour>
+      <point x="64.5" y="576.5" type="line"/>
+      <point x="134.5" y="576.5" type="line"/>
+      <point x="224.5" y="733.5" type="line"/>
+      <point x="131.5" y="733.5" type="line"/>
+    </contour>
+    <contour>
+      <point x="208.5" y="576.5" type="line"/>
+      <point x="278.5" y="576.5" type="line"/>
+      <point x="368.5" y="733.5" type="line"/>
+      <point x="275.5" y="733.5" type="line"/>
+    </contour>
+  </outline>
+</glyph>

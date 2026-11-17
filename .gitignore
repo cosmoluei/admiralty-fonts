@@ -1,0 +1,13 @@
+.venv/
+.uv-python/
+.uv-cache/
+__pycache__/
+*.pyc
+*.log
+build/
+dist/
+sources/instance_ufos/
+specimens/*.png
+specimens/*.pdf
+.DS_Store
+sources/build.ninja

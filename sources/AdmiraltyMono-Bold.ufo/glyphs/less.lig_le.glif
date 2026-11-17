@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<glyph name="less.lig_le" format="2">
+  <advance width="600"/>
+  <outline>
+    <contour>
+      <point x="86" y="344" type="line"/>
+      <point x="600" y="240" type="line"/>
+      <point x="600" y="326" type="line"/>
+      <point x="272" y="374" type="line"/>
+      <point x="600" y="422" type="line"/>
+      <point x="600" y="508" type="line"/>
+      <point x="86" y="404" type="line"/>
+    </contour>
+    <contour>
+      <point x="86" y="38" type="line"/>
+      <point x="600" y="38" type="line"/>
+      <point x="600" y="126" type="line"/>
+      <point x="86" y="126" type="line"/>
+    </contour>
+  </outline>
+</glyph>
