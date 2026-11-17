@@ -47,7 +47,6 @@
       <sub name="switch_account" with="switch_account.rvrn700"/>
       <sub name="devices" with="devices.rvrn700"/>
       <sub name="project" with="project.rvrn700"/>
-      <sub name="artifact" with="artifact.rvrn700"/>
       <sub name="conversations" with="conversations.rvrn700"/>
       <sub name="read_receipt" with="read_receipt.rvrn700"/>
       <sub name="wallet" with="wallet.rvrn700"/>

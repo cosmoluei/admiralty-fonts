@@ -139,13 +139,14 @@ def _draw_browser(c: IconCanvas) -> None:
 # ---------------------------------------------------------------------------
 
 def _draw_brain(c: IconCanvas) -> None:
-    # a brain seen from the side, facing left (like the emoji): lobes, two folds and the brain stem
-    lobes = [(6.8, 11.0, 3.7), (10.0, 7.4, 3.7), (14.6, 7.0, 3.9), (18.2, 10.2, 3.5),
-             (9.8, 13.8, 3.3), (15.0, 13.2, 3.3)]
-    _union_outline(c, lobes, hidden=[(12.2, 10.4, 4.4)])
-    c.cubic_stroke((7.4, 12.8), (9.6, 10.8), (12.0, 12.2), (15.2, 10.4))
-    c.cubic_stroke((12.4, 3.6), (11.4, 5.4), (13.0, 6.6), (12.2, 8.0))
-    c.line(14.0, 16.6, 15.0, 20.6)
+    # a brain seen from above: two halves, each with three rounded lobes and one fold,
+    # a line between the halves
+    left = [(8.4, 6.6, 3.4), (5.4, 11.6, 3.3), (8.0, 16.8, 3.5)]
+    right = [(24.0 - x, y, r) for x, y, r in left]
+    _union_outline(c, left + right, hidden=[(9.2, 11.8, 4.2), (14.8, 11.8, 4.2), (12.0, 15.6, 3.6)])
+    c.line(12.0, 6.4, 12.0, 19.4)
+    c.cubic_stroke((5.4, 9.0), (7.6, 9.4), (8.6, 11.4), (8.2, 13.6))
+    c.cubic_stroke((18.6, 9.0), (16.4, 9.4), (15.4, 11.4), (15.8, 13.6))
 
 def _draw_web_search(c: IconCanvas) -> None:
     c.circle(10.0, 10.0, 7.2)
@@ -170,10 +171,11 @@ def _draw_project(c: IconCanvas) -> None:
 
 
 def _draw_artifact(c: IconCanvas) -> None:
-    c.rect(2.8, 2.8, 18.4, 18.4, rx=2.4)
-    c.circle(8.8, 8.8, 2.4)
-    c.polygon([(12.2, 17.6), (15.4, 11.6), (18.6, 17.6)])
-
+    # made things of every kind: a triangle, a circle and a square, with no frame
+    # (a frame would make it look like the image symbol)
+    c.polygon([(12.0, 2.6), (16.6, 9.8), (7.4, 9.8)])
+    c.circle(7.2, 17.2, 3.4)
+    c.rect(14.2, 14.0, 6.6, 6.6, rx=1.0)
 
 def _draw_summarize(c: IconCanvas) -> None:
     c.line(3.5, 5.5, 20.5, 5.5)
@@ -316,12 +318,9 @@ def _draw_command(c: IconCanvas) -> None:
 # ---------------------------------------------------------------------------
 
 def _draw_usage(c: IconCanvas) -> None:
-    # a gauge: scale with tick marks, the needle well into the range
-    # (ticks and needle stay clear of the scale in every weight)
+    # a gauge: the scale and a needle well into the range
     cx, cy, R = 12.0, 14.4, 9.0
     c.arc(cx, cy, R, 150.0, 390.0)
-    for a in (180.0, 270.0, 360.0):
-        c.line(*_pt(cx, cy, R - 3.2, a), *_pt(cx, cy, R - 4.6, a))
     c.line(cx, cy, *_pt(cx, cy, R - 3.6, 315.0))
     c.dot(cx, cy, r=(2.0 if c.is_bold else 1.8))
 
