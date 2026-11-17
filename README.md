@@ -9,7 +9,7 @@ Admiralty is a font family made for a personal agent app: a calm, professional l
 | **Admiralty Sans** | A humanist sans serif for interface text and the user's messages. |
 | **Admiralty Serif** | A low-contrast text serif for the agent's messages. It has the same letter widths and kerning as Sans in every weight, so switching between the two never changes line breaks. |
 | **Admiralty Mono** | A monospaced companion for code, logs and IDs (every character is 600 units wide). Optional programming ligatures are in `ss01`. |
-| **Admiralty Symbols** | 280 interface icons on a 24 × 24 grid in the Private Use Area (`U+E000`–`U+E117`), drawn to sit at cap height next to the text. |
+| **Admiralty Symbols** | 282 interface icons on a 24 × 24 grid in the Private Use Area (`U+E000`–`U+E119`), drawn to sit at cap height next to the text. |
 
 Sans, Serif and Mono each have six static styles (Regular, Medium, Bold and their italics) and two variable fonts (`wght` 400–700, with named Regular, Medium, SemiBold and Bold). Symbols has Regular, Medium and Bold and one variable font. The text families cover the Google Fonts Latin Core and Latin Plus sets, Latin Extended-A, Pinyin and Vietnamese. Mono also has the box drawing and block characters (`U+2500`–`U+259F`) for terminal interfaces.
 

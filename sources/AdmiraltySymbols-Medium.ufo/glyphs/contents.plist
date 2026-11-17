@@ -98,14 +98,10 @@
     <string>bookmark_filled.glif</string>
     <key>brain</key>
     <string>brain.glif</string>
-    <key>brain.rvrn700</key>
-    <string>brain.rvrn700.glif</string>
     <key>branch</key>
     <string>branch.glif</string>
     <key>browser</key>
     <string>browser.glif</string>
-    <key>browser.rvrn700</key>
-    <string>browser.rvrn700.glif</string>
     <key>bug</key>
     <string>bug.glif</string>
     <key>bug.rvrn700</key>
@@ -164,8 +160,6 @@
     <string>collapse.glif</string>
     <key>command</key>
     <string>command.glif</string>
-    <key>command.rvrn700</key>
-    <string>command.rvrn700.glif</string>
     <key>compare</key>
     <string>compare.glif</string>
     <key>computer</key>
@@ -194,10 +188,6 @@
     <string>data_controls.glif</string>
     <key>deep_research</key>
     <string>deep_research.glif</string>
-    <key>deep_research.rvrn500</key>
-    <string>deep_research.rvrn500.glif</string>
-    <key>deep_research.rvrn700</key>
-    <string>deep_research.rvrn700.glif</string>
     <key>delete</key>
     <string>delete.glif</string>
     <key>devices</key>
@@ -226,8 +216,6 @@
     <string>edit.glif</string>
     <key>edit_message</key>
     <string>edit_message.glif</string>
-    <key>edit_message.rvrn500</key>
-    <string>edit_message.rvrn500.glif</string>
     <key>emoji</key>
     <string>emoji.glif</string>
     <key>encryption</key>
@@ -288,6 +276,8 @@
     <string>headphones.glif</string>
     <key>heart</key>
     <string>heart.glif</string>
+    <key>heart_filled</key>
+    <string>heart_filled.glif</string>
     <key>help</key>
     <string>help.glif</string>
     <key>help_center</key>
@@ -430,6 +420,10 @@
     <string>play.glif</string>
     <key>play.rtl</key>
     <string>play.rtl.glif</string>
+    <key>play_filled</key>
+    <string>play_filled.glif</string>
+    <key>play_filled.rtl</key>
+    <string>play_filled.rtl.glif</string>
     <key>plug</key>
     <string>plug.glif</string>
     <key>presentation</key>
@@ -510,8 +504,6 @@
     <string>schedule_send.rtl.glif</string>
     <key>scheduled_task</key>
     <string>scheduled_task.glif</string>
-    <key>scheduled_task.rvrn500</key>
-    <string>scheduled_task.rvrn500.glif</string>
     <key>screen_share</key>
     <string>screen_share.glif</string>
     <key>search</key>
@@ -688,8 +680,6 @@
     <string>upload.glif</string>
     <key>usage</key>
     <string>usage.glif</string>
-    <key>usage.rvrn700</key>
-    <string>usage.rvrn700.glif</string>
     <key>user</key>
     <string>user.glif</string>
     <key>verified</key>

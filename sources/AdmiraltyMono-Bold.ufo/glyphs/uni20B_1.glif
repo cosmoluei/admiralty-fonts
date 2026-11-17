@@ -56,12 +56,12 @@
       <point x="309" y="345" type="curve" smooth="yes"/>
     </contour>
     <contour>
-      <point x="380" y="588" type="curve"/>
       <point x="186" y="588" type="line"/>
       <point x="186" y="610" type="line"/>
       <point x="309" y="610" type="line" smooth="yes"/>
       <point x="336" y="610"/>
       <point x="360" y="602"/>
+      <point x="380" y="588" type="curve"/>
     </contour>
   </outline>
 </glyph>

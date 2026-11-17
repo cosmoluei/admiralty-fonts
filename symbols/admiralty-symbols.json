@@ -13,8 +13,8 @@
     500,
     700
   ],
-  "puaRange": "U+E000-U+E117",
-  "count": 280,
+  "puaRange": "U+E000-U+E119",
+  "count": 282,
   "symbols": [
     {
       "name": "send",
@@ -5136,6 +5136,47 @@
       "svgRegular": "svg/regular/bug.svg",
       "svgMedium": "svg/medium/bug.svg",
       "svgBold": "svg/bold/bug.svg"
+    },
+    {
+      "name": "heart-filled",
+      "label": "Heart, active",
+      "glyphName": "heart_filled",
+      "codepoint": "U+E118",
+      "codepointInt": 57624,
+      "category": "Common",
+      "tags": [
+        "liked",
+        "favorite",
+        "active",
+        "solid"
+      ],
+      "rtlMirror": false,
+      "filled": true,
+      "svgRegular": "svg/regular/heart-filled.svg",
+      "svgMedium": "svg/medium/heart-filled.svg",
+      "svgBold": "svg/bold/heart-filled.svg"
+    },
+    {
+      "name": "play-filled",
+      "label": "Play, active",
+      "glyphName": "play_filled",
+      "codepoint": "U+E119",
+      "codepointInt": 57625,
+      "category": "Media and voice",
+      "tags": [
+        "start",
+        "playing",
+        "active",
+        "solid"
+      ],
+      "rtlMirror": true,
+      "filled": true,
+      "svgRegular": "svg/regular/play-filled.svg",
+      "svgMedium": "svg/medium/play-filled.svg",
+      "svgBold": "svg/bold/play-filled.svg",
+      "svgRegularRtl": "svg/regular/play-filled-rtl.svg",
+      "svgMediumRtl": "svg/medium/play-filled-rtl.svg",
+      "svgBoldRtl": "svg/bold/play-filled-rtl.svg"
     }
   ]
 }

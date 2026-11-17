@@ -1,5 +1,5 @@
 """
-Admiralty Symbols — Phase 2 (62 new symbols, added for version 0.300).
+Admiralty Symbols — Phase 2 (64 new symbols, added for version 0.300).
 
 New code points follow the 218 Phase 1 symbols (U+E0DA onwards), in the order of SYMBOLS_PHASE2.
 All drawings are original and use the IconCanvas primitives on the 24 x 24 grid
@@ -81,9 +81,9 @@ def _corners(c: IconCanvas, lo: float = 3.0, hi: float = 21.0, arm: float = 5.0)
 
 
 def _clock_badge(c: IconCanvas, cx: float, cy: float, r: float = 4.4) -> None:
-    c.cut_circle(cx, cy, r + c.sw * 0.5 + 1.0)
+    c.cut_circle(cx, cy, r + 2.4)          # same cut in every weight: same outline topology
     c.circle(cx, cy, r)
-    c.polyline([(cx, cy - r * 0.55), (cx, cy), (cx + r * 0.45, cy + r * 0.3)])
+    c.polyline([(cx, cy - r * 0.86), (cx, cy), (cx + r * 0.28, cy + r * 0.18)])
 
 
 # ---------------------------------------------------------------------------
@@ -125,32 +125,27 @@ def _draw_devices(c: IconCanvas) -> None:
 
 
 def _draw_browser(c: IconCanvas) -> None:
-    # a web page: window with a toolbar (three dots) and lines of content
-    c.rect(2.5, 3.5, 19.0, 17.0, rx=2.2)
-    c.line(2.5, 8.4, 21.5, 8.4)
-    d = 1.05 if c.is_bold else 0.95
-    for x in (5.4, 8.0, 10.6):
-        c.dot(x, 5.95, r=d)
-    c.line(6.2, 12.6, 17.8, 12.6)
-    c.line(6.2, 16.4, 13.4, 16.4)
-
+    # a compass, the browser sign people know from Safari: a ring and a needle
+    # (solid)
+    cx, cy, R = 12.0, 12.0, 9.0
+    c.circle(cx, cy, R)
+    k, w = 6.4, 2.6
+    ne, sw = _pt(cx, cy, k, -45.0), _pt(cx, cy, k, 135.0)
+    l, r_ = _pt(cx, cy, w, -135.0), _pt(cx, cy, w, 45.0)
+    c.fill_polygon([ne, r_, sw, l])
 
 # ---------------------------------------------------------------------------
 # Agent and tools
 # ---------------------------------------------------------------------------
 
 def _draw_brain(c: IconCanvas) -> None:
-    # two hemispheres with a softly scalloped edge, split by a centre line
-    circles = []
-    for side in (-1.0, 1.0):
-        for a in (-80.0, -40.0, 0.0, 40.0, 80.0):
-            rad = math.radians(a)
-            circles.append((12.0 + side * (4.6 * math.cos(rad) + 1.6), 12.0 + 6.0 * math.sin(rad), 3.3))
-    _union_outline(c, circles, hidden=[(9.0, 12.0, 5.4), (15.0, 12.0, 5.4), (12.0, 8.0, 4.4), (12.0, 16.0, 4.4)])
-    c.line(12.0, 4.6, 12.0, 19.4)
-    c.cubic_stroke((6.4, 10.4), (8.2, 9.4), (9.8, 10.4), (9.6, 12.8))
-    c.cubic_stroke((17.6, 13.6), (15.8, 14.6), (14.2, 13.6), (14.4, 11.2))
-
+    # a brain seen from the side, facing left (like the emoji): lobes, two folds and the brain stem
+    lobes = [(6.8, 11.0, 3.7), (10.0, 7.4, 3.7), (14.6, 7.0, 3.9), (18.2, 10.2, 3.5),
+             (9.8, 13.8, 3.3), (15.0, 13.2, 3.3)]
+    _union_outline(c, lobes, hidden=[(12.2, 10.4, 4.4)])
+    c.cubic_stroke((7.4, 12.8), (9.6, 10.8), (12.0, 12.2), (15.2, 10.4))
+    c.cubic_stroke((12.4, 3.6), (11.4, 5.4), (13.0, 6.6), (12.2, 8.0))
+    c.line(14.0, 16.6, 15.0, 20.6)
 
 def _draw_web_search(c: IconCanvas) -> None:
     c.circle(10.0, 10.0, 7.2)
@@ -163,7 +158,7 @@ def _draw_web_search(c: IconCanvas) -> None:
 
 def _draw_deep_research(c: IconCanvas) -> None:
     c.circle(10.5, 10.5, 7.0)
-    c.line(15.6, 15.6, 20.8, 20.8)
+    c.line(15.2, 15.2, 20.6, 20.6)
     _spark(c, 10.5, 10.5, 3.8, 1.2)
 
 
@@ -267,9 +262,13 @@ def _draw_conversations(c: IconCanvas) -> None:
 
 
 def _draw_edit_message(c: IconCanvas) -> None:
-    _bubble(c)
-    c.polygon([(8.4, 13.4), (8.8, 11.4), (13.6, 6.6), (15.2, 8.2), (10.4, 13.0)])
-
+    # a message bubble with a large pencil crossing its lower right corner
+    _bubble(c, x=2.5, y=3.0, w=16.0, h=12.6, tail_x=6.4)
+    c.line(6.4, 7.6, 14.4, 7.6)
+    c.line(6.4, 11.0, 10.4, 11.0)
+    pencil = [(12.6, 21.2), (12.9, 18.0), (19.4, 11.5), (22.3, 14.4), (15.8, 20.9)]
+    c.cut_polygon(pencil)
+    c.polygon(pencil)
 
 def _draw_read_receipt(c: IconCanvas) -> None:
     c.polyline([(2.4, 12.6), (6.4, 16.6), (14.0, 8.0)])
@@ -277,10 +276,13 @@ def _draw_read_receipt(c: IconCanvas) -> None:
 
 
 def _draw_schedule_send(c: IconCanvas) -> None:
-    c.polygon([(2.8, 4.0), (20.4, 12.0), (2.8, 20.0), (5.8, 12.0)])
-    c.line(5.8, 12.0, 11.0, 12.0)
-    _clock_badge(c, 17.8, 17.8, 3.6)
-
+    # a smaller send arrow, and a clock face beside it at the lower right
+    c.polygon([(2.6, 3.2), (18.6, 9.8), (2.6, 16.4), (5.3, 9.8)])
+    c.line(5.3, 9.8, 10.2, 9.8)
+    cx, cy, r = 17.2, 17.0, 4.6
+    c.cut_circle(cx, cy, r + 2.4)
+    c.circle(cx, cy, r)
+    c.polyline([(cx, cy - r * 0.86), (cx, cy), (cx + r * 0.3, cy)])
 
 def _draw_hashtag(c: IconCanvas) -> None:
     c.line(9.8, 3.5, 7.8, 20.5)
@@ -298,26 +300,30 @@ def _draw_keyboard(c: IconCanvas) -> None:
 
 
 def _draw_command(c: IconCanvas) -> None:
-    lo, hi, r = 9.4, 14.6, 2.8
-    c.line(lo, lo - 0.2, lo, hi + 0.2)
-    c.line(hi, lo - 0.2, hi, hi + 0.2)
-    c.line(lo - 0.2, lo, hi + 0.2, lo)
-    c.line(lo - 0.2, hi, hi + 0.2, hi)
+    # the command key: a square whose sides run on into four loops
+    lo, hi, r = 8.8, 15.2, 3.0
+    c.line(lo, lo - r, lo, hi + r)
+    c.line(hi, lo - r, hi, hi + r)
+    c.line(lo - r, lo, hi + r, lo)
+    c.line(lo - r, hi, hi + r, hi)
     c.arc(lo - r, lo - r, r, 90.0, 360.0)
     c.arc(hi + r, lo - r, r, 180.0, 450.0)
     c.arc(lo - r, hi + r, r, 0.0, 270.0)
     c.arc(hi + r, hi + r, r, 270.0, 540.0)
-
 
 # ---------------------------------------------------------------------------
 # Account, billing and security
 # ---------------------------------------------------------------------------
 
 def _draw_usage(c: IconCanvas) -> None:
-    c.arc(12.0, 13.6, 8.6, 150.0, 390.0)
-    c.line(12.0, 13.6, 16.4, 9.2)
-    c.dot(12.0, 13.6, r=(1.8 if c.is_bold else 1.6))
-    c.line(6.4, 19.4, 17.6, 19.4)
+    # a gauge: scale with tick marks, the needle well into the range
+    # (ticks and needle stay clear of the scale in every weight)
+    cx, cy, R = 12.0, 14.4, 9.0
+    c.arc(cx, cy, R, 150.0, 390.0)
+    for a in (180.0, 270.0, 360.0):
+        c.line(*_pt(cx, cy, R - 3.2, a), *_pt(cx, cy, R - 4.6, a))
+    c.line(cx, cy, *_pt(cx, cy, R - 3.6, 315.0))
+    c.dot(cx, cy, r=(2.0 if c.is_bold else 1.8))
 
 
 def _draw_appearance(c: IconCanvas) -> None:
@@ -571,6 +577,24 @@ def _draw_heart(c: IconCanvas) -> None:
     c.line(*_pt(16.0, 9.0, r, 400.0), 12.0, 20.0)
 
 
+def _heart_pts() -> List[Pt]:
+    r = 4.6
+    pts = [(12.0, 20.0)]
+    pts += [_pt(8.0, 9.0, r, 140.0 + (330.4 - 140.0) * k / 24.0) for k in range(25)]
+    pts += [_pt(16.0, 9.0, r, 209.6 + (400.0 - 209.6) * k / 24.0) for k in range(25)]
+    return pts
+
+
+def _draw_heart_filled(c: IconCanvas) -> None:
+    _draw_heart(c)
+    c.fill_polygon(_heart_pts())
+
+
+def _draw_play_filled(c: IconCanvas) -> None:
+    _draw_play(c)
+    c.fill_polygon([(7.0, 4.4), (19.4, 12.0), (7.0, 19.6)])
+
+
 def _draw_bug(c: IconCanvas) -> None:
     c.ellipse(12.0, 14.4, 4.6, 6.0)
     c.line(12.0, 10.4, 12.0, 20.2)
@@ -654,6 +678,10 @@ SYMBOLS_PHASE2: List[SymbolSpec] = [
     SymbolSpec("drag-handle", "Common", ("grip", "reorder", "move"), _draw_drag_handle),
     SymbolSpec("heart", "Common", ("like", "favorite", "love"), _draw_heart),
     SymbolSpec("bug", "Common", ("debug", "issue", "error"), _draw_bug),
+    # added after review of 0.300: filled partners for the active state
+    SymbolSpec("heart-filled", "Common", ("liked", "favorite", "active", "solid"), _draw_heart_filled, is_filled=True),
+    SymbolSpec("play-filled", "Media and voice", ("start", "playing", "active", "solid"), _draw_play_filled,
+               rtl_mirror=True, is_filled=True),
 ]
 
-assert len(SYMBOLS_PHASE2) == 62, len(SYMBOLS_PHASE2)
+assert len(SYMBOLS_PHASE2) == 64, len(SYMBOLS_PHASE2)

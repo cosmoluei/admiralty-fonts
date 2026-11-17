@@ -1,7 +1,7 @@
 """
 Builds all 5 platform delivery packages (REQUIREMENTS.md Section 14 & 17) into dist/:
   1. dist/apple-ios-macos/  - Variable TTFs + Static OTFs + Plain Original SVGs + OFL.txt + README
-  2. dist/android/          - res/font/*.ttf & XML descriptors + 280 Vector Drawables (ic_adm_*.xml) + OFL.txt + README
+  2. dist/android/          - res/font/*.ttf & XML descriptors + 282 Vector Drawables (ic_adm_*.xml) + OFL.txt + README
   3. dist/windows/          - Static RIBBI TTFs (Office/Win32) + Variable TTFs + SVGs + OFL.txt + README
   4. dist/web/              - Variable & Static WOFF2s + Unicode-range Subsets + CLS-zero CSS + SVG Sprite + OFL.txt + README
   5. dist/cross-platform/   - Variable & Static TTFs + admiralty-symbols.json + Flutter IconData Dart map + OFL.txt + README
@@ -84,7 +84,7 @@ def _build_apple(otf_dir: Path, var_dir: Path, sym_svg_dir: Path) -> None:
         "# Admiralty for Apple (iOS & macOS)\n\n"
         "## Bundle & Registration\n"
         f"- Copy `fonts/variable/*.ttf` ({len(v_files)} Variable Fonts) or `fonts/static/*.otf` ({len(s_files)} Static OTFs) into your Xcode target and list filenames under `UIAppFonts` in `Info.plist`.\n"
-        "- Plain 24x24 original SVG icons are included in `symbols/svg/{regular,medium,bold}/` alongside `AdmiraltySymbols[wght].ttf` (`U+E000..U+E117`). Custom Apple SF-Symbol-template import headers are intentionally omitted pending Apple custom-symbol rule verification (see REQUIREMENTS Section 17).\n\n"
+        "- Plain 24x24 original SVG icons are included in `symbols/svg/{regular,medium,bold}/` alongside `AdmiraltySymbols[wght].ttf` (`U+E000..U+E119`). Custom Apple SF-Symbol-template import headers are intentionally omitted pending Apple custom-symbol rule verification (see REQUIREMENTS Section 17).\n\n"
         "## SwiftUI Usage (Dynamic Type Ready)\n"
         "```swift\n"
         "Text(\"Net revenue: €1,362,446.86\")\n"
@@ -159,7 +159,7 @@ def _build_android(ttf_dir: Path, var_dir: Path, meta: dict) -> None:
     (d / "README.md").write_text(
         "# Admiralty for Android\n\n"
         "## Resources Layout\n"
-        "- Copy `res/font/*` into `app/src/main/res/font/` and `res/drawable/ic_adm_*.xml` (280 VectorDrawables, including `android:autoMirrored=\"true\"` on 37 directional icons) into `app/src/main/res/drawable/`.\n"
+        "- Copy `res/font/*` into `app/src/main/res/font/` and `res/drawable/ic_adm_*.xml` (282 VectorDrawables, including `android:autoMirrored=\"true\"` on 38 directional icons) into `app/src/main/res/drawable/`.\n"
         "- `admiralty_*_wght.ttf` work natively on Android 8+ (API 26+); static files + `<font-family>` XML support older Android releases.\n\n"
         "## Jetpack Compose Example (Accessibility `sp` Ready)\n"
         "```kotlin\n"

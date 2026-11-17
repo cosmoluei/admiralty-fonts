@@ -41,4 +41,5 @@ feature rtlm {
     sub mute by mute.rtl;
     sub read_aloud by read_aloud.rtl;
     sub trending_up by trending_up.rtl;
+    sub play_filled by play_filled.rtl;
 } rtlm;

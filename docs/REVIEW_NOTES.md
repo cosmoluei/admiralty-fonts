@@ -94,5 +94,12 @@ Left as they are, on purpose
 ## New characters (2026-11-17)
 - 62 new symbols, Latin Plus, Vietnamese and Mono box drawing (see `CHANGELOG.md`). Built and checked on the owner's Mac: all 21 static and 7 variable fonts build; duplex (Sans = Serif widths) and Mono 600-unit checks pass; OTS passes for every file; Font Bakery has no new failures (only the version number).
 - Mono `Ⓓ` uses a smaller true circle that fits the 600-unit cell (it was squeezed into an ellipse).
-- Still open: Font Bakery warns about a small kink between weight 499 and 700 in Serif `₨` (variable font only); the Mono horn letters `Ơ Ư` reach slightly past the cell on the right, as in most monospaced fonts.
+- Fixed after review: the Serif `₨` kink and the other weight problems (see below). Still open: the Mono horn letters `Ơ Ư` reach slightly past the cell on the right, as in most monospaced fonts.
 - Review page: `specimens/review.html`.
+
+## Owner review of the new designs (2026-11-17)
+- Unclear symbols redrawn: `browser` (compass), `brain` (side view with stem), `edit-message` (bubble with text lines and a large pencil), `schedule-send` (smaller arrow, clock with hands), `usage` (gauge with ticks). `command` fixed: the sides of the square now run into the loops.
+- New `heart-filled` (U+E118) and `play-filled` (U+E119, mirrored in RTL).
+- Weight problems: the old Medium superscripts were smaller than Regular and Bold, and Mono Medium/Bold superscripts were not centred, so the figures changed size as the weight moved. All superscripts, subscripts and fractions are now built from one fixed size in every weight, with separate (not merged) parts. `₨` keeps R and s apart. `deep-research` had its handle split off in Medium (a pathops edge case); the handle now overlaps the ring in every weight. Clock badges use one cut size in every weight.
+- `₴`: the mirrored S had the opposite outline direction, so the bars cut gaps into it. Parts are now joined one at a time.
+- Checked: no glyph moves out of place between weights in any variable font (except the existing `“ ”` pair, which touch at the heaviest weights when typed next to each other); Font Bakery interpolation check passes; OTS passes.

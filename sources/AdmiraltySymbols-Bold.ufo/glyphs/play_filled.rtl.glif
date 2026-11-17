@@ -1,0 +1,32 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<glyph name="play_filled.rtl" format="2">
+  <advance width="840"/>
+  <outline>
+    <contour>
+      <point x="573" y="666" type="curve"/>
+      <point x="128" y="393.5" type="line" smooth="yes"/>
+      <point x="113" y="384.5"/>
+      <point x="103" y="368.5"/>
+      <point x="103" y="350" type="curve" smooth="yes"/>
+      <point x="103" y="331.5"/>
+      <point x="113" y="315.5"/>
+      <point x="128" y="306.5" type="curve" smooth="yes"/>
+      <point x="573" y="34" type="line" smooth="yes"/>
+      <point x="581" y="29"/>
+      <point x="590" y="26"/>
+      <point x="600" y="26" type="curve" smooth="yes"/>
+      <point x="628" y="26"/>
+      <point x="650.5" y="48.5"/>
+      <point x="650.5" y="76.5" type="curve" smooth="yes"/>
+      <point x="650.5" y="623.5" type="line" smooth="yes"/>
+      <point x="650.5" y="651.5"/>
+      <point x="628" y="674"/>
+      <point x="600" y="674" type="curve" smooth="yes"/>
+      <point x="590.5" y="674"/>
+      <point x="581.5" y="671.5"/>
+      <point x="574" y="666.5" type="curve"/>
+      <point x="573.5" y="666.5"/>
+      <point x="573.5" y="666.5"/>
+    </contour>
+  </outline>
+</glyph>

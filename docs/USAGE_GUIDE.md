@@ -1,6 +1,6 @@
 # Admiralty Font Family — App Team Usage Guide (`v0.300`)
 
-Machine-readable tokens: [`admiralty-design-tokens.json`](../tokens/admiralty-design-tokens.json) · License: **SIL Open Font License 1.1** (no Reserved Font Name) · Latin-only + **280 original PUA UI icons** (`U+E000–U+E0D9`).
+Machine-readable tokens: [`admiralty-design-tokens.json`](../tokens/admiralty-design-tokens.json) · License: **SIL Open Font License 1.1** (no Reserved Font Name) · Latin-only + **282 original PUA UI icons** (`U+E000–U+E0D9`).
 
 ---
 

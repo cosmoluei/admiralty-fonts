@@ -40,25 +40,25 @@
       <point x="343" y="298" type="line"/>
     </contour>
     <contour>
-      <point x="471" y="298" type="line"/>
-      <point x="417" y="388" type="line"/>
       <point x="551" y="388" type="line"/>
       <point x="551" y="298" type="line"/>
+      <point x="471" y="298" type="line"/>
+      <point x="417" y="388" type="line"/>
     </contour>
     <contour>
-      <point x="201.0" y="480.0" type="line"/>
       <point x="201.0" y="534.0" type="line"/>
       <point x="203.672" y="529.491" type="line"/>
       <point x="233.0" y="480.0" type="line"/>
+      <point x="201.0" y="480.0" type="line"/>
     </contour>
     <contour>
-      <point x="551.0" y="205.893" type="line"/>
-      <point x="551.0" y="205.786" type="line"/>
-      <point x="551.0" y="205.68" type="line"/>
+      <point x="527.09" y="206.0" type="line"/>
+      <point x="527.181" y="206.0" type="line"/>
+      <point x="527.271" y="206.0" type="line"/>
+      <point x="551.0" y="206.0" type="line"/>
       <point x="551.0" y="166.0" type="line"/>
       <point x="548.591" y="170.015" type="line"/>
       <point x="527.0" y="206.0" type="line"/>
-      <point x="551.0" y="206.0" type="line"/>
     </contour>
   </outline>
 </glyph>

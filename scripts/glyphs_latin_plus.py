@@ -46,10 +46,12 @@ def _clean(p: pathops.Path) -> pathops.Path:
 
 
 def _union(paths: List[pathops.Path]) -> pathops.Path:
+    """Union of filled shapes. Each part is cleaned on its own first, so a mirrored part
+    (reversed direction) adds to the others instead of cutting holes into them."""
     acc = pathops.Path()
     for q in paths:
-        acc.addPath(q)
-    return _clean(acc)
+        acc = pathops.op(acc, _clean(q), pathops.PathOp.UNION, fix_winding=True)
+    return acc
 
 
 def _minus(a: pathops.Path, b: pathops.Path) -> pathops.Path:
@@ -188,50 +190,91 @@ def build_latin_plus(data: Dict[str, Glyph], family: str, weight: int, italic: b
             path, width = _fit_mono(path), 600
         out[name] = (int(round(width)), cp, _to_contours(_clean(path)))
 
-    # -- superscripts / subscripts 4..9 -----------------------------------------
+    def put_parts(name: str, cp: int, parts: List[pathops.Path], width: float) -> None:
+        """Like put, but the parts stay separate outlines (no merging). Merged outlines can
+        change shape from weight to weight and break the variable fonts; separate parts
+        always match. The parts are laid out so they do not touch."""
+        if S.mono:
+            allp = pathops.Path()
+            for q in parts:
+                allp.addPath(q)
+            x0, _, x1, _ = allp.bounds
+            sc = min(1.0, 540.0 / max(x1 - x0, 1.0))
+            cx = (x0 + x1) / 2.0
+            parts = [_xf(q, sc, 0, 0, 1, 300.0 - sc * cx, 0) for q in parts]
+            width = 600
+        cbs = []
+        for q in parts:
+            cbs += _to_contours(_clean(q))
+        out[name] = (int(round(width)), cp, cbs)
+
+    # -- superscripts and subscripts (all of them, so the set matches in every weight) -----
+    # Every style uses the same box (two: 304..710), so the figures keep their size when the
+    # weight changes (the old Medium superscripts were smaller than Regular and Bold).
+    SUP_BOT, SUP_H = 304.0, 406.0
+    figs = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"]
+    sup_paths: Dict[int, pathops.Path] = {}
     if S.has("two", "twosuperior"):
-        a0, a1 = _bounds(S.p("two")), _bounds(S.p("twosuperior"))
-        sx = (a1[2] - a1[0]) / (a0[2] - a0[0])
-        sy = (a1[3] - a1[1]) / (a0[3] - a0[1])
-        bx, by = a1[0] - sx * a0[0], a1[1] - sy * a0[1]
+        tb = _bounds(S.p("two"))
+        sy = SUP_H / (tb[3] - tb[1])
+        by = SUP_BOT - sy * tb[1]
         sup_w = S.w("twosuperior")
-        figs = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"]
-        drop = 450.0
-        for n in range(1, 10):
+        for n in range(0, 10):
             if not S.has(figs[n]):
                 continue
-            if n >= 4:
-                sp = _xf(S.p(figs[n]), sx, 0, 0, sy, bx, by)
-                put(f"uni{0x2070 + n:04X}", 0x2070 + n, sp, sup_w)
-            # subscripts: the superscript form, lowered (slant-corrected in the italics)
-            src = {1: "onesuperior", 2: "twosuperior", 3: "threesuperior"}.get(n)
-            sp = S.p(src) if src and S.has(src) else _xf(S.p(figs[n]), sx, 0, 0, sy, bx, by)
-            sw = S.w(src) if src and S.has(src) else sup_w
-            put(f"uni{0x2080 + n:04X}", 0x2080 + n, _xf(sp, e=-k * drop, f=-drop), sw)
+            # scale about the baseline, lift along the slant, centre the figure's advance
+            p = _xf(S.p(figs[n]), sy, 0, 0, sy, 0, 0)
+            p = _xf(p, e=sup_w / 2.0 - sy * S.w(figs[n]) / 2.0 + k * by, f=by)
+            sup_paths[n] = p
+        drop = 450.0
+        sup_names = {1: ("onesuperior", 0x00B9), 2: ("twosuperior", 0x00B2), 3: ("threesuperior", 0x00B3)}
+        for n in range(1, 10):
+            if n not in sup_paths:
+                continue
+            nm, cp = sup_names.get(n, (f"uni{0x2070 + n:04X}", 0x2070 + n))
+            w = S.w(nm) if S.has(nm) else sup_w
+            put(nm, cp, sup_paths[n], w)
+            put(f"uni{0x2080 + n:04X}", 0x2080 + n, _xf(sup_paths[n], e=-k * drop, f=-drop), w)
 
-    # -- fraction slash, one third, two thirds ------------------------------------
-    if S.has("onehalf", "one", "two", "three"):
-        half = S.data["onehalf"][2]
-        parts = [(_path([cb]), _bounds(_path([cb]))) for cb in half]
-        slash = max(parts, key=lambda t: t[1][3] - t[1][1])
-        rest = [t for t in parts if t is not slash]
-        num = max(rest, key=lambda t: t[1][1])
-        den = min(rest, key=lambda t: t[1][1])
-        put("fraction", 0x2044, _center_in(slash[0], 160.0) if not S.mono else slash[0], 160)
+    # -- fraction slash, one third, two thirds ----------------------------------------------
+    # Drawn from fixed proportions (not from the old half sign), parts kept separate.
+    def slash_at(xc: float) -> pathops.Path:
+        t, dx = stem * 0.78, 330.0
+        up = _poly([(xc - dx / 2 - t / 2, -12), (xc - dx / 2 + t / 2, -12),
+                    (xc + dx / 2 + t / 2, 704), (xc + dx / 2 - t / 2, 704)])
+        return S.slant(up, 350.0)
+
+    if sup_paths and S.has("onehalf"):
         if S.mono:
-            out["fraction"] = (600, 0x2044, _to_contours(_fit_mono(slash[0], 420.0)))
-
-        def digit_into(fig: str, box) -> pathops.Path:
-            g = S.p(fig)
-            gb = _bounds(g)
-            s = (box[3] - box[1]) / (gb[3] - gb[1])
-            g = _xf(g, s, 0, 0, s, 0, 0)
-            gb = _bounds(g)
-            return _xf(g, e=(box[0] + box[2]) / 2 - (gb[0] + gb[2]) / 2, f=box[1] - gb[1])
-
+            out["fraction"] = (600, 0x2044, _to_contours(_clean(slash_at(300.0))))
+        else:
+            out["fraction"] = (160, 0x2044, _to_contours(_clean(slash_at(80.0))))
         hw = S.w("onehalf")
-        put("uni2153", 0x2153, _union([digit_into("one", num[1]), slash[0], digit_into("three", den[1])]), hw)
-        put("uni2154", 0x2154, _union([digit_into("two", num[1]), slash[0], digit_into("three", den[1])]), hw)
+        if S.mono:
+            hw = 760.0          # laid out like Sans, then fitted into the 600 cell
+
+        def frac(num: int, den: int) -> List[pathops.Path]:
+            fs = 0.94
+            res = []
+            for n, xc, low in ((num, hw / 2 - 0.27 * hw, 0.0), (den, hw / 2 + 0.27 * hw, SUP_BOT)):
+                p = sup_paths[n]
+                b = _bounds(p)
+                ybase = SUP_BOT - low
+                # shrink slightly about the figure's centre, then move it into place
+                pcx = (b[0] + b[2]) / 2.0
+                p = _xf(p, fs, 0, 0, fs, pcx - fs * pcx, SUP_BOT - fs * SUP_BOT)
+                b = _bounds(p)
+                p = _xf(p, e=xc - (b[0] + b[2]) / 2.0 - k * low, f=-low)
+                res.append(p)
+            return [res[0], slash_at(hw / 2.0), res[1]]
+
+        w_out = 600 if S.mono else S.w("onehalf")
+        put_parts("uni2153", 0x2153, frac(1, 3), w_out)
+        put_parts("uni2154", 0x2154, frac(2, 3), w_out)
+        # the older ½ ¼ ¾ are rebuilt the same way, so all fractions match in every weight
+        for nm, cp, a, b_ in (("onehalf", 0x00BD, 1, 2), ("onequarter", 0x00BC, 1, 4), ("threequarters", 0x00BE, 3, 4)):
+            if S.has(nm) and a in sup_paths and b_ in sup_paths:
+                put_parts(nm, cp, frac(a, b_), 600 if S.mono else S.w(nm))
 
     # -- currency signs ---------------------------------------------------------
     ymid = CAP / 2.0
@@ -265,8 +308,8 @@ def build_latin_plus(data: Dict[str, Glyph], family: str, weight: int, italic: b
         put("uni20A6", 0x20A6, _xf(_union([S.p("N")] + bars), e=20), S.w("N") + 40)
     if S.has("R", "s"):
         rw = S.w("R")
-        s_p = _xf(S.p("s"), 0.8, 0, 0, 0.8, rw - 30, 0)
-        put("uni20A8", 0x20A8, _union([S.p("R"), s_p]), rw + 0.8 * S.w("s") - 30)
+        s_p = _xf(S.p("s"), 0.8, 0, 0, 0.8, rw - 16, 0)
+        put_parts("uni20A8", 0x20A8, [S.p("R"), s_p], rw + 0.8 * S.w("s") - 16)
     if S.has("dcroat"):
         b = _bounds(S.p("dcroat"))
         put("uni20AB", 0x20AB, _union([S.p("dcroat"), S.bar_at(b, -190 + hb / 2, hb, -10, -10)]), S.w("dcroat"))
@@ -305,7 +348,7 @@ def build_latin_plus(data: Dict[str, Glyph], family: str, weight: int, italic: b
         flat = S.unslant(sp, ymid)
         fb = _bounds(flat)
         mir = S.slant(_xf(flat, -1, 0, 0, 1, fb[0] + fb[2], 0), ymid)
-        bars = [S.bar_at(b, y, hb * 0.84, 20, 20) for y in (CAP * 0.40, CAP * 0.60)]
+        bars = [S.bar_at(b, y, hb * 0.84, 40, 40) for y in (CAP * 0.38, CAP * 0.60)]
         put("uni20B4", 0x20B4, _union([mir] + bars), S.w("S"))
 
     # sheqel, manat, lari: drawn from strokes (slanted in the italics)

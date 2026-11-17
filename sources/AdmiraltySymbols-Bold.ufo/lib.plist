@@ -323,6 +323,9 @@
       <string>drag_handle</string>
       <string>heart</string>
       <string>bug</string>
+      <string>heart_filled</string>
+      <string>play_filled</string>
+      <string>play_filled.rtl</string>
       <string>camera.rvrn700</string>
       <string>paste.rvrn500</string>
       <string>paste.rvrn700</string>
@@ -348,22 +351,14 @@
       <string>switch_account.rvrn700</string>
       <string>whats_new.rvrn500</string>
       <string>devices.rvrn700</string>
-      <string>browser.rvrn700</string>
-      <string>brain.rvrn700</string>
-      <string>deep_research.rvrn500</string>
-      <string>deep_research.rvrn700</string>
       <string>project.rvrn700</string>
       <string>artifact.rvrn700</string>
       <string>translate.rvrn500</string>
       <string>server.rvrn500</string>
       <string>conversations.rvrn700</string>
-      <string>edit_message.rvrn500</string>
       <string>read_receipt.rvrn700</string>
-      <string>command.rvrn700</string>
-      <string>usage.rvrn700</string>
       <string>wallet.rvrn700</string>
       <string>subscription.rvrn500</string>
-      <string>scheduled_task.rvrn500</string>
       <string>subtitles.rvrn700</string>
       <string>pie_chart.rvrn700</string>
       <string>bug.rvrn700</string>

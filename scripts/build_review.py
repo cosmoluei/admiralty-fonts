@@ -1,6 +1,6 @@
 """
 Builds specimens/review.html: a browser page for reviewing the 0.300 additions
-(62 new symbols, GF Latin Plus, Mono box drawing, Vietnamese).
+(64 new symbols, GF Latin Plus, Mono box drawing, Vietnamese).
 
 The page loads the fonts by relative path from ../fonts/, so open it from a copy of the
 repository (or the build folder) where fonts/variable and fonts/woff2 exist.
@@ -93,7 +93,7 @@ p.note{color:var(--muted);margin:4px 0 14px;max-width:820px}
 </div></header>
 <main>
 <section id="sym" class="on">
-  <p class="note">The 62 symbols added in 0.300 (U+E0DA–U+E117). The big glyph follows the weight slider; the strip below shows Regular, Medium and Bold at 24 px, then Regular and Bold at 16 px. The blue line is the text axis. Symbols marked ⇄ are mirrored in right-to-left text (<code>rtlm</code>): switch on RTL to see them.</p>
+  <p class="note">The 64 symbols added in 0.300 (U+E0DA–U+E119). The big glyph follows the weight slider; the strip below shows Regular, Medium and Bold at 24 px, then Regular and Bold at 16 px. The blue line is the text axis. Symbols marked ⇄ are mirrored in right-to-left text (<code>rtlm</code>): switch on RTL to see them.</p>
   <div class="ctl seg" id="rtl" style="margin-bottom:10px"><button data-v="ltr" class="on">LTR</button><button data-v="rtl">RTL</button></div>
   <div class="grid sym" id="symgrid"></div>
 </section>
