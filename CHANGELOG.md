@@ -6,6 +6,12 @@ All notable pre-release milestones (`0.x` design track) are documented here. All
 
 ## `[0.300]` — 2026-11-16 (Review 2 refinement, rounds 1–4)
 
+- **New characters** (added to 0.300 before it is tagged):
+  - **62 new symbols** (`U+E0DA`–`U+E117`, 280 in all): devices (computer, laptop, phone, tablet, watch, devices, browser), agent and tools (brain, web search, deep research, project, artifact, summarize, translate, computer use, screen share, extension, API, server), chat, account and billing (usage, appearance, billing, receipt, wallet, subscription, Face ID, fingerprint, QR code, scan), time and places, media and voice, charts, mail and contacts, drag handle, heart, bug. Six are mirrored in RTL. Source: `scripts/symbols_phase2.py`.
+  - **Google Fonts Latin Plus** in Sans, Serif and Mono, every style: superscripts and subscripts, `⅓ ⅔ ⁄`, 17 more currency signs, `ℓ ℮ Ⓓ ∂ ∅ ∏ ∑ ∫ ‖ ⟨ ⟩`, `↖ ↙ ↕` and the geometric shapes. Source: `scripts/glyphs_latin_plus.py`.
+  - **Vietnamese**: `Ơ ơ Ư ư`, the marks hook above, dot below and horn (with mark anchors), and all precomposed letters `U+1EA0`–`U+1EF9`, built from components. Acute, grave and hook sit beside a circumflex; caps stacks stay under the 980 ascent. New letters share their base letter's kerning. Source: `scripts/glyphs_vietnamese.py`.
+  - **Mono box drawing and block elements** (`U+2500`–`U+259F`, 160 characters) that join across the full cell height, upright in the italics. Source: `scripts/glyphs_box.py`.
+  - `specimens/review.html` (`scripts/build_review.py`) for reviewing these additions.
 - **Release preparation**: `æ` in the italics has its own straight a-stem with an open notch before the e (it read as `œ`); Mono `æ` redrawn as one outline (no notch at the bottom); SemiBold 600 instances in the designspace files; `gftools builder` configs in `sources/`; Google Fonts descriptions in `documentation/`; `AUTHORS.txt`, `CONTRIBUTORS.txt`, `requirements.txt`; README, usage guide, QA report and tokens updated for 0.300; copyright URL `https://github.com/cosmoluei/admiralty-fonts`.
 - **Round 4**: Serif `a` tail and `g` joins; italic exit hooks in all weights; Serif Italic `k`; straight prime marks in Medium/Bold; `i-ogonek` soft-dotted; `Qj` and other kerns; OTF hinting (needs AFDKO); one copyright line in the fonts and `OFL.txt`; `legal` symbol redrawn; a clean-up pass for tiny segments on every glyph. Details in `review2/REVIEW2_CHANGES.md`.
 

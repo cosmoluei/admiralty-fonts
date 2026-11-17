@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<glyph name="uni2081" format="2">
+  <advance width="340"/>
+  <unicode hex="2081"/>
+  <outline>
+    <contour>
+      <point x="238.0" y="-154.0" type="line"/>
+      <point x="238.0" y="-135.0" type="line"/>
+      <point x="236.667" y="-135.0"/>
+      <point x="235.333" y="-135.0"/>
+      <point x="234.0" y="-135.0" type="curve"/>
+      <point x="218.0" y="-135.0"/>
+      <point x="190.0" y="-135.0"/>
+      <point x="190.0" y="-118.0" type="curve"/>
+      <point x="190.0" y="232.0" type="line"/>
+      <point x="149.0" y="232.0" type="line"/>
+      <point x="52.0" y="170.0" type="line"/>
+      <point x="66.0" y="143.0" type="line"/>
+      <point x="123.0" y="181.0" type="line"/>
+      <point x="123.0" y="-118.0" type="line"/>
+      <point x="123.0" y="-135.0"/>
+      <point x="96.0" y="-135.0"/>
+      <point x="81.0" y="-135.0" type="curve"/>
+      <point x="80.0" y="-135.0"/>
+      <point x="79.0" y="-135.0"/>
+      <point x="78.0" y="-135.0" type="curve"/>
+      <point x="77.0" y="-135.0"/>
+      <point x="76.0" y="-135.0"/>
+      <point x="75.0" y="-135.0" type="curve"/>
+      <point x="75.0" y="-154.0" type="line"/>
+    </contour>
+  </outline>
+</glyph>

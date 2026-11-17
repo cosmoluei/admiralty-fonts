@@ -12,28 +12,28 @@
 | Unified Vertical Metrics (980/-320/0) & OFL Metadata | **PASS** | 49 OTF/TTF/VF-TTF binaries verified |
 | Forbidden Trademark Tokens Check (MTR / HongKong / Kowloon / SF Symbols) | **PASS** | 0 matches across all name tables |
 | gasp + prep Non-Hinting & CFF Private Zones | **PASS** | 28 TTFs (gasp=0x000F + prep) & 21 OTFs verified |
-| WOFF2 Decompression & Section 14 Size Budgets | **PASS** | Static 21=384.1 KB, Variable 7=302.4 KB, Combined=686.5 KB / 1536.0 KB |
-| FreeType Full-Glyph Rasterization Audit (every GID @16px) | **PASS** | 21,563 glyphs loaded & rasterized across 49 binaries with 0 errors |
+| WOFF2 Decompression & Section 14 Size Budgets | **PASS** | Static 21=533.4 KB, Variable 7=426.8 KB, Combined=960.2 KB / 1536.0 KB |
+| FreeType Full-Glyph Rasterization Audit (every GID @16px) | **PASS** | 31,481 glyphs loaded & rasterized across 49 binaries with 0 errors |
 | Variable Font Tables (fvar, gvar, HVAR, STAT) | **PASS** | All 7 Variable TTFs pass wght 400..700 + STAT verification |
-| 5-Platform Delivery Packages (dist/) | **PASS** | All 5 folders verified w/ OFL.txt + README (Android=218 VDs, Web=12 subsets, Apple=747 SVGs) |
+| 5-Platform Delivery Packages (dist/) | **PASS** | All 5 folders verified w/ OFL.txt + README (Android=280 VDs, Web=12 subsets, Apple=951 SVGs) |
 
 ### File Size Summary vs Section 14 Targets
 
-- **21 Static WOFF2 total**: `384.1 KB`
-- **7 Variable WOFF2 total**: `302.4 KB` (`< 100 KB` per Latin VF, `< 150 KB` Symbols VF)
-- **Combined WOFF2 budget**: `686.5 KB / 1536.0 KB` (`44.7%`)
+- **21 Static WOFF2 total**: `533.4 KB`
+- **7 Variable WOFF2 total**: `426.8 KB` (`< 100 KB` per Latin VF, `< 150 KB` Symbols VF)
+- **Combined WOFF2 budget**: `960.2 KB / 1536.0 KB` (`62.5%`)
 
 ### Variable Font Size Breakdown
 
 | Variable Font Binary | TTF Size | WOFF2 Size | Axes |
 | --- | --- | --- | --- |
-| `AdmiraltyMono-Italic[wght]` | `82.8 KB` | `33.9 KB` | `wght (400..700)` |
-| `AdmiraltyMono[wght]` | `75.3 KB` | `30.0 KB` | `wght (400..700)` |
-| `AdmiraltySans-Italic[wght]` | `96.3 KB` | `40.1 KB` | `wght (400..700)` |
-| `AdmiraltySans[wght]` | `86.3 KB` | `34.5 KB` | `wght (400..700)` |
-| `AdmiraltySerif-Italic[wght]` | `113.6 KB` | `46.8 KB` | `wght (400..700)` |
-| `AdmiraltySerif[wght]` | `100.0 KB` | `39.6 KB` | `wght (400..700)` |
-| `AdmiraltySymbols[wght]` | `234.1 KB` | `77.5 KB` | `wght (400..700)` |
+| `AdmiraltyMono-Italic[wght]` | `132.2 KB` | `49.7 KB` | `wght (400..700)` |
+| `AdmiraltyMono[wght]` | `124.2 KB` | `45.9 KB` | `wght (400..700)` |
+| `AdmiraltySans-Italic[wght]` | `131.4 KB` | `54.4 KB` | `wght (400..700)` |
+| `AdmiraltySans[wght]` | `118.7 KB` | `46.9 KB` | `wght (400..700)` |
+| `AdmiraltySerif-Italic[wght]` | `154.1 KB` | `62.9 KB` | `wght (400..700)` |
+| `AdmiraltySerif[wght]` | `136.9 KB` | `53.3 KB` | `wght (400..700)` |
+| `AdmiraltySymbols[wght]` | `334.2 KB` | `113.8 KB` | `wght (400..700)` |
 
 ---
 

@@ -35,4 +35,10 @@ feature rtlm {
     sub sign_in by sign_in.rtl;
     sub sign_out by sign_out.rtl;
     sub share_app by share_app.rtl;
+    sub schedule_send by schedule_send.rtl;
+    sub play by play.rtl;
+    sub volume by volume.rtl;
+    sub mute by mute.rtl;
+    sub read_aloud by read_aloud.rtl;
+    sub trending_up by trending_up.rtl;
 } rtlm;

@@ -46,6 +46,9 @@ from glyphs_medium import (
     build_all_sans_medium_glyphs,
     build_all_serif_medium_glyphs,
 )
+from glyphs_box import build_box_glyphs
+from glyphs_latin_plus import build_latin_plus
+from glyphs_vietnamese import add_vietnamese
 from glyphs_mono import (
     MONO_FEATURES_FEA,
     MONO_REGULAR,
@@ -497,6 +500,7 @@ def _populate_ufo_and_compile(
     attach_fn(ufo)
     if kern_fn is not None:
         kern_fn(ufo)
+    add_vietnamese(ufo)
 
     for cname in ("udieresis", "Udieresis", "adieresis", "Adieresis"):
         assert any(a.name == "top" for a in ufo[cname].anchors), f"{stem} missing propagated anchor on {cname}"
@@ -547,6 +551,8 @@ def build_duplex_family_all_styles(
     ds_italic: list[tuple[str, int, Path]] = []
 
     for style_name, weight_class, is_italic, glyph_data in style_specs:
+        # 0.300: Google Fonts Latin Plus characters, built from this style's own glyphs
+        glyph_data.update(build_latin_plus(glyph_data, "serif" if "Serif" in family_name else "sans", weight_class, is_italic))
         ps_style = style_name.replace(" ", "")
         stem = f"{ps_family}-{ps_style}"
         ufo = ufoLib2.Font()
@@ -678,6 +684,9 @@ def build_admiralty_mono() -> dict[str, tuple[Path, Path]]:
     ds_italic: list[tuple[str, int, Path]] = []
 
     for style_name, weight_class, is_italic, glyph_data in mono_specs:
+        # 0.300: box drawing and block elements (upright in every style, as terminals expect)
+        glyph_data.update(build_latin_plus(glyph_data, "mono", weight_class, is_italic))
+        glyph_data.update(build_box_glyphs(weight_class))
         ps_style = style_name.replace(" ", "")
         stem = f"{ps_family}-{ps_style}"
         ufo = ufoLib2.Font()

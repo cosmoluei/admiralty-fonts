@@ -125,7 +125,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Admiralty Font Inspector — v0.300 (7 Variable Fonts + 21 Static + 218 Symbols)</title>
+  <title>Admiralty Font Inspector — v0.300 (7 Variable Fonts + 21 Static + 280 Symbols)</title>
   <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
   <style id="admiralty-font-face"></style>
   <style>
@@ -205,7 +205,7 @@ __STANDALONE_VARS__</head>
           <button data-tab="microscope" class="tab-btn px-3 py-1.5 rounded-md font-medium text-[var(--muted-foreground)]">单字解剖显微镜</button>
           <button data-tab="lab" class="tab-btn px-3 py-1.5 rounded-md font-medium text-[var(--muted-foreground)]">易混与字距实验室</button>
           <button data-tab="chat" class="tab-btn px-3 py-1.5 rounded-md font-medium text-[var(--muted-foreground)]">三字体 App 原型</button>
-          <button data-tab="symbols" class="tab-btn px-3 py-1.5 rounded-md font-medium text-[var(--muted-foreground)]">Symbols 图标库 (218)</button>
+          <button data-tab="symbols" class="tab-btn px-3 py-1.5 rounded-md font-medium text-[var(--muted-foreground)]">Symbols 图标库 (280)</button>
           <button data-tab="specs" class="tab-btn px-3 py-1.5 rounded-md font-medium text-[var(--muted-foreground)]">度量与 Kerning 表</button>
         </div>
       </div>
@@ -528,7 +528,7 @@ Il1 O0 rn/m   $1,480.95 €290 £75 ¥3,600   § © ª ← ↑ → ↓ ↩</div>
               <span>RTL Mirror (rtlm)</span>
             </label>
           </div>
-          <div id="sym-count-lbl" class="font-mono text-[var(--muted-foreground)]">显示 218 / 218 个 24×24 原创图标 (U+E000..U+E0D9)</div>
+          <div id="sym-count-lbl" class="font-mono text-[var(--muted-foreground)]">显示 280 / 280 个 24×24 原创图标 (U+E000..U+E117)</div>
         </div>
 
         <div id="sym-cat-bar" class="flex flex-wrap gap-1 pt-2 border-t border-[var(--card-border)]"></div>
@@ -1306,7 +1306,7 @@ def main() -> None:
     out_path.write_text(standalone_html, encoding="utf-8")
     print(
         f"Built Milestone 8 Inspector v0.300 (7 VF {vf_kb:.1f} KB + 21 Static {static_kb:.1f} KB, "
-        f"218 Symbols, {n_kern} class rules) -> {out_path} ({out_path.stat().st_size // 1024} KB)"
+        f"280 Symbols, {n_kern} class rules) -> {out_path} ({out_path.stat().st_size // 1024} KB)"
     )
 
 

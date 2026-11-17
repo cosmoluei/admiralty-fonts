@@ -255,6 +255,74 @@
       <string>bell_filled</string>
       <string>mic_filled</string>
       <string>stop_filled</string>
+      <string>computer</string>
+      <string>laptop</string>
+      <string>phone</string>
+      <string>tablet</string>
+      <string>watch</string>
+      <string>devices</string>
+      <string>browser</string>
+      <string>brain</string>
+      <string>web_search</string>
+      <string>deep_research</string>
+      <string>project</string>
+      <string>artifact</string>
+      <string>summarize</string>
+      <string>translate</string>
+      <string>computer_use</string>
+      <string>screen_share</string>
+      <string>extension</string>
+      <string>api</string>
+      <string>server</string>
+      <string>chat</string>
+      <string>new_chat</string>
+      <string>conversations</string>
+      <string>edit_message</string>
+      <string>read_receipt</string>
+      <string>schedule_send</string>
+      <string>schedule_send.rtl</string>
+      <string>hashtag</string>
+      <string>keyboard</string>
+      <string>command</string>
+      <string>usage</string>
+      <string>appearance</string>
+      <string>billing</string>
+      <string>receipt</string>
+      <string>wallet</string>
+      <string>subscription</string>
+      <string>face_id</string>
+      <string>fingerprint</string>
+      <string>qr_code</string>
+      <string>scan</string>
+      <string>calendar</string>
+      <string>scheduled_task</string>
+      <string>timer</string>
+      <string>location</string>
+      <string>map</string>
+      <string>play</string>
+      <string>play.rtl</string>
+      <string>pause</string>
+      <string>volume</string>
+      <string>volume.rtl</string>
+      <string>mute</string>
+      <string>mute.rtl</string>
+      <string>headphones</string>
+      <string>read_aloud</string>
+      <string>read_aloud.rtl</string>
+      <string>subtitles</string>
+      <string>record</string>
+      <string>bar_chart</string>
+      <string>line_chart</string>
+      <string>pie_chart</string>
+      <string>trending_up</string>
+      <string>trending_up.rtl</string>
+      <string>mail</string>
+      <string>inbox</string>
+      <string>phone_call</string>
+      <string>contacts</string>
+      <string>drag_handle</string>
+      <string>heart</string>
+      <string>bug</string>
       <string>camera.rvrn700</string>
       <string>paste.rvrn500</string>
       <string>paste.rvrn700</string>
@@ -279,6 +347,26 @@
       <string>sync_error.rvrn700</string>
       <string>switch_account.rvrn700</string>
       <string>whats_new.rvrn500</string>
+      <string>devices.rvrn700</string>
+      <string>browser.rvrn700</string>
+      <string>brain.rvrn700</string>
+      <string>deep_research.rvrn500</string>
+      <string>deep_research.rvrn700</string>
+      <string>project.rvrn700</string>
+      <string>artifact.rvrn700</string>
+      <string>translate.rvrn500</string>
+      <string>server.rvrn500</string>
+      <string>conversations.rvrn700</string>
+      <string>edit_message.rvrn500</string>
+      <string>read_receipt.rvrn700</string>
+      <string>command.rvrn700</string>
+      <string>usage.rvrn700</string>
+      <string>wallet.rvrn700</string>
+      <string>subscription.rvrn500</string>
+      <string>scheduled_task.rvrn500</string>
+      <string>subtitles.rvrn700</string>
+      <string>pie_chart.rvrn700</string>
+      <string>bug.rvrn700</string>
     </array>
   </dict>
 </plist>

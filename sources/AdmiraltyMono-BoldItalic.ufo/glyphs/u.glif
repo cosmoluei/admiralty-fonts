@@ -5,6 +5,7 @@
   <anchor x="344" y="520" name="top"/>
   <anchor x="256" y="0" name="bottom"/>
   <anchor x="424" y="0.0" name="ogonek"/>
+  <anchor x="534" y="433" name="horn"/>
   <outline>
     <contour>
       <point x="221.5" y="-11.0"/>

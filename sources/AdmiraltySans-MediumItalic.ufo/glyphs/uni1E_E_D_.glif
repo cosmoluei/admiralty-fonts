@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<glyph name="uni1EED" format="2">
+  <advance width="644"/>
+  <unicode hex="1EED"/>
+  <anchor x="370" y="720" name="top"/>
+  <anchor x="250" y="0" name="bottom"/>
+  <anchor x="429" y="0" name="ogonek"/>
+  <outline>
+    <component base="u"/>
+    <component base="horncomb" xOffset="533" yOffset="437"/>
+    <component base="hookabovecomb" xOffset="337"/>
+  </outline>
+</glyph>

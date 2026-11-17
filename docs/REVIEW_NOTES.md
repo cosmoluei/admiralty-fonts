@@ -90,3 +90,9 @@ Left as they are, on purpose
 - `æ` in Sans, Serif and Mono Italic: the a now has its own straight stem up to the x-height, with an open notch before the e. Before, the a and e met in a round valley, and `æ` looked almost the same as `œ`.
 - Mono `æ` (upright): redrawn as one outline with two counters, like the Mono Bold `æ`. The old one left a flat notch at the bottom and a pinched e counter.
 - `gftools builder` builds Sans, Serif and Mono from `sources/` (configs `sources/config-*.yaml`). Compared with `scripts/build_fonts.py`: same glyph set, same advances at weights 400, 550 and 700, no outline differs by more than 0.5% in area. Font Bakery on the gftools fonts: the only failure is the version (below 1.000); the errors are checks that need the internet.
+
+## New characters (2026-11-17)
+- 62 new symbols, Latin Plus, Vietnamese and Mono box drawing (see `CHANGELOG.md`). Built and checked on the owner's Mac: all 21 static and 7 variable fonts build; duplex (Sans = Serif widths) and Mono 600-unit checks pass; OTS passes for every file; Font Bakery has no new failures (only the version number).
+- Mono `Ⓓ` uses a smaller true circle that fits the 600-unit cell (it was squeezed into an ellipse).
+- Still open: Font Bakery warns about a small kink between weight 499 and 700 in Serif `₨` (variable font only); the Mono horn letters `Ơ Ư` reach slightly past the cell on the right, as in most monospaced fonts.
+- Review page: `specimens/review.html`.

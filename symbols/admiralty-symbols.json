@@ -13,8 +13,8 @@
     500,
     700
   ],
-  "puaRange": "U+E000-U+E0D9",
-  "count": 218,
+  "puaRange": "U+E000-U+E117",
+  "count": 280,
   "symbols": [
     {
       "name": "send",
@@ -4002,6 +4002,1140 @@
       "svgRegular": "svg/regular/stop-filled.svg",
       "svgMedium": "svg/medium/stop-filled.svg",
       "svgBold": "svg/bold/stop-filled.svg"
+    },
+    {
+      "name": "computer",
+      "label": "Computer",
+      "glyphName": "computer",
+      "codepoint": "U+E0DA",
+      "codepointInt": 57562,
+      "category": "Devices",
+      "tags": [
+        "desktop",
+        "monitor",
+        "pc"
+      ],
+      "rtlMirror": false,
+      "filled": false,
+      "svgRegular": "svg/regular/computer.svg",
+      "svgMedium": "svg/medium/computer.svg",
+      "svgBold": "svg/bold/computer.svg"
+    },
+    {
+      "name": "laptop",
+      "label": "Laptop",
+      "glyphName": "laptop",
+      "codepoint": "U+E0DB",
+      "codepointInt": 57563,
+      "category": "Devices",
+      "tags": [
+        "notebook",
+        "macbook",
+        "computer"
+      ],
+      "rtlMirror": false,
+      "filled": false,
+      "svgRegular": "svg/regular/laptop.svg",
+      "svgMedium": "svg/medium/laptop.svg",
+      "svgBold": "svg/bold/laptop.svg"
+    },
+    {
+      "name": "phone",
+      "label": "Phone",
+      "glyphName": "phone",
+      "codepoint": "U+E0DC",
+      "codepointInt": 57564,
+      "category": "Devices",
+      "tags": [
+        "mobile",
+        "smartphone",
+        "device"
+      ],
+      "rtlMirror": false,
+      "filled": false,
+      "svgRegular": "svg/regular/phone.svg",
+      "svgMedium": "svg/medium/phone.svg",
+      "svgBold": "svg/bold/phone.svg"
+    },
+    {
+      "name": "tablet",
+      "label": "Tablet",
+      "glyphName": "tablet",
+      "codepoint": "U+E0DD",
+      "codepointInt": 57565,
+      "category": "Devices",
+      "tags": [
+        "ipad",
+        "device",
+        "screen"
+      ],
+      "rtlMirror": false,
+      "filled": false,
+      "svgRegular": "svg/regular/tablet.svg",
+      "svgMedium": "svg/medium/tablet.svg",
+      "svgBold": "svg/bold/tablet.svg"
+    },
+    {
+      "name": "watch",
+      "label": "Watch",
+      "glyphName": "watch",
+      "codepoint": "U+E0DE",
+      "codepointInt": 57566,
+      "category": "Devices",
+      "tags": [
+        "wearable",
+        "smartwatch",
+        "device"
+      ],
+      "rtlMirror": false,
+      "filled": false,
+      "svgRegular": "svg/regular/watch.svg",
+      "svgMedium": "svg/medium/watch.svg",
+      "svgBold": "svg/bold/watch.svg"
+    },
+    {
+      "name": "devices",
+      "label": "Devices",
+      "glyphName": "devices",
+      "codepoint": "U+E0DF",
+      "codepointInt": 57567,
+      "category": "Devices",
+      "tags": [
+        "computer-phone",
+        "sync",
+        "cross-device"
+      ],
+      "rtlMirror": false,
+      "filled": false,
+      "svgRegular": "svg/regular/devices.svg",
+      "svgMedium": "svg/medium/devices.svg",
+      "svgBold": "svg/bold/devices.svg"
+    },
+    {
+      "name": "browser",
+      "label": "Browser",
+      "glyphName": "browser",
+      "codepoint": "U+E0E0",
+      "codepointInt": 57568,
+      "category": "Devices",
+      "tags": [
+        "web",
+        "website",
+        "internet"
+      ],
+      "rtlMirror": false,
+      "filled": false,
+      "svgRegular": "svg/regular/browser.svg",
+      "svgMedium": "svg/medium/browser.svg",
+      "svgBold": "svg/bold/browser.svg"
+    },
+    {
+      "name": "brain",
+      "label": "Brain",
+      "glyphName": "brain",
+      "codepoint": "U+E0E1",
+      "codepointInt": 57569,
+      "category": "Agent and tools",
+      "tags": [
+        "thinking",
+        "reasoning",
+        "mind"
+      ],
+      "rtlMirror": false,
+      "filled": false,
+      "svgRegular": "svg/regular/brain.svg",
+      "svgMedium": "svg/medium/brain.svg",
+      "svgBold": "svg/bold/brain.svg"
+    },
+    {
+      "name": "web-search",
+      "label": "Web search",
+      "glyphName": "web_search",
+      "codepoint": "U+E0E2",
+      "codepointInt": 57570,
+      "category": "Agent and tools",
+      "tags": [
+        "internet",
+        "globe",
+        "lookup"
+      ],
+      "rtlMirror": false,
+      "filled": false,
+      "svgRegular": "svg/regular/web-search.svg",
+      "svgMedium": "svg/medium/web-search.svg",
+      "svgBold": "svg/bold/web-search.svg"
+    },
+    {
+      "name": "deep-research",
+      "label": "Deep research",
+      "glyphName": "deep_research",
+      "codepoint": "U+E0E3",
+      "codepointInt": 57571,
+      "category": "Agent and tools",
+      "tags": [
+        "investigate",
+        "report",
+        "analysis"
+      ],
+      "rtlMirror": false,
+      "filled": false,
+      "svgRegular": "svg/regular/deep-research.svg",
+      "svgMedium": "svg/medium/deep-research.svg",
+      "svgBold": "svg/bold/deep-research.svg"
+    },
+    {
+      "name": "project",
+      "label": "Project",
+      "glyphName": "project",
+      "codepoint": "U+E0E4",
+      "codepointInt": 57572,
+      "category": "Agent and tools",
+      "tags": [
+        "workspace",
+        "briefcase",
+        "work"
+      ],
+      "rtlMirror": false,
+      "filled": false,
+      "svgRegular": "svg/regular/project.svg",
+      "svgMedium": "svg/medium/project.svg",
+      "svgBold": "svg/bold/project.svg"
+    },
+    {
+      "name": "artifact",
+      "label": "Artifact",
+      "glyphName": "artifact",
+      "codepoint": "U+E0E5",
+      "codepointInt": 57573,
+      "category": "Agent and tools",
+      "tags": [
+        "canvas",
+        "output",
+        "creation"
+      ],
+      "rtlMirror": false,
+      "filled": false,
+      "svgRegular": "svg/regular/artifact.svg",
+      "svgMedium": "svg/medium/artifact.svg",
+      "svgBold": "svg/bold/artifact.svg"
+    },
+    {
+      "name": "summarize",
+      "label": "Summarize",
+      "glyphName": "summarize",
+      "codepoint": "U+E0E6",
+      "codepointInt": 57574,
+      "category": "Agent and tools",
+      "tags": [
+        "tldr",
+        "digest",
+        "condense"
+      ],
+      "rtlMirror": false,
+      "filled": false,
+      "svgRegular": "svg/regular/summarize.svg",
+      "svgMedium": "svg/medium/summarize.svg",
+      "svgBold": "svg/bold/summarize.svg"
+    },
+    {
+      "name": "translate",
+      "label": "Translate",
+      "glyphName": "translate",
+      "codepoint": "U+E0E7",
+      "codepointInt": 57575,
+      "category": "Agent and tools",
+      "tags": [
+        "language",
+        "localize",
+        "convert"
+      ],
+      "rtlMirror": false,
+      "filled": false,
+      "svgRegular": "svg/regular/translate.svg",
+      "svgMedium": "svg/medium/translate.svg",
+      "svgBold": "svg/bold/translate.svg"
+    },
+    {
+      "name": "computer-use",
+      "label": "Computer use",
+      "glyphName": "computer_use",
+      "codepoint": "U+E0E8",
+      "codepointInt": 57576,
+      "category": "Agent and tools",
+      "tags": [
+        "cursor",
+        "control",
+        "automation"
+      ],
+      "rtlMirror": false,
+      "filled": false,
+      "svgRegular": "svg/regular/computer-use.svg",
+      "svgMedium": "svg/medium/computer-use.svg",
+      "svgBold": "svg/bold/computer-use.svg"
+    },
+    {
+      "name": "screen-share",
+      "label": "Screen share",
+      "glyphName": "screen_share",
+      "codepoint": "U+E0E9",
+      "codepointInt": 57577,
+      "category": "Agent and tools",
+      "tags": [
+        "present",
+        "cast",
+        "display"
+      ],
+      "rtlMirror": false,
+      "filled": false,
+      "svgRegular": "svg/regular/screen-share.svg",
+      "svgMedium": "svg/medium/screen-share.svg",
+      "svgBold": "svg/bold/screen-share.svg"
+    },
+    {
+      "name": "extension",
+      "label": "Extension",
+      "glyphName": "extension",
+      "codepoint": "U+E0EA",
+      "codepointInt": 57578,
+      "category": "Agent and tools",
+      "tags": [
+        "plugin",
+        "integration",
+        "puzzle"
+      ],
+      "rtlMirror": false,
+      "filled": false,
+      "svgRegular": "svg/regular/extension.svg",
+      "svgMedium": "svg/medium/extension.svg",
+      "svgBold": "svg/bold/extension.svg"
+    },
+    {
+      "name": "api",
+      "label": "Api",
+      "glyphName": "api",
+      "codepoint": "U+E0EB",
+      "codepointInt": 57579,
+      "category": "Agent and tools",
+      "tags": [
+        "developer",
+        "endpoint",
+        "json"
+      ],
+      "rtlMirror": false,
+      "filled": false,
+      "svgRegular": "svg/regular/api.svg",
+      "svgMedium": "svg/medium/api.svg",
+      "svgBold": "svg/bold/api.svg"
+    },
+    {
+      "name": "server",
+      "label": "Server",
+      "glyphName": "server",
+      "codepoint": "U+E0EC",
+      "codepointInt": 57580,
+      "category": "Agent and tools",
+      "tags": [
+        "host",
+        "backend",
+        "infrastructure"
+      ],
+      "rtlMirror": false,
+      "filled": false,
+      "svgRegular": "svg/regular/server.svg",
+      "svgMedium": "svg/medium/server.svg",
+      "svgBold": "svg/bold/server.svg"
+    },
+    {
+      "name": "chat",
+      "label": "Chat",
+      "glyphName": "chat",
+      "codepoint": "U+E0ED",
+      "codepointInt": 57581,
+      "category": "Chat",
+      "tags": [
+        "message",
+        "bubble",
+        "conversation"
+      ],
+      "rtlMirror": false,
+      "filled": false,
+      "svgRegular": "svg/regular/chat.svg",
+      "svgMedium": "svg/medium/chat.svg",
+      "svgBold": "svg/bold/chat.svg"
+    },
+    {
+      "name": "new-chat",
+      "label": "New chat",
+      "glyphName": "new_chat",
+      "codepoint": "U+E0EE",
+      "codepointInt": 57582,
+      "category": "Chat",
+      "tags": [
+        "compose",
+        "start",
+        "conversation"
+      ],
+      "rtlMirror": false,
+      "filled": false,
+      "svgRegular": "svg/regular/new-chat.svg",
+      "svgMedium": "svg/medium/new-chat.svg",
+      "svgBold": "svg/bold/new-chat.svg"
+    },
+    {
+      "name": "conversations",
+      "label": "Conversations",
+      "glyphName": "conversations",
+      "codepoint": "U+E0EF",
+      "codepointInt": 57583,
+      "category": "Chat",
+      "tags": [
+        "threads",
+        "history",
+        "messages"
+      ],
+      "rtlMirror": false,
+      "filled": false,
+      "svgRegular": "svg/regular/conversations.svg",
+      "svgMedium": "svg/medium/conversations.svg",
+      "svgBold": "svg/bold/conversations.svg"
+    },
+    {
+      "name": "edit-message",
+      "label": "Edit message",
+      "glyphName": "edit_message",
+      "codepoint": "U+E0F0",
+      "codepointInt": 57584,
+      "category": "Chat",
+      "tags": [
+        "revise",
+        "change",
+        "message"
+      ],
+      "rtlMirror": false,
+      "filled": false,
+      "svgRegular": "svg/regular/edit-message.svg",
+      "svgMedium": "svg/medium/edit-message.svg",
+      "svgBold": "svg/bold/edit-message.svg"
+    },
+    {
+      "name": "read-receipt",
+      "label": "Read receipt",
+      "glyphName": "read_receipt",
+      "codepoint": "U+E0F1",
+      "codepointInt": 57585,
+      "category": "Chat",
+      "tags": [
+        "seen",
+        "double-check",
+        "delivered"
+      ],
+      "rtlMirror": false,
+      "filled": false,
+      "svgRegular": "svg/regular/read-receipt.svg",
+      "svgMedium": "svg/medium/read-receipt.svg",
+      "svgBold": "svg/bold/read-receipt.svg"
+    },
+    {
+      "name": "schedule-send",
+      "label": "Schedule send",
+      "glyphName": "schedule_send",
+      "codepoint": "U+E0F2",
+      "codepointInt": 57586,
+      "category": "Chat",
+      "tags": [
+        "later",
+        "delay",
+        "queue"
+      ],
+      "rtlMirror": true,
+      "filled": false,
+      "svgRegular": "svg/regular/schedule-send.svg",
+      "svgMedium": "svg/medium/schedule-send.svg",
+      "svgBold": "svg/bold/schedule-send.svg",
+      "svgRegularRtl": "svg/regular/schedule-send-rtl.svg",
+      "svgMediumRtl": "svg/medium/schedule-send-rtl.svg",
+      "svgBoldRtl": "svg/bold/schedule-send-rtl.svg"
+    },
+    {
+      "name": "hashtag",
+      "label": "Hashtag",
+      "glyphName": "hashtag",
+      "codepoint": "U+E0F3",
+      "codepointInt": 57587,
+      "category": "Chat",
+      "tags": [
+        "channel",
+        "topic",
+        "tag"
+      ],
+      "rtlMirror": false,
+      "filled": false,
+      "svgRegular": "svg/regular/hashtag.svg",
+      "svgMedium": "svg/medium/hashtag.svg",
+      "svgBold": "svg/bold/hashtag.svg"
+    },
+    {
+      "name": "keyboard",
+      "label": "Keyboard",
+      "glyphName": "keyboard",
+      "codepoint": "U+E0F4",
+      "codepointInt": 57588,
+      "category": "Chat",
+      "tags": [
+        "type",
+        "input",
+        "keys"
+      ],
+      "rtlMirror": false,
+      "filled": false,
+      "svgRegular": "svg/regular/keyboard.svg",
+      "svgMedium": "svg/medium/keyboard.svg",
+      "svgBold": "svg/bold/keyboard.svg"
+    },
+    {
+      "name": "command",
+      "label": "Command",
+      "glyphName": "command",
+      "codepoint": "U+E0F5",
+      "codepointInt": 57589,
+      "category": "Chat",
+      "tags": [
+        "shortcut",
+        "cmd",
+        "hotkey"
+      ],
+      "rtlMirror": false,
+      "filled": false,
+      "svgRegular": "svg/regular/command.svg",
+      "svgMedium": "svg/medium/command.svg",
+      "svgBold": "svg/bold/command.svg"
+    },
+    {
+      "name": "usage",
+      "label": "Usage",
+      "glyphName": "usage",
+      "codepoint": "U+E0F6",
+      "codepointInt": 57590,
+      "category": "Account and billing",
+      "tags": [
+        "quota",
+        "gauge",
+        "limit"
+      ],
+      "rtlMirror": false,
+      "filled": false,
+      "svgRegular": "svg/regular/usage.svg",
+      "svgMedium": "svg/medium/usage.svg",
+      "svgBold": "svg/bold/usage.svg"
+    },
+    {
+      "name": "appearance",
+      "label": "Appearance",
+      "glyphName": "appearance",
+      "codepoint": "U+E0F7",
+      "codepointInt": 57591,
+      "category": "Account and billing",
+      "tags": [
+        "palette",
+        "colors",
+        "style"
+      ],
+      "rtlMirror": false,
+      "filled": false,
+      "svgRegular": "svg/regular/appearance.svg",
+      "svgMedium": "svg/medium/appearance.svg",
+      "svgBold": "svg/bold/appearance.svg"
+    },
+    {
+      "name": "billing",
+      "label": "Billing",
+      "glyphName": "billing",
+      "codepoint": "U+E0F8",
+      "codepointInt": 57592,
+      "category": "Account and billing",
+      "tags": [
+        "credit-card",
+        "payment",
+        "card"
+      ],
+      "rtlMirror": false,
+      "filled": false,
+      "svgRegular": "svg/regular/billing.svg",
+      "svgMedium": "svg/medium/billing.svg",
+      "svgBold": "svg/bold/billing.svg"
+    },
+    {
+      "name": "receipt",
+      "label": "Receipt",
+      "glyphName": "receipt",
+      "codepoint": "U+E0F9",
+      "codepointInt": 57593,
+      "category": "Account and billing",
+      "tags": [
+        "invoice",
+        "bill",
+        "purchase"
+      ],
+      "rtlMirror": false,
+      "filled": false,
+      "svgRegular": "svg/regular/receipt.svg",
+      "svgMedium": "svg/medium/receipt.svg",
+      "svgBold": "svg/bold/receipt.svg"
+    },
+    {
+      "name": "wallet",
+      "label": "Wallet",
+      "glyphName": "wallet",
+      "codepoint": "U+E0FA",
+      "codepointInt": 57594,
+      "category": "Account and billing",
+      "tags": [
+        "balance",
+        "credits",
+        "money"
+      ],
+      "rtlMirror": false,
+      "filled": false,
+      "svgRegular": "svg/regular/wallet.svg",
+      "svgMedium": "svg/medium/wallet.svg",
+      "svgBold": "svg/bold/wallet.svg"
+    },
+    {
+      "name": "subscription",
+      "label": "Subscription",
+      "glyphName": "subscription",
+      "codepoint": "U+E0FB",
+      "codepointInt": 57595,
+      "category": "Account and billing",
+      "tags": [
+        "plan",
+        "renew",
+        "recurring"
+      ],
+      "rtlMirror": false,
+      "filled": false,
+      "svgRegular": "svg/regular/subscription.svg",
+      "svgMedium": "svg/medium/subscription.svg",
+      "svgBold": "svg/bold/subscription.svg"
+    },
+    {
+      "name": "face-id",
+      "label": "Face id",
+      "glyphName": "face_id",
+      "codepoint": "U+E0FC",
+      "codepointInt": 57596,
+      "category": "Account and billing",
+      "tags": [
+        "face",
+        "biometric",
+        "unlock"
+      ],
+      "rtlMirror": false,
+      "filled": false,
+      "svgRegular": "svg/regular/face-id.svg",
+      "svgMedium": "svg/medium/face-id.svg",
+      "svgBold": "svg/bold/face-id.svg"
+    },
+    {
+      "name": "fingerprint",
+      "label": "Fingerprint",
+      "glyphName": "fingerprint",
+      "codepoint": "U+E0FD",
+      "codepointInt": 57597,
+      "category": "Account and billing",
+      "tags": [
+        "touch-id",
+        "biometric",
+        "unlock"
+      ],
+      "rtlMirror": false,
+      "filled": false,
+      "svgRegular": "svg/regular/fingerprint.svg",
+      "svgMedium": "svg/medium/fingerprint.svg",
+      "svgBold": "svg/bold/fingerprint.svg"
+    },
+    {
+      "name": "qr-code",
+      "label": "Qr code",
+      "glyphName": "qr_code",
+      "codepoint": "U+E0FE",
+      "codepointInt": 57598,
+      "category": "Account and billing",
+      "tags": [
+        "code",
+        "link",
+        "pair"
+      ],
+      "rtlMirror": false,
+      "filled": false,
+      "svgRegular": "svg/regular/qr-code.svg",
+      "svgMedium": "svg/medium/qr-code.svg",
+      "svgBold": "svg/bold/qr-code.svg"
+    },
+    {
+      "name": "scan",
+      "label": "Scan",
+      "glyphName": "scan",
+      "codepoint": "U+E0FF",
+      "codepointInt": 57599,
+      "category": "Account and billing",
+      "tags": [
+        "capture",
+        "camera",
+        "document"
+      ],
+      "rtlMirror": false,
+      "filled": false,
+      "svgRegular": "svg/regular/scan.svg",
+      "svgMedium": "svg/medium/scan.svg",
+      "svgBold": "svg/bold/scan.svg"
+    },
+    {
+      "name": "calendar",
+      "label": "Calendar",
+      "glyphName": "calendar",
+      "codepoint": "U+E100",
+      "codepointInt": 57600,
+      "category": "Time and places",
+      "tags": [
+        "date",
+        "event",
+        "schedule"
+      ],
+      "rtlMirror": false,
+      "filled": false,
+      "svgRegular": "svg/regular/calendar.svg",
+      "svgMedium": "svg/medium/calendar.svg",
+      "svgBold": "svg/bold/calendar.svg"
+    },
+    {
+      "name": "scheduled-task",
+      "label": "Scheduled task",
+      "glyphName": "scheduled_task",
+      "codepoint": "U+E101",
+      "codepointInt": 57601,
+      "category": "Time and places",
+      "tags": [
+        "routine",
+        "cron",
+        "later"
+      ],
+      "rtlMirror": false,
+      "filled": false,
+      "svgRegular": "svg/regular/scheduled-task.svg",
+      "svgMedium": "svg/medium/scheduled-task.svg",
+      "svgBold": "svg/bold/scheduled-task.svg"
+    },
+    {
+      "name": "timer",
+      "label": "Timer",
+      "glyphName": "timer",
+      "codepoint": "U+E102",
+      "codepointInt": 57602,
+      "category": "Time and places",
+      "tags": [
+        "stopwatch",
+        "duration",
+        "countdown"
+      ],
+      "rtlMirror": false,
+      "filled": false,
+      "svgRegular": "svg/regular/timer.svg",
+      "svgMedium": "svg/medium/timer.svg",
+      "svgBold": "svg/bold/timer.svg"
+    },
+    {
+      "name": "location",
+      "label": "Location",
+      "glyphName": "location",
+      "codepoint": "U+E103",
+      "codepointInt": 57603,
+      "category": "Time and places",
+      "tags": [
+        "place",
+        "map-pin",
+        "address"
+      ],
+      "rtlMirror": false,
+      "filled": false,
+      "svgRegular": "svg/regular/location.svg",
+      "svgMedium": "svg/medium/location.svg",
+      "svgBold": "svg/bold/location.svg"
+    },
+    {
+      "name": "map",
+      "label": "Map",
+      "glyphName": "map",
+      "codepoint": "U+E104",
+      "codepointInt": 57604,
+      "category": "Time and places",
+      "tags": [
+        "directions",
+        "route",
+        "area"
+      ],
+      "rtlMirror": false,
+      "filled": false,
+      "svgRegular": "svg/regular/map.svg",
+      "svgMedium": "svg/medium/map.svg",
+      "svgBold": "svg/bold/map.svg"
+    },
+    {
+      "name": "play",
+      "label": "Play",
+      "glyphName": "play",
+      "codepoint": "U+E105",
+      "codepointInt": 57605,
+      "category": "Media and voice",
+      "tags": [
+        "start",
+        "resume",
+        "media"
+      ],
+      "rtlMirror": true,
+      "filled": false,
+      "svgRegular": "svg/regular/play.svg",
+      "svgMedium": "svg/medium/play.svg",
+      "svgBold": "svg/bold/play.svg",
+      "svgRegularRtl": "svg/regular/play-rtl.svg",
+      "svgMediumRtl": "svg/medium/play-rtl.svg",
+      "svgBoldRtl": "svg/bold/play-rtl.svg"
+    },
+    {
+      "name": "pause",
+      "label": "Pause",
+      "glyphName": "pause",
+      "codepoint": "U+E106",
+      "codepointInt": 57606,
+      "category": "Media and voice",
+      "tags": [
+        "hold",
+        "media",
+        "break"
+      ],
+      "rtlMirror": false,
+      "filled": false,
+      "svgRegular": "svg/regular/pause.svg",
+      "svgMedium": "svg/medium/pause.svg",
+      "svgBold": "svg/bold/pause.svg"
+    },
+    {
+      "name": "volume",
+      "label": "Volume",
+      "glyphName": "volume",
+      "codepoint": "U+E107",
+      "codepointInt": 57607,
+      "category": "Media and voice",
+      "tags": [
+        "sound",
+        "speaker",
+        "audio"
+      ],
+      "rtlMirror": true,
+      "filled": false,
+      "svgRegular": "svg/regular/volume.svg",
+      "svgMedium": "svg/medium/volume.svg",
+      "svgBold": "svg/bold/volume.svg",
+      "svgRegularRtl": "svg/regular/volume-rtl.svg",
+      "svgMediumRtl": "svg/medium/volume-rtl.svg",
+      "svgBoldRtl": "svg/bold/volume-rtl.svg"
+    },
+    {
+      "name": "mute",
+      "label": "Mute",
+      "glyphName": "mute",
+      "codepoint": "U+E108",
+      "codepointInt": 57608,
+      "category": "Media and voice",
+      "tags": [
+        "silent",
+        "sound-off",
+        "speaker"
+      ],
+      "rtlMirror": true,
+      "filled": false,
+      "svgRegular": "svg/regular/mute.svg",
+      "svgMedium": "svg/medium/mute.svg",
+      "svgBold": "svg/bold/mute.svg",
+      "svgRegularRtl": "svg/regular/mute-rtl.svg",
+      "svgMediumRtl": "svg/medium/mute-rtl.svg",
+      "svgBoldRtl": "svg/bold/mute-rtl.svg"
+    },
+    {
+      "name": "headphones",
+      "label": "Headphones",
+      "glyphName": "headphones",
+      "codepoint": "U+E109",
+      "codepointInt": 57609,
+      "category": "Media and voice",
+      "tags": [
+        "listen",
+        "audio",
+        "earphones"
+      ],
+      "rtlMirror": false,
+      "filled": false,
+      "svgRegular": "svg/regular/headphones.svg",
+      "svgMedium": "svg/medium/headphones.svg",
+      "svgBold": "svg/bold/headphones.svg"
+    },
+    {
+      "name": "read-aloud",
+      "label": "Read aloud",
+      "glyphName": "read_aloud",
+      "codepoint": "U+E10A",
+      "codepointInt": 57610,
+      "category": "Media and voice",
+      "tags": [
+        "speak",
+        "text-to-speech",
+        "voice"
+      ],
+      "rtlMirror": true,
+      "filled": false,
+      "svgRegular": "svg/regular/read-aloud.svg",
+      "svgMedium": "svg/medium/read-aloud.svg",
+      "svgBold": "svg/bold/read-aloud.svg",
+      "svgRegularRtl": "svg/regular/read-aloud-rtl.svg",
+      "svgMediumRtl": "svg/medium/read-aloud-rtl.svg",
+      "svgBoldRtl": "svg/bold/read-aloud-rtl.svg"
+    },
+    {
+      "name": "subtitles",
+      "label": "Subtitles",
+      "glyphName": "subtitles",
+      "codepoint": "U+E10B",
+      "codepointInt": 57611,
+      "category": "Media and voice",
+      "tags": [
+        "captions",
+        "transcript",
+        "cc"
+      ],
+      "rtlMirror": false,
+      "filled": false,
+      "svgRegular": "svg/regular/subtitles.svg",
+      "svgMedium": "svg/medium/subtitles.svg",
+      "svgBold": "svg/bold/subtitles.svg"
+    },
+    {
+      "name": "record",
+      "label": "Record",
+      "glyphName": "record",
+      "codepoint": "U+E10C",
+      "codepointInt": 57612,
+      "category": "Media and voice",
+      "tags": [
+        "capture",
+        "rec",
+        "dictate"
+      ],
+      "rtlMirror": false,
+      "filled": false,
+      "svgRegular": "svg/regular/record.svg",
+      "svgMedium": "svg/medium/record.svg",
+      "svgBold": "svg/bold/record.svg"
+    },
+    {
+      "name": "bar-chart",
+      "label": "Bar chart",
+      "glyphName": "bar_chart",
+      "codepoint": "U+E10D",
+      "codepointInt": 57613,
+      "category": "Data",
+      "tags": [
+        "statistics",
+        "analytics",
+        "columns"
+      ],
+      "rtlMirror": false,
+      "filled": false,
+      "svgRegular": "svg/regular/bar-chart.svg",
+      "svgMedium": "svg/medium/bar-chart.svg",
+      "svgBold": "svg/bold/bar-chart.svg"
+    },
+    {
+      "name": "line-chart",
+      "label": "Line chart",
+      "glyphName": "line_chart",
+      "codepoint": "U+E10E",
+      "codepointInt": 57614,
+      "category": "Data",
+      "tags": [
+        "trend",
+        "graph",
+        "analytics"
+      ],
+      "rtlMirror": false,
+      "filled": false,
+      "svgRegular": "svg/regular/line-chart.svg",
+      "svgMedium": "svg/medium/line-chart.svg",
+      "svgBold": "svg/bold/line-chart.svg"
+    },
+    {
+      "name": "pie-chart",
+      "label": "Pie chart",
+      "glyphName": "pie_chart",
+      "codepoint": "U+E10F",
+      "codepointInt": 57615,
+      "category": "Data",
+      "tags": [
+        "share",
+        "breakdown",
+        "segments"
+      ],
+      "rtlMirror": false,
+      "filled": false,
+      "svgRegular": "svg/regular/pie-chart.svg",
+      "svgMedium": "svg/medium/pie-chart.svg",
+      "svgBold": "svg/bold/pie-chart.svg"
+    },
+    {
+      "name": "trending-up",
+      "label": "Trending up",
+      "glyphName": "trending_up",
+      "codepoint": "U+E110",
+      "codepointInt": 57616,
+      "category": "Data",
+      "tags": [
+        "growth",
+        "increase",
+        "rise"
+      ],
+      "rtlMirror": true,
+      "filled": false,
+      "svgRegular": "svg/regular/trending-up.svg",
+      "svgMedium": "svg/medium/trending-up.svg",
+      "svgBold": "svg/bold/trending-up.svg",
+      "svgRegularRtl": "svg/regular/trending-up-rtl.svg",
+      "svgMediumRtl": "svg/medium/trending-up-rtl.svg",
+      "svgBoldRtl": "svg/bold/trending-up-rtl.svg"
+    },
+    {
+      "name": "mail",
+      "label": "Mail",
+      "glyphName": "mail",
+      "codepoint": "U+E111",
+      "codepointInt": 57617,
+      "category": "Communication",
+      "tags": [
+        "email",
+        "envelope",
+        "message"
+      ],
+      "rtlMirror": false,
+      "filled": false,
+      "svgRegular": "svg/regular/mail.svg",
+      "svgMedium": "svg/medium/mail.svg",
+      "svgBold": "svg/bold/mail.svg"
+    },
+    {
+      "name": "inbox",
+      "label": "Inbox",
+      "glyphName": "inbox",
+      "codepoint": "U+E112",
+      "codepointInt": 57618,
+      "category": "Communication",
+      "tags": [
+        "tray",
+        "messages",
+        "received"
+      ],
+      "rtlMirror": false,
+      "filled": false,
+      "svgRegular": "svg/regular/inbox.svg",
+      "svgMedium": "svg/medium/inbox.svg",
+      "svgBold": "svg/bold/inbox.svg"
+    },
+    {
+      "name": "phone-call",
+      "label": "Phone call",
+      "glyphName": "phone_call",
+      "codepoint": "U+E113",
+      "codepointInt": 57619,
+      "category": "Communication",
+      "tags": [
+        "call",
+        "telephone",
+        "voice"
+      ],
+      "rtlMirror": false,
+      "filled": false,
+      "svgRegular": "svg/regular/phone-call.svg",
+      "svgMedium": "svg/medium/phone-call.svg",
+      "svgBold": "svg/bold/phone-call.svg"
+    },
+    {
+      "name": "contacts",
+      "label": "Contacts",
+      "glyphName": "contacts",
+      "codepoint": "U+E114",
+      "codepointInt": 57620,
+      "category": "Communication",
+      "tags": [
+        "address-book",
+        "people",
+        "directory"
+      ],
+      "rtlMirror": false,
+      "filled": false,
+      "svgRegular": "svg/regular/contacts.svg",
+      "svgMedium": "svg/medium/contacts.svg",
+      "svgBold": "svg/bold/contacts.svg"
+    },
+    {
+      "name": "drag-handle",
+      "label": "Drag handle",
+      "glyphName": "drag_handle",
+      "codepoint": "U+E115",
+      "codepointInt": 57621,
+      "category": "Common",
+      "tags": [
+        "grip",
+        "reorder",
+        "move"
+      ],
+      "rtlMirror": false,
+      "filled": false,
+      "svgRegular": "svg/regular/drag-handle.svg",
+      "svgMedium": "svg/medium/drag-handle.svg",
+      "svgBold": "svg/bold/drag-handle.svg"
+    },
+    {
+      "name": "heart",
+      "label": "Heart",
+      "glyphName": "heart",
+      "codepoint": "U+E116",
+      "codepointInt": 57622,
+      "category": "Common",
+      "tags": [
+        "like",
+        "favorite",
+        "love"
+      ],
+      "rtlMirror": false,
+      "filled": false,
+      "svgRegular": "svg/regular/heart.svg",
+      "svgMedium": "svg/medium/heart.svg",
+      "svgBold": "svg/bold/heart.svg"
+    },
+    {
+      "name": "bug",
+      "label": "Bug",
+      "glyphName": "bug",
+      "codepoint": "U+E117",
+      "codepointInt": 57623,
+      "category": "Common",
+      "tags": [
+        "debug",
+        "issue",
+        "error"
+      ],
+      "rtlMirror": false,
+      "filled": false,
+      "svgRegular": "svg/regular/bug.svg",
+      "svgMedium": "svg/medium/bug.svg",
+      "svgBold": "svg/bold/bug.svg"
     }
   ]
 }

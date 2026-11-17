@@ -5,6 +5,7 @@
   <anchor x="345" y="700" name="top"/>
   <anchor x="345" y="0" name="bottom"/>
   <anchor x="427" y="4" name="ogonek"/>
+  <anchor x="624" y="617" name="horn"/>
   <outline>
     <contour>
       <point x="349" y="-13.5" type="curve" smooth="yes"/>

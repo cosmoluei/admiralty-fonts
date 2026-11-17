@@ -103,11 +103,11 @@
       <point x="500.0" y="397.5"/>
       <point x="510.0" y="375.0"/>
       <point x="510.0" y="350.0" type="curve"/>
-      <point x="510.0" y="325.0"/>
-      <point x="500.0" y="302.5"/>
-      <point x="483.5" y="286.5" type="curve"/>
-      <point x="467.5" y="270.0"/>
-      <point x="445.0" y="260.0"/>
+      <point x="510.0" y="325.25"/>
+      <point x="499.875" y="302.75"/>
+      <point x="483.562" y="286.438" type="curve"/>
+      <point x="467.25" y="270.125"/>
+      <point x="444.75" y="260.0"/>
       <point x="420.0" y="260.0" type="curve"/>
     </contour>
   </outline>

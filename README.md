@@ -9,9 +9,9 @@ Admiralty is a font family made for a personal agent app: a calm, professional l
 | **Admiralty Sans** | A humanist sans serif for interface text and the user's messages. |
 | **Admiralty Serif** | A low-contrast text serif for the agent's messages. It has the same letter widths and kerning as Sans in every weight, so switching between the two never changes line breaks. |
 | **Admiralty Mono** | A monospaced companion for code, logs and IDs (every character is 600 units wide). Optional programming ligatures are in `ss01`. |
-| **Admiralty Symbols** | 218 interface icons on a 24 × 24 grid in the Private Use Area (`U+E000`–`U+E0D9`), drawn to sit at cap height next to the text. |
+| **Admiralty Symbols** | 280 interface icons on a 24 × 24 grid in the Private Use Area (`U+E000`–`U+E117`), drawn to sit at cap height next to the text. |
 
-Sans, Serif and Mono each have six static styles (Regular, Medium, Bold and their italics) and two variable fonts (`wght` 400–700, with named Regular, Medium, SemiBold and Bold). Symbols has Regular, Medium and Bold and one variable font. The text families cover Latin, Latin Extended-A and Pinyin.
+Sans, Serif and Mono each have six static styles (Regular, Medium, Bold and their italics) and two variable fonts (`wght` 400–700, with named Regular, Medium, SemiBold and Bold). Symbols has Regular, Medium and Bold and one variable font. The text families cover the Google Fonts Latin Core and Latin Plus sets, Latin Extended-A, Pinyin and Vietnamese. Mono also has the box drawing and block characters (`U+2500`–`U+259F`) for terminal interfaces.
 
 ## Using the fonts
 
@@ -22,7 +22,7 @@ Ready-to-use font files are in [`fonts/`](fonts):
 
 Icons are also available as SVG files in [`symbols/svg/`](symbols/svg), with names and accessibility labels in [`symbols/admiralty-symbols.json`](symbols/admiralty-symbols.json).
 
-Open [`specimens/inspector.html`](specimens/inspector.html) in a browser to try every style, the weight axis, the icons and the kerning. The page loads its styling from the internet.
+Open [`specimens/inspector.html`](specimens/inspector.html) in a browser to try every style, the weight axis, the icons and the kerning. The page loads its styling from the internet. [`specimens/review.html`](specimens/review.html) shows the 0.300 additions: the new symbols, Latin Plus, box drawing and Vietnamese.
 
 The [usage guide](docs/USAGE_GUIDE.md) covers sizes, weights, CSS, iOS, Android and Windows examples, and fallback fonts for Chinese. Design tokens are in [`tokens/admiralty-design-tokens.json`](tokens/admiralty-design-tokens.json).
 
@@ -37,6 +37,7 @@ python3 scripts/build_fonts.py       # all static and variable fonts, symbols, U
 python3 scripts/build_delivery.py    # platform packages in dist/ (Apple, Android, Windows, web, cross-platform)
 python3 scripts/audit_qa.py          # checks -> docs/QA_AND_ORIGINALITY_REPORT.md
 python3 scripts/build_inspector.py   # specimens/inspector.html
+python3 scripts/build_review.py      # specimens/review.html
 ```
 
 `build_fonts.py` takes about one and a half minutes. If AFDKO is installed (`pip install afdko`), the OTF files are hinted.
