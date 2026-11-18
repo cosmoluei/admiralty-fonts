@@ -3,6 +3,58 @@
   <axes>
     <axis tag="wght" name="Weight" minimum="400" maximum="700" default="400"/>
   </axes>
+  <rules>
+    <rule name="sym_med_to_bold">
+      <conditionset>
+        <condition name="Weight" minimum="450" maximum="700"/>
+      </conditionset>
+      <sub name="profile" with="profile.rvrn500"/>
+      <sub name="incognito" with="incognito.rvrn500"/>
+      <sub name="whats_new" with="whats_new.rvrn500"/>
+      <sub name="translate" with="translate.rvrn500"/>
+      <sub name="server" with="server.rvrn500"/>
+      <sub name="subscription" with="subscription.rvrn500"/>
+    </rule>
+    <rule name="sym_med_band">
+      <conditionset>
+        <condition name="Weight" minimum="450" maximum="599"/>
+      </conditionset>
+      <sub name="paste" with="paste.rvrn500"/>
+      <sub name="account" with="account.rvrn500"/>
+    </rule>
+    <rule name="sym_bold_band">
+      <conditionset>
+        <condition name="Weight" minimum="600" maximum="700"/>
+      </conditionset>
+      <sub name="camera" with="camera.rvrn700"/>
+      <sub name="paste" with="paste.rvrn700"/>
+      <sub name="team" with="team.rvrn700"/>
+      <sub name="audio_file" with="audio_file.rvrn700"/>
+      <sub name="video_file" with="video_file.rvrn700"/>
+      <sub name="code_file" with="code_file.rvrn700"/>
+      <sub name="unlink" with="unlink.rvrn700"/>
+      <sub name="clipboard" with="clipboard.rvrn700"/>
+      <sub name="trash" with="trash.rvrn700"/>
+      <sub name="find_in_page" with="find_in_page.rvrn700"/>
+      <sub name="saved_search" with="saved_search.rvrn700"/>
+      <sub name="advanced_search" with="advanced_search.rvrn700"/>
+      <sub name="accessibility" with="accessibility.rvrn700"/>
+      <sub name="notification_settings" with="notification_settings.rvrn700"/>
+      <sub name="account" with="account.rvrn700"/>
+      <sub name="two_factor" with="two_factor.rvrn700"/>
+      <sub name="auto_sync" with="auto_sync.rvrn700"/>
+      <sub name="sync_error" with="sync_error.rvrn700"/>
+      <sub name="switch_account" with="switch_account.rvrn700"/>
+      <sub name="devices" with="devices.rvrn700"/>
+      <sub name="project" with="project.rvrn700"/>
+      <sub name="conversations" with="conversations.rvrn700"/>
+      <sub name="read_receipt" with="read_receipt.rvrn700"/>
+      <sub name="wallet" with="wallet.rvrn700"/>
+      <sub name="subtitles" with="subtitles.rvrn700"/>
+      <sub name="pie_chart" with="pie_chart.rvrn700"/>
+      <sub name="bug" with="bug.rvrn700"/>
+    </rule>
+  </rules>
   <sources>
     <source filename="AdmiraltySymbols-Regular.ufo" familyname="Admiralty Symbols" stylename="Regular">
       <lib copy="1"/>

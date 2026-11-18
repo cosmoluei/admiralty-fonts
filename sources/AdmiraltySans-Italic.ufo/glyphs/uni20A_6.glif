@@ -46,16 +46,22 @@
       <point x="416" y="396" type="line"/>
     </contour>
     <contour>
-      <point x="223" y="472" type="line"/>
-      <point x="236" y="548" type="line"/>
-      <point x="244" y="548" type="line"/>
-      <point x="276" y="472" type="line"/>
+      <point x="223.029" y="472.169" type="line"/>
+      <point x="223.058" y="472.338" type="line"/>
+      <point x="223.087" y="472.507" type="line"/>
+      <point x="236.0" y="548.0" type="line"/>
+      <point x="244.0" y="548.0" type="line"/>
+      <point x="276.0" y="472.0" type="line"/>
+      <point x="223.0" y="472.0" type="line"/>
     </contour>
     <contour>
-      <point x="492" y="214" type="line"/>
-      <point x="536" y="214" type="line"/>
-      <point x="526" y="152" type="line"/>
-      <point x="518" y="152" type="line"/>
+      <point x="492.196" y="214.0" type="line"/>
+      <point x="492.392" y="214.0" type="line"/>
+      <point x="492.587" y="214.0" type="line"/>
+      <point x="536.0" y="214.0" type="line"/>
+      <point x="526.0" y="152.0" type="line"/>
+      <point x="518.0" y="152.0" type="line"/>
+      <point x="492.0" y="214.0" type="line"/>
     </contour>
   </outline>
 </glyph>

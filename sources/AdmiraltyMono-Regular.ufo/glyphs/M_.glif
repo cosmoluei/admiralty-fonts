@@ -6,22 +6,22 @@
   <anchor x="300" y="0" name="bottom"/>
   <outline>
     <contour>
-      <point x="44" y="0" type="line"/>
-      <point x="128" y="0" type="line"/>
-      <point x="128" y="520" type="line"/>
-      <point x="134" y="520" type="line"/>
-      <point x="264" y="154" type="line"/>
-      <point x="336" y="154" type="line"/>
-      <point x="466" y="520" type="line"/>
-      <point x="472" y="520" type="line"/>
-      <point x="472" y="0" type="line"/>
-      <point x="556" y="0" type="line"/>
-      <point x="556" y="700" type="line"/>
-      <point x="452" y="700" type="line"/>
-      <point x="304" y="294" type="line"/>
-      <point x="296" y="294" type="line"/>
-      <point x="148" y="700" type="line"/>
-      <point x="44" y="700" type="line"/>
+      <point x="128.0" y="0.0" type="line"/>
+      <point x="128.0" y="520.0" type="line"/>
+      <point x="134.0" y="520.0" type="line"/>
+      <point x="264.0" y="154.0" type="line"/>
+      <point x="336.0" y="154.0" type="line"/>
+      <point x="466.0" y="520.0" type="line"/>
+      <point x="472.0" y="520.0" type="line"/>
+      <point x="472.0" y="0.0" type="line"/>
+      <point x="556.0" y="0.0" type="line"/>
+      <point x="556.0" y="700.0" type="line"/>
+      <point x="452.0" y="700.0" type="line"/>
+      <point x="304.0" y="294.0" type="line"/>
+      <point x="296.0" y="294.0" type="line"/>
+      <point x="148.0" y="700.0" type="line"/>
+      <point x="44.0" y="700.0" type="line"/>
+      <point x="44.0" y="0.0" type="line"/>
     </contour>
   </outline>
 </glyph>

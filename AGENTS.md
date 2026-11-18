@@ -37,7 +37,7 @@ Version 0.300 is a test release; names and code points of existing symbols will 
 
 1. **Find symbols by name in `symbols/admiralty-symbols.json`.** Search `name`, `label` and
    `tags` (for example "like" finds `heart`). Never invent a name, and never hard-code a
-   Private Use Area code point such as `` in app code: use the package APIs below.
+   Private Use Area code point such as `\uE118` (heart-filled) in app code: use the package APIs below.
    Filled variants end in `-filled` (`heart-filled`, `play-filled`, `star-filled` ...); use
    them for the selected or active state.
 2. **Match the symbol weight to the text beside it**: regular next to body text, medium next

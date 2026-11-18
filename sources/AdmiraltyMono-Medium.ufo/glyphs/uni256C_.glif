@@ -12,6 +12,14 @@
       <point x="170" y="200" type="line"/>
     </contour>
     <contour>
+      <point x="0" y="386" type="line"/>
+      <point x="244" y="386" type="line"/>
+      <point x="244" y="980" type="line"/>
+      <point x="170" y="980" type="line"/>
+      <point x="170" y="460" type="line"/>
+      <point x="0" y="460" type="line"/>
+    </contour>
+    <contour>
       <point x="356" y="980" type="line"/>
       <point x="356" y="386" type="line"/>
       <point x="600" y="386" type="line"/>
@@ -26,14 +34,6 @@
       <point x="430" y="-320" type="line"/>
       <point x="430" y="200" type="line"/>
       <point x="600" y="200" type="line"/>
-    </contour>
-    <contour>
-      <point x="0" y="386" type="line"/>
-      <point x="244" y="386" type="line"/>
-      <point x="244" y="980" type="line"/>
-      <point x="170" y="980" type="line"/>
-      <point x="170" y="460" type="line"/>
-      <point x="0" y="460" type="line"/>
     </contour>
   </outline>
 </glyph>

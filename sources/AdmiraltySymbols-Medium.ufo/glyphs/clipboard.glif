@@ -59,9 +59,15 @@
     </contour>
     <contour>
       <point x="336.5" y="649.5" type="line"/>
-      <point x="503.5" y="649.5" type="line"/>
-      <point x="503.5" y="637" type="line"/>
-      <point x="336.5" y="637" type="line"/>
+      <point x="339.951" y="649.5"/>
+      <point x="343.403" y="649.5"/>
+      <point x="346.854" y="649.5" type="curve"/>
+      <point x="497.819" y="649.5" type="line"/>
+      <point x="499.713" y="649.5"/>
+      <point x="501.606" y="649.5"/>
+      <point x="503.5" y="649.5" type="curve"/>
+      <point x="503.5" y="637.0" type="line"/>
+      <point x="336.5" y="637.0" type="line"/>
     </contour>
   </outline>
 </glyph>

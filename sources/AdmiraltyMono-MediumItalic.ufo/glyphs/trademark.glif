@@ -4,19 +4,22 @@
   <unicode hex="2122"/>
   <outline>
     <contour>
-      <point x="286.5" y="376.5" type="line"/>
       <point x="341.5" y="376.5" type="line"/>
-      <point x="376.5" y="585" type="line"/>
-      <point x="404" y="376.5" type="line"/>
+      <point x="376.5" y="585.0" type="line"/>
+      <point x="376.789" y="582.809" type="line"/>
+      <point x="404.0" y="376.5" type="line"/>
       <point x="452.5" y="376.5" type="line"/>
       <point x="549.5" y="583.5" type="line"/>
-      <point x="515" y="376.5" type="line"/>
-      <point x="572" y="376.5" type="line"/>
-      <point x="626" y="700" type="line"/>
-      <point x="550.5" y="700" type="line"/>
-      <point x="445" y="474.5" type="line"/>
-      <point x="414" y="700" type="line"/>
-      <point x="340.5" y="700" type="line"/>
+      <point x="549.177" y="581.561" type="line"/>
+      <point x="515.0" y="376.5" type="line"/>
+      <point x="572.0" y="376.5" type="line"/>
+      <point x="626.0" y="700.0" type="line"/>
+      <point x="550.5" y="700.0" type="line"/>
+      <point x="445.0" y="474.5" type="line"/>
+      <point x="444.728" y="476.482" type="line"/>
+      <point x="414.0" y="700.0" type="line"/>
+      <point x="340.5" y="700.0" type="line"/>
+      <point x="286.5" y="376.5" type="line"/>
     </contour>
     <contour>
       <point x="134.5" y="376.5" type="line"/>

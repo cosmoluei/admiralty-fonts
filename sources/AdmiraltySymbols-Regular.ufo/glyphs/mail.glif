@@ -44,15 +44,15 @@
       <point x="683" y="134" type="curve" smooth="yes"/>
     </contour>
     <contour>
-      <point x="146" y="564.5" type="line"/>
       <point x="149.5" y="565.5"/>
-      <point x="153.5" y="566"/>
-      <point x="157" y="566" type="curve" smooth="yes"/>
-      <point x="683" y="566" type="line" smooth="yes"/>
-      <point x="686.5" y="566"/>
+      <point x="153.5" y="566.0"/>
+      <point x="157.0" y="566.0" type="curve"/>
+      <point x="683.0" y="566.0" type="line"/>
+      <point x="686.5" y="566.0"/>
       <point x="690.5" y="565.5"/>
-      <point x="694" y="564.5" type="curve"/>
-      <point x="420" y="359" type="line"/>
+      <point x="694.0" y="564.5" type="curve"/>
+      <point x="420.0" y="359.0" type="line"/>
+      <point x="146.0" y="564.5" type="line"/>
     </contour>
   </outline>
 </glyph>

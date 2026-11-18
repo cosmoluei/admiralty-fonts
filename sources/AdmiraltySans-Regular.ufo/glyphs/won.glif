@@ -56,22 +56,22 @@
       <point x="569" y="384" type="line"/>
     </contour>
     <contour>
-      <point x="412" y="444" type="line"/>
-      <point x="438" y="536" type="line"/>
-      <point x="446" y="536" type="line"/>
-      <point x="472" y="444" type="line"/>
+      <point x="438.0" y="536.0" type="line"/>
+      <point x="446.0" y="536.0" type="line"/>
+      <point x="472.0" y="444.0" type="line"/>
+      <point x="412.0" y="444.0" type="line"/>
     </contour>
     <contour>
-      <point x="615" y="224" type="line"/>
-      <point x="666" y="224" type="line"/>
-      <point x="648" y="136" type="line"/>
-      <point x="640" y="136" type="line"/>
+      <point x="666.0" y="224.0" type="line"/>
+      <point x="648.0" y="136.0" type="line"/>
+      <point x="640.0" y="136.0" type="line"/>
+      <point x="615.0" y="224.0" type="line"/>
     </contour>
     <contour>
-      <point x="269" y="224" type="line"/>
-      <point x="244" y="136" type="line"/>
-      <point x="236" y="136" type="line"/>
-      <point x="218" y="224" type="line"/>
+      <point x="244.0" y="136.0" type="line"/>
+      <point x="236.0" y="136.0" type="line"/>
+      <point x="218.0" y="224.0" type="line"/>
+      <point x="269.0" y="224.0" type="line"/>
     </contour>
   </outline>
 </glyph>

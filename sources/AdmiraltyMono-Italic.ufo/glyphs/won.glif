@@ -50,22 +50,22 @@
       <point x="388" y="384" type="line"/>
     </contour>
     <contour>
-      <point x="281" y="288" type="line"/>
-      <point x="316" y="380" type="line"/>
-      <point x="324" y="380" type="line"/>
-      <point x="328" y="288" type="line"/>
+      <point x="316.0" y="380.0" type="line"/>
+      <point x="324.0" y="380.0" type="line"/>
+      <point x="328.0" y="288.0" type="line"/>
+      <point x="281.0" y="288.0" type="line"/>
     </contour>
     <contour>
-      <point x="397.5" y="224" type="line"/>
-      <point x="427.5" y="224" type="line"/>
-      <point x="407.5" y="150" type="line"/>
-      <point x="401.5" y="150" type="line"/>
+      <point x="427.5" y="224.0" type="line"/>
+      <point x="407.5" y="150.0" type="line"/>
+      <point x="401.5" y="150.0" type="line"/>
+      <point x="397.5" y="224.0" type="line"/>
     </contour>
     <contour>
-      <point x="190.5" y="224" type="line"/>
-      <point x="161.5" y="150" type="line"/>
-      <point x="155.5" y="150" type="line"/>
-      <point x="160.5" y="224" type="line"/>
+      <point x="161.5" y="150.0" type="line"/>
+      <point x="155.5" y="150.0" type="line"/>
+      <point x="160.5" y="224.0" type="line"/>
+      <point x="190.5" y="224.0" type="line"/>
     </contour>
   </outline>
 </glyph>

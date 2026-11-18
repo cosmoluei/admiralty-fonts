@@ -4,21 +4,23 @@
   <unicode hex="21D2"/>
   <outline>
     <contour>
-      <point x="62" y="202.5" type="line"/>
-      <point x="320" y="202.5" type="line"/>
-      <point x="250.5" y="134" type="line"/>
+      <point x="320.0" y="202.5" type="line"/>
+      <point x="250.5" y="134.0" type="line"/>
       <point x="287.5" y="74.5" type="line"/>
-      <point x="539" y="321.5" type="line"/>
+      <point x="539.0" y="321.5" type="line"/>
       <point x="541.5" y="338.5" type="line"/>
-      <point x="372.5" y="586" type="line"/>
-      <point x="317" y="525" type="line"/>
-      <point x="361" y="457.5" type="line"/>
+      <point x="372.5" y="586.0" type="line"/>
+      <point x="317.0" y="525.0" type="line"/>
+      <point x="361.0" y="457.5" type="line"/>
       <point x="104.5" y="457.5" type="line"/>
       <point x="92.5" y="384.5" type="line"/>
+      <point x="403.056" y="384.5" type="line"/>
       <point x="411.5" y="384.5" type="line"/>
-      <point x="448" y="330" type="line"/>
-      <point x="393" y="275.5" type="line"/>
-      <point x="74" y="275.5" type="line"/>
+      <point x="448.0" y="330.0" type="line"/>
+      <point x="393.0" y="275.5" type="line"/>
+      <point x="378.347" y="275.5" type="line"/>
+      <point x="74.0" y="275.5" type="line"/>
+      <point x="62.0" y="202.5" type="line"/>
     </contour>
   </outline>
 </glyph>

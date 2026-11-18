@@ -8,12 +8,20 @@
     <string>about.glif</string>
     <key>accessibility</key>
     <string>accessibility.glif</string>
+    <key>accessibility.rvrn700</key>
+    <string>accessibility.rvrn700.glif</string>
     <key>account</key>
     <string>account.glif</string>
+    <key>account.rvrn500</key>
+    <string>account.rvrn500.glif</string>
+    <key>account.rvrn700</key>
+    <string>account.rvrn700.glif</string>
     <key>add_account</key>
     <string>add_account.glif</string>
     <key>advanced_search</key>
     <string>advanced_search.glif</string>
+    <key>advanced_search.rvrn700</key>
+    <string>advanced_search.rvrn700.glif</string>
     <key>agent</key>
     <string>agent.glif</string>
     <key>api</key>
@@ -46,6 +54,8 @@
     <string>attach.glif</string>
     <key>audio_file</key>
     <string>audio_file.glif</string>
+    <key>audio_file.rvrn700</key>
+    <string>audio_file.rvrn700.glif</string>
     <key>audit_log</key>
     <string>audit_log.glif</string>
     <key>audit_log.rtl</key>
@@ -54,6 +64,8 @@
     <string>auto_mode.glif</string>
     <key>auto_sync</key>
     <string>auto_sync.glif</string>
+    <key>auto_sync.rvrn700</key>
+    <string>auto_sync.rvrn700.glif</string>
     <key>automation</key>
     <string>automation.glif</string>
     <key>back</key>
@@ -90,10 +102,14 @@
     <string>browser.glif</string>
     <key>bug</key>
     <string>bug.glif</string>
+    <key>bug.rvrn700</key>
+    <string>bug.rvrn700.glif</string>
     <key>calendar</key>
     <string>calendar.glif</string>
     <key>camera</key>
     <string>camera.glif</string>
+    <key>camera.rvrn700</key>
+    <string>camera.rvrn700.glif</string>
     <key>chat</key>
     <string>chat.glif</string>
     <key>check</key>
@@ -118,6 +134,8 @@
     <string>clear.glif</string>
     <key>clipboard</key>
     <string>clipboard.glif</string>
+    <key>clipboard.rvrn700</key>
+    <string>clipboard.rvrn700.glif</string>
     <key>close</key>
     <string>close.glif</string>
     <key>cloud</key>
@@ -134,6 +152,8 @@
     <string>code_block.glif</string>
     <key>code_file</key>
     <string>code_file.glif</string>
+    <key>code_file.rvrn700</key>
+    <string>code_file.rvrn700.glif</string>
     <key>collapse</key>
     <string>collapse.glif</string>
     <key>command</key>
@@ -152,6 +172,8 @@
     <string>context.glif</string>
     <key>conversations</key>
     <string>conversations.glif</string>
+    <key>conversations.rvrn700</key>
+    <string>conversations.rvrn700.glif</string>
     <key>copy</key>
     <string>copy.glif</string>
     <key>cut</key>
@@ -168,6 +190,8 @@
     <string>delete.glif</string>
     <key>devices</key>
     <string>devices.glif</string>
+    <key>devices.rvrn700</key>
+    <string>devices.rvrn700.glif</string>
     <key>document</key>
     <string>document.glif</string>
     <key>double_chevron_left</key>
@@ -220,6 +244,8 @@
     <string>filter.glif</string>
     <key>find_in_page</key>
     <string>find_in_page.glif</string>
+    <key>find_in_page.rvrn700</key>
+    <string>find_in_page.rvrn700.glif</string>
     <key>fingerprint</key>
     <string>fingerprint.glif</string>
     <key>folder</key>
@@ -272,6 +298,8 @@
     <string>inbox.glif</string>
     <key>incognito</key>
     <string>incognito.glif</string>
+    <key>incognito.rvrn500</key>
+    <string>incognito.rvrn500.glif</string>
     <key>info</key>
     <string>info.glif</string>
     <key>key</key>
@@ -348,6 +376,8 @@
     <string>notification_dot.glif</string>
     <key>notification_settings</key>
     <string>notification_settings.glif</string>
+    <key>notification_settings.rvrn700</key>
+    <string>notification_settings.rvrn700.glif</string>
     <key>offline</key>
     <string>offline.glif</string>
     <key>online</key>
@@ -358,6 +388,10 @@
     <string>password.glif</string>
     <key>paste</key>
     <string>paste.glif</string>
+    <key>paste.rvrn500</key>
+    <string>paste.rvrn500.glif</string>
+    <key>paste.rvrn700</key>
+    <string>paste.rvrn700.glif</string>
     <key>pause</key>
     <string>pause.glif</string>
     <key>pdf</key>
@@ -372,6 +406,8 @@
     <string>phone_call.glif</string>
     <key>pie_chart</key>
     <string>pie_chart.glif</string>
+    <key>pie_chart.rvrn700</key>
+    <string>pie_chart.rvrn700.glif</string>
     <key>pin</key>
     <string>pin.glif</string>
     <key>pin_filled</key>
@@ -396,10 +432,14 @@
     <string>privacy_settings.glif</string>
     <key>profile</key>
     <string>profile.glif</string>
+    <key>profile.rvrn500</key>
+    <string>profile.rvrn500.glif</string>
     <key>progress</key>
     <string>progress.glif</string>
     <key>project</key>
     <string>project.glif</string>
+    <key>project.rvrn700</key>
+    <string>project.rvrn700.glif</string>
     <key>prompt</key>
     <string>prompt.glif</string>
     <key>qr_code</key>
@@ -414,6 +454,8 @@
     <string>read_aloud.rtl.glif</string>
     <key>read_receipt</key>
     <string>read_receipt.glif</string>
+    <key>read_receipt.rvrn700</key>
+    <string>read_receipt.rvrn700.glif</string>
     <key>receipt</key>
     <string>receipt.glif</string>
     <key>recent</key>
@@ -450,6 +492,8 @@
     <string>save.glif</string>
     <key>saved_search</key>
     <string>saved_search.glif</string>
+    <key>saved_search.rvrn700</key>
+    <string>saved_search.rvrn700.glif</string>
     <key>scan</key>
     <string>scan.glif</string>
     <key>schedule_send</key>
@@ -468,6 +512,8 @@
     <string>send.rtl.glif</string>
     <key>server</key>
     <string>server.glif</string>
+    <key>server.rvrn500</key>
+    <string>server.rvrn500.glif</string>
     <key>settings</key>
     <string>settings.glif</string>
     <key>share</key>
@@ -532,18 +578,26 @@
     <string>stop_filled.glif</string>
     <key>subscription</key>
     <string>subscription.glif</string>
+    <key>subscription.rvrn500</key>
+    <string>subscription.rvrn500.glif</string>
     <key>subtitles</key>
     <string>subtitles.glif</string>
+    <key>subtitles.rvrn700</key>
+    <string>subtitles.rvrn700.glif</string>
     <key>summarize</key>
     <string>summarize.glif</string>
     <key>support</key>
     <string>support.glif</string>
     <key>switch_account</key>
     <string>switch_account.glif</string>
+    <key>switch_account.rvrn700</key>
+    <string>switch_account.rvrn700.glif</string>
     <key>sync</key>
     <string>sync.glif</string>
     <key>sync_error</key>
     <string>sync_error.glif</string>
+    <key>sync_error.rvrn700</key>
+    <string>sync_error.rvrn700.glif</string>
     <key>sync_now</key>
     <string>sync_now.glif</string>
     <key>sync_paused</key>
@@ -560,6 +614,8 @@
     <string>task_list.rtl.glif</string>
     <key>team</key>
     <string>team.glif</string>
+    <key>team.rvrn700</key>
+    <string>team.rvrn700.glif</string>
     <key>template</key>
     <string>template.glif</string>
     <key>terminal</key>
@@ -588,8 +644,12 @@
     <string>tool.glif</string>
     <key>translate</key>
     <string>translate.glif</string>
+    <key>translate.rvrn500</key>
+    <string>translate.rvrn500.glif</string>
     <key>trash</key>
     <string>trash.glif</string>
+    <key>trash.rvrn700</key>
+    <string>trash.rvrn700.glif</string>
     <key>trending_up</key>
     <string>trending_up.glif</string>
     <key>trending_up.rtl</key>
@@ -600,8 +660,12 @@
     <string>tutorial.glif</string>
     <key>two_factor</key>
     <string>two_factor.glif</string>
+    <key>two_factor.rvrn700</key>
+    <string>two_factor.rvrn700.glif</string>
     <key>unlink</key>
     <string>unlink.glif</string>
+    <key>unlink.rvrn700</key>
+    <string>unlink.rvrn700.glif</string>
     <key>unlock</key>
     <string>unlock.glif</string>
     <key>unpin</key>
@@ -622,6 +686,8 @@
     <string>version.glif</string>
     <key>video_file</key>
     <string>video_file.glif</string>
+    <key>video_file.rvrn700</key>
+    <string>video_file.rvrn700.glif</string>
     <key>voice_message</key>
     <string>voice_message.glif</string>
     <key>volume</key>
@@ -630,6 +696,8 @@
     <string>volume.rtl.glif</string>
     <key>wallet</key>
     <string>wallet.glif</string>
+    <key>wallet.rvrn700</key>
+    <string>wallet.rvrn700.glif</string>
     <key>warning</key>
     <string>warning.glif</string>
     <key>watch</key>
@@ -638,6 +706,8 @@
     <string>web_search.glif</string>
     <key>whats_new</key>
     <string>whats_new.glif</string>
+    <key>whats_new.rvrn500</key>
+    <string>whats_new.rvrn500.glif</string>
     <key>window</key>
     <string>window.glif</string>
     <key>workflow</key>
