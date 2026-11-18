@@ -125,7 +125,21 @@ def _build_apple(otf_dir: Path, var_dir: Path, sym_svg_dir: Path) -> None:
         "# Admiralty for Apple (iOS & macOS)\n\n"
         "## Bundle & Registration\n"
         f"- Copy `fonts/variable/*.ttf` ({len(v_files)} Variable Fonts) or `fonts/static/*.otf` ({len(s_files)} Static OTFs) into your Xcode target and list filenames under `UIAppFonts` in `Info.plist`.\n"
-        "- Plain 24x24 original SVG icons are included in `symbols/svg/{regular,medium,bold}/` alongside `AdmiraltySymbols[wght].ttf` (`U+E000..U+E119`). Custom Apple SF-Symbol-template import headers are intentionally omitted pending Apple custom-symbol rule verification (see REQUIREMENTS Section 17).\n\n"
+        "- 24 x 24 outline SVG icons are in `symbols/svg/{regular,medium,bold}/`.\n\n"
+        "## Admiralty Symbols by name (Swift package)\n"
+        "Add the folder `AdmiraltySymbols/` to your project (Xcode: File > Add Package Dependencies > Add Local, "
+        "or the GitHub URL). It contains the three symbol fonts and registers them for you; nothing goes in `Info.plist`.\n"
+        "```swift\n"
+        "import AdmiraltySymbols\n\n"
+        "AdmiraltyIcon(\"heart-filled\")                        // like Image(systemName: \"heart.fill\")\n"
+        "AdmiraltyIcon(.send, size: 20, weight: .medium)       // type-checked name, VoiceOver label, RTL mirroring\n"
+        "Text(admiralty: .heartFilled) + Text(\" Liked\")         // inside text, scales with Dynamic Type\n"
+        "Label { Text(\"Settings\") } icon: { AdmiraltyIcon(.settings) }\n"
+        "Image(admiralty: .heartFilled, pointSize: 22)         // a template Image of fixed size\n"
+        "button.setImage(UIImage.admiralty(.send), for: .normal)  // UIKit\n"
+        "```\n"
+        "Use `weight: .medium` next to medium text and `.bold` next to bold text. Colour comes from "
+        "`.foregroundStyle` / `.tint` (SwiftUI) or `tintColor` (UIKit). iOS 15 or later.\n\n"
         "## SwiftUI Usage (Dynamic Type Ready)\n"
         "```swift\n"
         "Text(\"Net revenue: €1,362,446.86\")\n"
@@ -199,6 +213,21 @@ def _build_android(ttf_dir: Path, var_dir: Path, meta: dict) -> None:
 
     (d / "README.md").write_text(
         "# Admiralty for Android\n\n"
+        "## Admiralty Symbols by name (library module)\n"
+        "Copy the folder `admiralty-symbols/` into your project, add `include(\":admiralty-symbols\")` to "
+        "`settings.gradle.kts` and `implementation(project(\":admiralty-symbols\"))` to your app module. "
+        "It holds all 282 vector drawables, the three symbol fonts and the `AdmiraltySymbol` list.\n"
+        "```kotlin\n"
+        "import io.github.cosmoluei.admiralty.symbols.AdmiraltySymbol\n\n"
+        "// Jetpack Compose\n"
+        "Icon(painterResource(AdmiraltySymbol.HeartFilled.drawable), contentDescription = AdmiraltySymbol.HeartFilled.label)\n"
+        "// by name, like \"heart-filled\"\n"
+        "AdmiraltySymbol.named(\"heart-filled\")?.let { Icon(painterResource(it.drawable), it.label) }\n"
+        "// Views\n"
+        "imageView.setImageResource(AdmiraltySymbol.Send.drawable)\n"
+        "```\n"
+        "Direction symbols flip by themselves in right-to-left layouts (`android:autoMirrored`). "
+        "Colour comes from `tint` (Compose `Icon` uses `LocalContentColor`).\n\n"
         "## Resources Layout\n"
         "- Copy `res/font/*` into `app/src/main/res/font/` and `res/drawable/ic_adm_*.xml` (282 VectorDrawables, including `android:autoMirrored=\"true\"` on 38 directional icons) into `app/src/main/res/drawable/`.\n"
         "- `admiralty_*_wght.ttf` work natively on Android 8+ (API 26+); static files + `<font-family>` XML support older Android releases.\n\n"
@@ -370,6 +399,34 @@ def build_all_delivery_packages() -> None:
     _build_windows(ttf_dir, var_dir, sym_svg_dir)
     _build_web(woff2_dir, var_dir, sym_svg_dir, meta)
     _build_cross_platform(ttf_dir, var_dir, sym_json, meta)
+
+    # SF-Symbols-style packages: use a symbol by name in iOS and Android apps
+    from build_native_packages import build_swift_package, build_android_library
+    build_swift_package(meta, ttf_dir, DIST_DIR / "apple-ios-macos", meta["version"])
+    build_android_library(meta, ttf_dir, DIST_DIR / "android" / "res" / "drawable", DIST_DIR / "android", meta["version"])
+    # The same packages, tracked in git under packages/, so an app can add them straight from GitHub.
+    # Swift Package Manager needs Package.swift at the top of the repository.
+    pk = ROOT / "packages"
+    if pk.exists():
+        shutil.rmtree(pk)
+    shutil.copytree(DIST_DIR / "apple-ios-macos" / "AdmiraltySymbols", pk / "ios" / "AdmiraltySymbols")
+    shutil.copytree(DIST_DIR / "android" / "admiralty-symbols", pk / "android" / "admiralty-symbols")
+    (pk / "ios" / "AdmiraltySymbols" / "Package.swift").unlink()
+    (ROOT / "Package.swift").write_text(
+        "// swift-tools-version:5.7\n"
+        "// Admiralty Symbols for iOS. Add this repository in Xcode (File > Add Package Dependencies).\n"
+        "import PackageDescription\n\n"
+        "let package = Package(\n"
+        '    name: "AdmiraltySymbols",\n'
+        "    platforms: [.iOS(.v15)],\n"
+        '    products: [.library(name: "AdmiraltySymbols", targets: ["AdmiraltySymbols"])],\n'
+        "    targets: [\n"
+        '        .target(name: "AdmiraltySymbols", path: "packages/ios/AdmiraltySymbols/Sources/AdmiraltySymbols",\n'
+        '                resources: [.copy("Fonts")])\n'
+        "    ]\n"
+        ")\n",
+        encoding="utf-8",
+    )
 
     n_drawables = len(list((DIST_DIR / "android" / "res" / "drawable").glob("*.xml")))
     n_subsets = len(list((DIST_DIR / "web" / "fonts" / "subsets").glob("*.woff2")))
