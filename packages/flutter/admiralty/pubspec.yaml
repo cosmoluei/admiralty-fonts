@@ -1,0 +1,71 @@
+name: admiralty
+description: Admiralty Sans, Serif, Mono and Symbols fonts, with the symbols as IconData.
+version: 0.300.0
+homepage: https://github.com/cosmoluei/admiralty-fonts
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+  flutter: '>=3.10.0'
+dependencies:
+  flutter:
+    sdk: flutter
+flutter:
+  fonts:
+    - family: AdmiraltySans
+      fonts:
+        - asset: fonts/AdmiraltySans-Regular.ttf
+          weight: 400
+        - asset: fonts/AdmiraltySans-Italic.ttf
+          weight: 400
+          style: italic
+        - asset: fonts/AdmiraltySans-Medium.ttf
+          weight: 500
+        - asset: fonts/AdmiraltySans-MediumItalic.ttf
+          weight: 500
+          style: italic
+        - asset: fonts/AdmiraltySans-Bold.ttf
+          weight: 700
+        - asset: fonts/AdmiraltySans-BoldItalic.ttf
+          weight: 700
+          style: italic
+    - family: AdmiraltySerif
+      fonts:
+        - asset: fonts/AdmiraltySerif-Regular.ttf
+          weight: 400
+        - asset: fonts/AdmiraltySerif-Italic.ttf
+          weight: 400
+          style: italic
+        - asset: fonts/AdmiraltySerif-Medium.ttf
+          weight: 500
+        - asset: fonts/AdmiraltySerif-MediumItalic.ttf
+          weight: 500
+          style: italic
+        - asset: fonts/AdmiraltySerif-Bold.ttf
+          weight: 700
+        - asset: fonts/AdmiraltySerif-BoldItalic.ttf
+          weight: 700
+          style: italic
+    - family: AdmiraltyMono
+      fonts:
+        - asset: fonts/AdmiraltyMono-Regular.ttf
+          weight: 400
+        - asset: fonts/AdmiraltyMono-Italic.ttf
+          weight: 400
+          style: italic
+        - asset: fonts/AdmiraltyMono-Medium.ttf
+          weight: 500
+        - asset: fonts/AdmiraltyMono-MediumItalic.ttf
+          weight: 500
+          style: italic
+        - asset: fonts/AdmiraltyMono-Bold.ttf
+          weight: 700
+        - asset: fonts/AdmiraltyMono-BoldItalic.ttf
+          weight: 700
+          style: italic
+    - family: AdmiraltySymbols
+      fonts:
+        - asset: fonts/AdmiraltySymbols-Regular.ttf
+          weight: 400
+        - asset: fonts/AdmiraltySymbols-Medium.ttf
+          weight: 500
+        - asset: fonts/AdmiraltySymbols-Bold.ttf
+          weight: 700

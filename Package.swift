@@ -1,13 +1,13 @@
 // swift-tools-version:5.7
-// Admiralty Symbols for iOS. Add this repository in Xcode (File > Add Package Dependencies).
+// Admiralty fonts and symbols for iOS. Add this repository in Xcode (File > Add Package Dependencies).
 import PackageDescription
 
 let package = Package(
-    name: "AdmiraltySymbols",
+    name: "Admiralty",
     platforms: [.iOS(.v15)],
-    products: [.library(name: "AdmiraltySymbols", targets: ["AdmiraltySymbols"])],
+    products: [.library(name: "Admiralty", targets: ["Admiralty"])],
     targets: [
-        .target(name: "AdmiraltySymbols", path: "packages/ios/AdmiraltySymbols/Sources/AdmiraltySymbols",
+        .target(name: "Admiralty", path: "packages/ios/Admiralty/Sources/Admiralty",
                 resources: [.copy("Fonts")])
     ]
 )

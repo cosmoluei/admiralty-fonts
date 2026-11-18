@@ -126,11 +126,11 @@ def _build_apple(otf_dir: Path, var_dir: Path, sym_svg_dir: Path) -> None:
         "## Bundle & Registration\n"
         f"- Copy `fonts/variable/*.ttf` ({len(v_files)} Variable Fonts) or `fonts/static/*.otf` ({len(s_files)} Static OTFs) into your Xcode target and list filenames under `UIAppFonts` in `Info.plist`.\n"
         "- 24 x 24 outline SVG icons are in `symbols/svg/{regular,medium,bold}/`.\n\n"
-        "## Admiralty Symbols by name (Swift package)\n"
-        "Add the folder `AdmiraltySymbols/` to your project (Xcode: File > Add Package Dependencies > Add Local, "
-        "or the GitHub URL). It contains the three symbol fonts and registers them for you; nothing goes in `Info.plist`.\n"
+        "## Fonts and symbols by name (Swift package)\n"
+        "Add the Admiralty repository as a Swift package (Xcode: File > Add Package Dependencies, "
+        "https://github.com/cosmoluei/admiralty-fonts). It contains all 21 static fonts and registers them for you; nothing goes in `Info.plist`.\n"
         "```swift\n"
-        "import AdmiraltySymbols\n\n"
+        "import Admiralty\n\n"
         "AdmiraltyIcon(\"heart-filled\")                        // like Image(systemName: \"heart.fill\")\n"
         "AdmiraltyIcon(.send, size: 20, weight: .medium)       // type-checked name, VoiceOver label, RTL mirroring\n"
         "Text(admiralty: .heartFilled) + Text(\" Liked\")         // inside text, scales with Dynamic Type\n"
@@ -213,12 +213,12 @@ def _build_android(ttf_dir: Path, var_dir: Path, meta: dict) -> None:
 
     (d / "README.md").write_text(
         "# Admiralty for Android\n\n"
-        "## Admiralty Symbols by name (library module)\n"
-        "Copy the folder `admiralty-symbols/` into your project, add `include(\":admiralty-symbols\")` to "
-        "`settings.gradle.kts` and `implementation(project(\":admiralty-symbols\"))` to your app module. "
-        "It holds all 282 vector drawables, the three symbol fonts and the `AdmiraltySymbol` list.\n"
+        "## Fonts and symbols by name (library module)\n"
+        "Copy `packages/android/admiralty` from the repository into your project, add `include(\":admiralty\")` to "
+        "`settings.gradle.kts` and `implementation(project(\":admiralty\"))` to your app module. "
+        "It holds the text fonts, all 282 vector drawables and the `AdmiraltySymbol` list.\n"
         "```kotlin\n"
-        "import io.github.cosmoluei.admiralty.symbols.AdmiraltySymbol\n\n"
+        "import io.github.cosmoluei.admiralty.AdmiraltySymbol\n\n"
         "// Jetpack Compose\n"
         "Icon(painterResource(AdmiraltySymbol.HeartFilled.drawable), contentDescription = AdmiraltySymbol.HeartFilled.label)\n"
         "// by name, like \"heart-filled\"\n"
@@ -271,9 +271,24 @@ def _build_web(woff2_dir: Path, var_dir: Path, sym_svg_dir: Path, meta: dict) ->
     _copy_glob(var_dir, "*.woff2", d / "fonts" / "variable")
     _copy_glob(woff2_dir, "*.woff2", d / "fonts" / "static")
 
-    # Build Unicode-range subsets from Variable TTFs (latin vs latin-ext)
-    latin_rng = "U+0000-00FF,U+2000-206F,U+20AC,U+2122,U+2190-21FF"
-    ext_rng = "U+0100-024F,U+1E00-1EFF,U+20A0-20CF,U+2100-22FF,U+2700-27BF"
+    # Unicode-range subsets from the variable TTFs: a small "latin" file for everyday text and a
+    # "latin-ext" file with every other character of the font (worked out from its cmap, so new
+    # characters such as Vietnamese, superscripts or box drawing are never left out).
+    latin_set = set(range(0x20, 0x100)) | set(range(0x0300, 0x0370)) | set(range(0x2000, 0x2070)) | {0x20AC, 0x2122} | set(range(0x2190, 0x2200))
+
+    def _ranges(cps) -> str:
+        cps = sorted(cps)
+        out, start, prev = [], None, None
+        for c in cps:
+            if start is None:
+                start = prev = c
+            elif c == prev + 1:
+                prev = c
+            else:
+                out.append((start, prev)); start = prev = c
+        if start is not None:
+            out.append((start, prev))
+        return ",".join(f"U+{a:04X}" if a == b else f"U+{a:04X}-{b:04X}" for a, b in out)
     sub_dir = d / "fonts" / "subsets"
     css_blocks: List[str] = [
         "/* Admiralty Web Fonts v0.300 — Metric-Matched Fallbacks & Variable Unicode-Range Subsets */\n",
@@ -289,6 +304,9 @@ def _build_web(woff2_dir: Path, var_dir: Path, sym_svg_dir: Path, meta: dict) ->
         ("Admiralty Mono", "AdmiraltyMono-Italic[wght]", "400 700", "italic"),
     ):
         vf_ttf = var_dir / f"{stem_base}.ttf"
+        cmap = set(TTFont(str(vf_ttf)).getBestCmap())
+        latin_rng = _ranges(cmap & latin_set)
+        ext_rng = _ranges(cmap - latin_set)
         clean_stem = stem_base.replace("[wght]", "-VF")
         lat_name = f"{clean_stem}-latin.woff2"
         ext_name = f"{clean_stem}-latin-ext.woff2"
@@ -400,28 +418,29 @@ def build_all_delivery_packages() -> None:
     _build_web(woff2_dir, var_dir, sym_svg_dir, meta)
     _build_cross_platform(ttf_dir, var_dir, sym_json, meta)
 
-    # SF-Symbols-style packages: use a symbol by name in iOS and Android apps
-    from build_native_packages import build_swift_package, build_android_library
-    build_swift_package(meta, ttf_dir, DIST_DIR / "apple-ios-macos", meta["version"])
-    build_android_library(meta, ttf_dir, DIST_DIR / "android" / "res" / "drawable", DIST_DIR / "android", meta["version"])
-    # The same packages, tracked in git under packages/, so an app can add them straight from GitHub.
-    # Swift Package Manager needs Package.swift at the top of the repository.
+    # Ready-to-use packages (tracked in git under packages/): fonts and symbols by name in iOS,
+    # Android, Flutter and web apps. Swift Package Manager needs Package.swift at the repo root.
+    from build_native_packages import (build_swift_package, build_android_library,
+                                       build_flutter_package, build_web_package)
     pk = ROOT / "packages"
     if pk.exists():
         shutil.rmtree(pk)
-    shutil.copytree(DIST_DIR / "apple-ios-macos" / "AdmiraltySymbols", pk / "ios" / "AdmiraltySymbols")
-    shutil.copytree(DIST_DIR / "android" / "admiralty-symbols", pk / "android" / "admiralty-symbols")
-    (pk / "ios" / "AdmiraltySymbols" / "Package.swift").unlink()
+    ver = meta["version"]
+    build_swift_package(meta, ttf_dir, pk / "ios", ver)
+    (pk / "ios" / "Admiralty" / "Package.swift").unlink()
+    build_android_library(meta, ttf_dir, DIST_DIR / "android" / "res" / "drawable", pk / "android", ver)
+    build_flutter_package(meta, ttf_dir, pk / "flutter", ver)
+    build_web_package(meta, DIST_DIR / "web", var_dir, pk, ver)
     (ROOT / "Package.swift").write_text(
         "// swift-tools-version:5.7\n"
-        "// Admiralty Symbols for iOS. Add this repository in Xcode (File > Add Package Dependencies).\n"
+        "// Admiralty fonts and symbols for iOS. Add this repository in Xcode (File > Add Package Dependencies).\n"
         "import PackageDescription\n\n"
         "let package = Package(\n"
-        '    name: "AdmiraltySymbols",\n'
+        '    name: "Admiralty",\n'
         "    platforms: [.iOS(.v15)],\n"
-        '    products: [.library(name: "AdmiraltySymbols", targets: ["AdmiraltySymbols"])],\n'
+        '    products: [.library(name: "Admiralty", targets: ["Admiralty"])],\n'
         "    targets: [\n"
-        '        .target(name: "AdmiraltySymbols", path: "packages/ios/AdmiraltySymbols/Sources/AdmiraltySymbols",\n'
+        '        .target(name: "Admiralty", path: "packages/ios/Admiralty/Sources/Admiralty",\n'
         '                resources: [.copy("Fonts")])\n'
         "    ]\n"
         ")\n",

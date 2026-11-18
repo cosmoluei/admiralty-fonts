@@ -1,15 +1,18 @@
 """
-Native packages that let an app use Admiralty Symbols by name, much like SF Symbols:
+Ready-to-use packages, so an app (or a coding agent) can use the fonts and the symbols by name,
+much like SF Symbols. All are written to packages/ (tracked in git) by build_delivery.py:
 
-  * iOS  — a Swift package `AdmiraltySymbols` (dist/apple-ios-macos/AdmiraltySymbols/)
-             Image(admiralty: .heartFilled)      Text(admiralty: "heart-filled")
-             AdmiraltyIcon("heart-filled")        UIImage.admiralty(.heartFilled)
-  * Android — a library module `admiralty-symbols` (dist/android/admiralty-symbols/)
-             painterResource(AdmiraltySymbol.HeartFilled.drawable)
-             AdmiraltySymbol.named("heart-filled")
+  * iOS     packages/ios/Admiralty           Swift package (Package.swift at the repo root)
+              .font(.admiralty(.serif, size: 17))   AdmiraltyIcon("heart-filled")
+  * Android packages/android/admiralty        library module (fonts + 282 vector drawables)
+              AdmiraltySymbol.HeartFilled.drawable   AdmiraltyFonts.SANS
+  * Flutter packages/flutter/admiralty        Dart package with the fonts
+              Icon(AdmiraltyIcons.heartFilled)       TextStyle(fontFamily: 'AdmiraltySans', package: 'admiralty')
+  * Web     packages/web                      CSS with the fonts and icon classes
+              <i class="adm-icon adm-heart-filled"></i>
 
-Both are generated from symbols/admiralty-symbols.json, so names and code points always match
-the fonts. Called by build_delivery.py.
+Everything is generated from symbols/admiralty-symbols.json, so names and code points always
+match the fonts.
 """
 
 from __future__ import annotations
@@ -52,40 +55,92 @@ def _kotlin_str(s: str) -> str:
 # ---------------------------------------------------------------------------------------------
 
 SWIFT_SUPPORT = r'''
-// MARK: - Weights
+// MARK: - Weights and families
 
-/// The three weights of Admiralty Symbols. Match them to the text next to the icon:
+/// The three weights of every Admiralty family. For symbols, match the text next to the icon:
 /// regular for body text, medium for buttons and labels, bold for bold text.
-public enum AdmiraltySymbolWeight: Sendable {
+public enum AdmiraltyWeight: Sendable {
     case regular, medium, bold
 
-    public var postScriptName: String {
+    fileprivate var styleName: String {
         switch self {
-        case .regular: return "AdmiraltySymbols-Regular"
-        case .medium: return "AdmiraltySymbols-Medium"
-        case .bold: return "AdmiraltySymbols-Bold"
+        case .regular: return "Regular"
+        case .medium: return "Medium"
+        case .bold: return "Bold"
         }
+    }
+
+    /// The PostScript name of the Admiralty Symbols font in this weight.
+    public var symbolsPostScriptName: String { "AdmiraltySymbols-" + styleName }
+}
+
+/// The three text families. Sans: interface and the user's messages. Serif: the agent's
+/// messages (same widths as Sans, so switching never changes line breaks). Mono: code and IDs.
+public enum AdmiraltyFamily: Sendable {
+    case sans, serif, mono
+
+    fileprivate var postScriptFamily: String {
+        switch self {
+        case .sans: return "AdmiraltySans"
+        case .serif: return "AdmiraltySerif"
+        case .mono: return "AdmiraltyMono"
+        }
+    }
+
+    /// The PostScript name of one style, e.g. "AdmiraltySerif-MediumItalic".
+    public func postScriptName(weight: AdmiraltyWeight = .regular, italic: Bool = false) -> String {
+        let style: String
+        switch (weight, italic) {
+        case (.regular, false): style = "Regular"
+        case (.regular, true): style = "Italic"
+        case (_, false): style = weight.styleName
+        case (_, true): style = weight.styleName + "Italic"
+        }
+        return postScriptFamily + "-" + style
     }
 }
 
 // MARK: - Font registration
 
-public enum AdmiraltySymbols {
-    /// Registers the three symbol fonts that ship inside this package. Every helper below calls
-    /// it, so you only need it yourself to use the fonts directly (for example in a UIFont).
+public enum Admiralty {
+    /// Registers all Admiralty fonts that ship inside this package (Sans, Serif, Mono and Symbols,
+    /// 21 styles). Every helper calls it; call it yourself before using a font by name in UIKit.
     public static func registerFonts() {
         _ = registered
     }
 
     private static let registered: Bool = {
-        for name in ["AdmiraltySymbols-Regular", "AdmiraltySymbols-Medium", "AdmiraltySymbols-Bold"] {
-            if let url = Bundle.module.url(forResource: name, withExtension: "ttf", subdirectory: "Fonts") {
-                CTFontManagerRegisterFontsForURL(url as CFURL, .process, nil)
-            }
+        for url in Bundle.module.urls(forResourcesWithExtension: "ttf", subdirectory: "Fonts") ?? [] {
+            CTFontManagerRegisterFontsForURL(url as CFURL, .process, nil)
         }
         return true
     }()
 }
+
+// MARK: - Text fonts
+
+public extension Font {
+    /// An Admiralty text font that scales with Dynamic Type:
+    /// `.font(.admiralty(.serif, size: 17))`, `.font(.admiralty(.mono, size: 14, relativeTo: .callout))`.
+    static func admiralty(_ family: AdmiraltyFamily = .sans, size: CGFloat, relativeTo textStyle: Font.TextStyle = .body,
+                          weight: AdmiraltyWeight = .regular, italic: Bool = false) -> Font {
+        Admiralty.registerFonts()
+        return .custom(family.postScriptName(weight: weight, italic: italic), size: size, relativeTo: textStyle)
+    }
+}
+
+#if canImport(UIKit)
+public extension UIFont {
+    /// An Admiralty text font for UIKit, scaled for the user's text size setting.
+    static func admiralty(_ family: AdmiraltyFamily = .sans, size: CGFloat, textStyle: UIFont.TextStyle = .body,
+                          weight: AdmiraltyWeight = .regular, italic: Bool = false) -> UIFont {
+        Admiralty.registerFonts()
+        let base = UIFont(name: family.postScriptName(weight: weight, italic: italic), size: size)
+            ?? UIFont.systemFont(ofSize: size)
+        return UIFontMetrics(forTextStyle: textStyle).scaledFont(for: base)
+    }
+}
+#endif
 
 // MARK: - SwiftUI
 
@@ -94,18 +149,18 @@ public extension Text {
     /// takes the foreground colour, so it can be joined with other text:
     /// `Text(admiralty: .heartFilled) + Text(" Liked")`.
     init(admiralty symbol: AdmiraltySymbol, size: CGFloat = 17, relativeTo textStyle: Font.TextStyle = .body,
-         weight: AdmiraltySymbolWeight = .regular) {
-        AdmiraltySymbols.registerFonts()
+         weight: AdmiraltyWeight = .regular) {
+        Admiralty.registerFonts()
         self = Text(verbatim: symbol.character)
-            .font(.custom(weight.postScriptName, size: size, relativeTo: textStyle))
+            .font(.custom(weight.symbolsPostScriptName, size: size, relativeTo: textStyle))
     }
 
     /// The same, by name, like `Image(systemName:)`. An unknown name gives empty text.
     init(admiralty name: String, size: CGFloat = 17, relativeTo textStyle: Font.TextStyle = .body,
-         weight: AdmiraltySymbolWeight = .regular) {
-        AdmiraltySymbols.registerFonts()
+         weight: AdmiraltyWeight = .regular) {
+        Admiralty.registerFonts()
         self = Text(verbatim: AdmiraltySymbol(rawValue: name)?.character ?? "")
-            .font(.custom(weight.postScriptName, size: size, relativeTo: textStyle))
+            .font(.custom(weight.symbolsPostScriptName, size: size, relativeTo: textStyle))
     }
 }
 
@@ -118,10 +173,10 @@ public struct AdmiraltyIcon: View {
     private let symbol: AdmiraltySymbol?
     private let size: CGFloat
     private let textStyle: Font.TextStyle
-    private let weight: AdmiraltySymbolWeight
+    private let weight: AdmiraltyWeight
 
     public init(_ symbol: AdmiraltySymbol, size: CGFloat = 17, relativeTo textStyle: Font.TextStyle = .body,
-                weight: AdmiraltySymbolWeight = .regular) {
+                weight: AdmiraltyWeight = .regular) {
         self.symbol = symbol
         self.size = size
         self.textStyle = textStyle
@@ -129,7 +184,7 @@ public struct AdmiraltyIcon: View {
     }
 
     public init(_ name: String, size: CGFloat = 17, relativeTo textStyle: Font.TextStyle = .body,
-                weight: AdmiraltySymbolWeight = .regular) {
+                weight: AdmiraltyWeight = .regular) {
         self.symbol = AdmiraltySymbol(rawValue: name)
         self.size = size
         self.textStyle = textStyle
@@ -150,13 +205,13 @@ public extension Image {
     /// An Admiralty symbol as a template image (it takes the tint or foreground colour).
     /// Its size is fixed by `pointSize`; use `Text(admiralty:)` or `AdmiraltyIcon` for an icon
     /// that grows with Dynamic Type.
-    init(admiralty symbol: AdmiraltySymbol, pointSize: CGFloat = 17, weight: AdmiraltySymbolWeight = .regular) {
+    init(admiralty symbol: AdmiraltySymbol, pointSize: CGFloat = 17, weight: AdmiraltyWeight = .regular) {
         self = Image(uiImage: UIImage.admiralty(symbol, pointSize: pointSize, weight: weight))
             .renderingMode(.template)
     }
 
     /// The same, by name. An unknown name gives an empty image.
-    init(admiralty name: String, pointSize: CGFloat = 17, weight: AdmiraltySymbolWeight = .regular) {
+    init(admiralty name: String, pointSize: CGFloat = 17, weight: AdmiraltyWeight = .regular) {
         if let symbol = AdmiraltySymbol(rawValue: name) {
             self.init(admiralty: symbol, pointSize: pointSize, weight: weight)
         } else {
@@ -171,9 +226,9 @@ public extension UIImage {
     /// An Admiralty symbol as a template UIImage, for UIImageView, UIButton, tab bars and so on.
     /// The image is the symbol's full 24 x 24 grid box, so all symbols line up.
     static func admiralty(_ symbol: AdmiraltySymbol, pointSize: CGFloat = 17,
-                          weight: AdmiraltySymbolWeight = .regular) -> UIImage {
-        AdmiraltySymbols.registerFonts()
-        let font = UIFont(name: weight.postScriptName, size: pointSize) ?? UIFont.systemFont(ofSize: pointSize)
+                          weight: AdmiraltyWeight = .regular) -> UIImage {
+        Admiralty.registerFonts()
+        let font = UIFont(name: weight.symbolsPostScriptName, size: pointSize) ?? UIFont.systemFont(ofSize: pointSize)
         // The symbol grid is 864 units square (24 x 36), from x = -12 and from 782 above the baseline.
         let side = (pointSize * 0.864).rounded(.up)
         let renderer = UIGraphicsImageRenderer(size: CGSize(width: side, height: side))
@@ -188,7 +243,7 @@ public extension UIImage {
 
     /// The same, by name, like `UIImage(systemName:)`. Returns nil for an unknown name.
     static func admiralty(named name: String, pointSize: CGFloat = 17,
-                          weight: AdmiraltySymbolWeight = .regular) -> UIImage? {
+                          weight: AdmiraltyWeight = .regular) -> UIImage? {
         guard let symbol = AdmiraltySymbol(rawValue: name) else { return nil }
         return admiralty(symbol, pointSize: pointSize, weight: weight)
     }
@@ -198,24 +253,24 @@ public extension UIImage {
 
 
 def build_swift_package(meta: dict, ttf_dir: Path, out_root: Path, version: str) -> Path:
-    pkg = out_root / "AdmiraltySymbols"
+    pkg = out_root / "Admiralty"
     if pkg.exists():
         shutil.rmtree(pkg)
-    src = pkg / "Sources" / "AdmiraltySymbols"
+    src = pkg / "Sources" / "Admiralty"
     (src / "Fonts").mkdir(parents=True)
-    for w in ("Regular", "Medium", "Bold"):
-        shutil.copyfile(ttf_dir / f"AdmiraltySymbols-{w}.ttf", src / "Fonts" / f"AdmiraltySymbols-{w}.ttf")
+    for p in sorted(ttf_dir.glob("Admiralty*.ttf")):          # all 21 static styles
+        shutil.copyfile(p, src / "Fonts" / p.name)
     shutil.copyfile(ROOT / "OFL.txt", pkg / "OFL.txt")
 
     (pkg / "Package.swift").write_text(
         "// swift-tools-version:5.7\n"
         "import PackageDescription\n\n"
         "let package = Package(\n"
-        '    name: "AdmiraltySymbols",\n'
+        '    name: "Admiralty",\n'
         "    platforms: [.iOS(.v15)],\n"
-        '    products: [.library(name: "AdmiraltySymbols", targets: ["AdmiraltySymbols"])],\n'
+        '    products: [.library(name: "Admiralty", targets: ["Admiralty"])],\n'
         "    targets: [\n"
-        '        .target(name: "AdmiraltySymbols", resources: [.copy("Fonts")])\n'
+        '        .target(name: "Admiralty", resources: [.copy("Fonts")])\n'
         "    ]\n"
         ")\n",
         encoding="utf-8",
@@ -252,7 +307,7 @@ def build_swift_package(meta: dict, ttf_dir: Path, out_root: Path, version: str)
         "        String(Character(Unicode.Scalar(codepoint)!))\n    }\n}\n"
         + SWIFT_SUPPORT
     )
-    (src / "AdmiraltySymbols.swift").write_text(body, encoding="utf-8")
+    (src / "Admiralty.swift").write_text(body, encoding="utf-8")
     return pkg
 
 
@@ -261,10 +316,10 @@ def build_swift_package(meta: dict, ttf_dir: Path, out_root: Path, version: str)
 # ---------------------------------------------------------------------------------------------
 
 def build_android_library(meta: dict, ttf_dir: Path, drawable_dir: Path, out_root: Path, version: str) -> Path:
-    mod = out_root / "admiralty-symbols"
+    mod = out_root / "admiralty"
     if mod.exists():
         shutil.rmtree(mod)
-    pkg_name = "io.github.cosmoluei.admiralty.symbols"
+    pkg_name = "io.github.cosmoluei.admiralty"
     main = mod / "src" / "main"
     kt_dir = main / "kotlin" / Path(*pkg_name.split("."))
     kt_dir.mkdir(parents=True)
@@ -272,6 +327,11 @@ def build_android_library(meta: dict, ttf_dir: Path, drawable_dir: Path, out_roo
     (main / "res" / "font").mkdir(parents=True)
     for p in sorted(drawable_dir.glob("ic_adm_*.xml")):
         shutil.copyfile(p, main / "res" / "drawable" / p.name)
+    # text fonts: the static styles and their <font-family> XML files (Sans, Serif, Mono)
+    font_src = drawable_dir.parent / "font"
+    for p in sorted(font_src.iterdir()):
+        if p.suffix == ".xml" or (p.suffix == ".ttf" and not p.stem.endswith("_wght")):
+            shutil.copyfile(p, main / "res" / "font" / p.name)
     for w in ("Regular", "Medium", "Bold"):
         shutil.copyfile(ttf_dir / f"AdmiraltySymbols-{w}.ttf",
                         main / "res" / "font" / f"admiralty_symbols_{w.lower()}.ttf")
@@ -336,4 +396,136 @@ def build_android_library(meta: dict, ttf_dir: Path, drawable_dir: Path, out_roo
         "}\n",
         encoding="utf-8",
     )
+    (kt_dir / "AdmiraltyFonts.kt").write_text(
+        f"// Generated (Admiralty {version}). Licensed under the SIL Open Font License 1.1.\n"
+        f"package {pkg_name}\n\n"
+        "/**\n"
+        " * Font family resources (Regular 400, Medium 500, Bold 700 and their italics).\n"
+        " *\n"
+        " * XML:     android:fontFamily=\"@font/admiralty_sans\"\n"
+        " * Views:   textView.typeface = ResourcesCompat.getFont(context, AdmiraltyFonts.SANS)\n"
+        " * Compose: see AGENTS.md in the Admiralty repository for a ready FontFamily.\n"
+        " */\n"
+        "object AdmiraltyFonts {\n"
+        "    /** Interface text and the user's messages. */\n"
+        "    val SANS: Int get() = R.font.admiralty_sans\n"
+        "    /** The agent's messages; same widths as Sans, so switching never changes line breaks. */\n"
+        "    val SERIF: Int get() = R.font.admiralty_serif\n"
+        "    /** Code, logs and IDs (fixed width). */\n"
+        "    val MONO: Int get() = R.font.admiralty_mono\n"
+        "}\n",
+        encoding="utf-8",
+    )
     return mod
+
+
+# ---------------------------------------------------------------------------------------------
+# Flutter: Dart package with the fonts
+# ---------------------------------------------------------------------------------------------
+
+DART_RESERVED = {
+    "assert", "break", "case", "catch", "class", "const", "continue", "default", "do", "else",
+    "enum", "extends", "false", "final", "finally", "for", "if", "in", "is", "new", "null",
+    "rethrow", "return", "super", "switch", "this", "throw", "true", "try", "var", "void",
+    "while", "with",
+}
+
+
+def build_flutter_package(meta: dict, ttf_dir: Path, out_root: Path, version: str) -> Path:
+    pkg = out_root / "admiralty"
+    if pkg.exists():
+        shutil.rmtree(pkg)
+    (pkg / "lib").mkdir(parents=True)
+    (pkg / "fonts").mkdir()
+    for p in sorted(ttf_dir.glob("Admiralty*.ttf")):
+        shutil.copyfile(p, pkg / "fonts" / p.name)
+    shutil.copyfile(ROOT / "OFL.txt", pkg / "LICENSE")
+    fam_yaml = []
+    for fam in ("Sans", "Serif", "Mono"):
+        fam_yaml.append(f"    - family: Admiralty{fam}\n      fonts:")
+        for st, w, it in (("Regular", 400, False), ("Italic", 400, True), ("Medium", 500, False),
+                          ("MediumItalic", 500, True), ("Bold", 700, False), ("BoldItalic", 700, True)):
+            fam_yaml.append(f"        - asset: fonts/Admiralty{fam}-{st}.ttf\n          weight: {w}"
+                            + ("\n          style: italic" if it else ""))
+    fam_yaml.append("    - family: AdmiraltySymbols\n      fonts:")
+    for st, w in (("Regular", 400), ("Medium", 500), ("Bold", 700)):
+        fam_yaml.append(f"        - asset: fonts/AdmiraltySymbols-{st}.ttf\n          weight: {w}")
+    (pkg / "pubspec.yaml").write_text(
+        "name: admiralty\n"
+        "description: Admiralty Sans, Serif, Mono and Symbols fonts, with the symbols as IconData.\n"
+        f"version: {version}.0\n"
+        "homepage: https://github.com/cosmoluei/admiralty-fonts\n"
+        "environment:\n  sdk: '>=3.0.0 <4.0.0'\n  flutter: '>=3.10.0'\n"
+        "dependencies:\n  flutter:\n    sdk: flutter\n"
+        "flutter:\n  fonts:\n" + "\n".join(fam_yaml) + "\n",
+        encoding="utf-8",
+    )
+    lines, names = [], []
+    for s_ in meta["symbols"]:
+        ident = _camel(s_["name"])
+        if ident in DART_RESERVED:
+            ident += "Icon"
+        lines.append(f"  static const IconData {ident} = IconData(0x{s_['codepointInt']:04X}, "
+                     f"fontFamily: _family, fontPackage: _package, matchTextDirection: {'true' if s_['rtlMirror'] else 'false'});")
+        names.append(f"    '{s_['name']}': {ident},")
+    (pkg / "lib" / "admiralty.dart").write_text(
+        f"// Generated from admiralty-symbols.json (Admiralty {version}). Do not edit by hand.\n"
+        "// Licensed under the SIL Open Font License 1.1 (see LICENSE).\n"
+        "library admiralty;\n\n"
+        "import 'package:flutter/widgets.dart';\n\n"
+        "/// Text font families. Use with `package: AdmiraltyFonts.package`:\n"
+        "/// `TextStyle(fontFamily: AdmiraltyFonts.serif, package: AdmiraltyFonts.package, fontWeight: FontWeight.w500)`.\n"
+        "abstract final class AdmiraltyFonts {\n"
+        "  static const String package = 'admiralty';\n"
+        "  static const String sans = 'AdmiraltySans';\n"
+        "  static const String serif = 'AdmiraltySerif';\n"
+        "  static const String mono = 'AdmiraltyMono';\n"
+        "  static const String symbols = 'AdmiraltySymbols';\n"
+        "}\n\n"
+        f"/// All {len(meta['symbols'])} Admiralty Symbols: `Icon(AdmiraltyIcons.heartFilled)`, or by name:\n"
+        "/// `Icon(AdmiraltyIcons.named('heart-filled'))`. Direction icons mirror in right-to-left text.\n"
+        "abstract final class AdmiraltyIcons {\n"
+        "  static const String _family = 'AdmiraltySymbols';\n"
+        "  static const String _package = 'admiralty';\n\n"
+        + "\n".join(lines)
+        + "\n\n  /// Every symbol by its name, as in the SVG files (\"heart-filled\").\n"
+        "  static const Map<String, IconData> all = {\n" + "\n".join(names) + "\n  };\n\n"
+        "  /// The symbol with this name, or null.\n"
+        "  static IconData? named(String name) => all[name];\n"
+        "}\n",
+        encoding="utf-8",
+    )
+    return pkg
+
+
+# ---------------------------------------------------------------------------------------------
+# Web: CSS with fonts and icon classes
+# ---------------------------------------------------------------------------------------------
+
+def build_web_package(meta: dict, dist_web: Path, var_dir: Path, out_root: Path, version: str) -> Path:
+    web = out_root / "web"
+    if web.exists():
+        shutil.rmtree(web)
+    (web / "fonts").mkdir(parents=True)
+    shutil.copytree(dist_web / "fonts" / "subsets", web / "fonts" / "subsets")
+    shutil.copyfile(dist_web / "admiralty-fonts.css", web / "admiralty-fonts.css")
+    shutil.copyfile(dist_web / "admiralty-symbols-sprite.svg", web / "admiralty-symbols-sprite.svg")
+    shutil.copyfile(var_dir / "AdmiraltySymbols[wght].woff2", web / "fonts" / "AdmiraltySymbols-VF.woff2")
+    shutil.copyfile(ROOT / "OFL.txt", web / "OFL.txt")
+    rules = []
+    for s_ in meta["symbols"]:
+        rules.append(f".adm-{s_['name']}::before {{ content: \"\\{s_['codepointInt']:X}\"; }}")
+    mirrored = ", ".join(f'[dir="rtl"] .adm-{s_["name"]}::before' for s_ in meta["symbols"] if s_["rtlMirror"])
+    (web / "admiralty-symbols.css").write_text(
+        f"/* Admiralty Symbols {version}: icons by name. SIL Open Font License 1.1.\n"
+        "   <i class=\"adm-icon adm-heart-filled\" aria-hidden=\"true\"></i>\n"
+        "   The icon takes the text colour and size; set font-weight 400 / 500 / 700 to match the text. */\n"
+        "@font-face {\n  font-family: 'Admiralty Symbols';\n  src: url('fonts/AdmiraltySymbols-VF.woff2') format('woff2');\n"
+        "  font-weight: 400 700;\n  font-style: normal;\n  font-display: block;\n}\n"
+        ".adm-icon {\n  font-family: 'Admiralty Symbols';\n  font-style: normal;\n  font-weight: inherit;\n"
+        "  line-height: 1;\n  display: inline-block;\n  speak: never;\n  -webkit-font-smoothing: antialiased;\n}\n"
+        + mirrored + " {\n  transform: scaleX(-1);\n}\n"
+        + "\n".join(rules) + "\n",
+        encoding="utf-8",
+    )
+    return web

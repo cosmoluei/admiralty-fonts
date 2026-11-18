@@ -24,29 +24,16 @@ Icons are also available as SVG files in [`symbols/svg/`](symbols/svg), with nam
 
 Open [`specimens/inspector.html`](specimens/inspector.html) in a browser to try every style, the weight axis, the icons and the kerning. The page loads its styling from the internet. [`specimens/review.html`](specimens/review.html) shows the 0.300 additions: the new symbols, Latin Plus, box drawing and Vietnamese.
 
-### Symbols in iOS and Android apps
+### In apps
 
-Use a symbol by its name, much like SF Symbols:
+Ready-made packages are in [`packages/`](packages), for iOS (Swift package, added from this repository's URL), Android (library module), Flutter and the web. They use the fonts and the symbols by name, much like SF Symbols:
 
 ```swift
-// iOS (SwiftUI): add this repository as a Swift package (Xcode > File > Add Package Dependencies)
-import AdmiraltySymbols
-
-AdmiraltyIcon("heart-filled")                    // like Image(systemName: "heart.fill")
-AdmiraltyIcon(.send, size: 20, weight: .medium)
-Text(admiralty: .heartFilled) + Text(" Liked")    // inside text, grows with Dynamic Type
-button.setImage(UIImage.admiralty(.send), for: .normal)   // UIKit
+Text(reply).font(.admiralty(.serif, size: 17))
+AdmiraltyIcon("heart-filled")
 ```
 
-```kotlin
-// Android: copy packages/android/admiralty-symbols into your project as a module
-import io.github.cosmoluei.admiralty.symbols.AdmiraltySymbol
-
-Icon(painterResource(AdmiraltySymbol.HeartFilled.drawable), contentDescription = AdmiraltySymbol.HeartFilled.label)
-AdmiraltySymbol.named("heart-filled")
-```
-
-The Swift package (iOS 15+) brings its own fonts, handles VoiceOver labels and right-to-left mirroring. The Android module holds the 282 vector drawables (they mirror by themselves in right-to-left layouts). Both live in [`packages/`](packages). Flutter: `lib/admiralty_icons.dart` in the cross-platform package (`Icon(AdmiraltyIcons.heartFilled)`).
+**Coding agents:** start with [`AGENTS.md`](AGENTS.md). It lists every file, the rules (symbol names, weights, accessibility, right-to-left, CJK fallbacks) and a recipe for each platform.
 
 The [usage guide](docs/USAGE_GUIDE.md) covers sizes, weights, CSS, iOS, Android and Windows examples, and fallback fonts for Chinese. Design tokens are in [`tokens/admiralty-design-tokens.json`](tokens/admiralty-design-tokens.json).
 
