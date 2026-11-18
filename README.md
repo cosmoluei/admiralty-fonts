@@ -40,7 +40,7 @@ python3 scripts/build_inspector.py   # specimens/inspector.html
 python3 scripts/build_review.py      # specimens/review.html
 ```
 
-`build_fonts.py` takes about one and a half minutes. If AFDKO is installed (`pip install afdko`), the OTF files are hinted.
+`build_fonts.py` takes about two minutes. If AFDKO is installed (`pip install afdko`), the OTF files are hinted; if ttfautohint is installed (`pip install ttfautohint-py`), the static TTF files are hinted. The WOFF2 files and the variable fonts stay unhinted.
 
 ### Google Fonts build
 
@@ -61,12 +61,14 @@ Checked automatically (see [`docs/QA_AND_ORIGINALITY_REPORT.md`](docs/QA_AND_ORI
 - Font Bakery (Google Fonts profile): the only failure is the version number, which must be 1.000 or higher for Google Fonts.
 - OTS passes for every font file.
 - No glyph breaks between weights in any variable font.
+- The symbol SVG files and Android drawables match the font outlines for all 282 symbols.
+- Shape comparison with open fonts of the same style (Regular, Bold, Italic, Bold Italic): no close copies (see the review notes).
 
 Before 1.000:
 
 - [ ] Review every style in real use (app, phone, desktop)
 - [ ] Set the version to 1.000
-- [ ] Clear the name *Admiralty* and decide on a Reserved Font Name (there is none today)
+- [x] Name: the family keeps the name *Admiralty*, with no Reserved Font Name (Google Fonts does not accept one). Before release, search "Admiralty" for fonts and software (classes 9 and 42) in the USPTO and Hong Kong IPD trademark databases.
 
 Changes are listed in [`CHANGELOG.md`](CHANGELOG.md).
 

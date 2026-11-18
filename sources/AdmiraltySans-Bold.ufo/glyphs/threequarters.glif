@@ -66,10 +66,10 @@
       <point x="661" y="91" type="line"/>
     </contour>
     <contour>
-      <point x="658.0" y="287.0" type="line"/>
-      <point x="661.0" y="287.0" type="line"/>
-      <point x="661.0" y="146.0" type="line"/>
-      <point x="553.0" y="146.0" type="line"/>
+      <point x="553" y="146" type="line"/>
+      <point x="658" y="287" type="line"/>
+      <point x="661" y="287" type="line"/>
+      <point x="661" y="146" type="line"/>
     </contour>
   </outline>
 </glyph>

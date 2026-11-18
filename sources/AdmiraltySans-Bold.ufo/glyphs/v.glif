@@ -6,14 +6,13 @@
   <anchor x="270" y="0" name="bottom"/>
   <outline>
     <contour>
-      <point x="337.0" y="0.0" type="line"/>
-      <point x="531.5" y="520.0" type="line"/>
-      <point x="396.0" y="520.0" type="line"/>
-      <point x="270.0" y="160.5" type="line"/>
-      <point x="268.914" y="163.662" type="line"/>
-      <point x="146.5" y="520.0" type="line"/>
-      <point x="8.5" y="520.0" type="line"/>
-      <point x="203.0" y="0.0" type="line"/>
+      <point x="203" y="0" type="line"/>
+      <point x="337" y="0" type="line"/>
+      <point x="531.5" y="520" type="line"/>
+      <point x="396" y="520" type="line"/>
+      <point x="270" y="160.5" type="line"/>
+      <point x="146.5" y="520" type="line"/>
+      <point x="8.5" y="520" type="line"/>
     </contour>
   </outline>
 </glyph>

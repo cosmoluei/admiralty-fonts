@@ -326,41 +326,6 @@
       <string>heart_filled</string>
       <string>play_filled</string>
       <string>play_filled.rtl</string>
-      <string>camera.rvrn700</string>
-      <string>paste.rvrn500</string>
-      <string>paste.rvrn700</string>
-      <string>team.rvrn700</string>
-      <string>audio_file.rvrn700</string>
-      <string>video_file.rvrn700</string>
-      <string>code_file.rvrn700</string>
-      <string>unlink.rvrn700</string>
-      <string>clipboard.rvrn700</string>
-      <string>trash.rvrn700</string>
-      <string>find_in_page.rvrn700</string>
-      <string>saved_search.rvrn700</string>
-      <string>advanced_search.rvrn700</string>
-      <string>accessibility.rvrn700</string>
-      <string>notification_settings.rvrn700</string>
-      <string>profile.rvrn500</string>
-      <string>account.rvrn500</string>
-      <string>account.rvrn700</string>
-      <string>incognito.rvrn500</string>
-      <string>two_factor.rvrn700</string>
-      <string>auto_sync.rvrn700</string>
-      <string>sync_error.rvrn700</string>
-      <string>switch_account.rvrn700</string>
-      <string>whats_new.rvrn500</string>
-      <string>devices.rvrn700</string>
-      <string>project.rvrn700</string>
-      <string>translate.rvrn500</string>
-      <string>server.rvrn500</string>
-      <string>conversations.rvrn700</string>
-      <string>read_receipt.rvrn700</string>
-      <string>wallet.rvrn700</string>
-      <string>subscription.rvrn500</string>
-      <string>subtitles.rvrn700</string>
-      <string>pie_chart.rvrn700</string>
-      <string>bug.rvrn700</string>
     </array>
   </dict>
 </plist>

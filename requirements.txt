@@ -11,3 +11,4 @@ scipy>=1.13.0
 afdko          # OTF hinting (otfautohint)
 gftools        # Google Fonts build: cd sources && gftools builder config-sans.yaml
 fontbakery     # quality checks
+ttfautohint-py

@@ -4,57 +4,50 @@
   <unicode hex="E05D"/>
   <outline>
     <contour>
-      <point x="297.5" y="600.097" type="line"/>
-      <point x="297.5" y="471.5" type="line"/>
-      <point x="96.0" y="116.5" type="line"/>
-      <point x="91.5" y="109.0"/>
-      <point x="89.0" y="100.0"/>
-      <point x="89.0" y="91.0" type="curve"/>
-      <point x="89.0" y="77.0"/>
-      <point x="94.5" y="64.5"/>
-      <point x="103.5" y="55.0" type="curve"/>
-      <point x="150.5" y="8.5" type="line"/>
-      <point x="159.5" y="-1.0"/>
-      <point x="172.0" y="-6.5"/>
-      <point x="186.0" y="-6.5" type="curve"/>
-      <point x="654.0" y="-6.5" type="line"/>
-      <point x="666.0" y="-6.5"/>
-      <point x="677.5" y="-2.0"/>
-      <point x="686.0" y="5.0" type="curve"/>
-      <point x="687.5" y="6.0"/>
-      <point x="688.5" y="7.0"/>
-      <point x="689.5" y="8.5" type="curve"/>
-      <point x="736.5" y="55.0" type="line"/>
-      <point x="745.5" y="64.5"/>
-      <point x="751.0" y="77.0"/>
-      <point x="751.0" y="91.0" type="curve"/>
-      <point x="751.0" y="99.5"/>
-      <point x="749.0" y="107.5"/>
-      <point x="745.0" y="115.0" type="curve"/>
-      <point x="745.0" y="115.5"/>
-      <point x="744.5" y="116.0"/>
-      <point x="744.0" y="116.5" type="curve"/>
-      <point x="743.815" y="116.827"/>
-      <point x="743.629" y="117.153"/>
-      <point x="743.444" y="117.48" type="curve"/>
-      <point x="542.5" y="471.5" type="line"/>
-      <point x="542.5" y="606.0" type="line"/>
-      <point x="545.149" y="606.378"/>
-      <point x="547.728" y="606.962"/>
-      <point x="550.221" y="607.733" type="curve"/>
-      <point x="570.785" y="614.094"/>
-      <point x="585.5" y="633.257"/>
-      <point x="585.5" y="656.0" type="curve"/>
-      <point x="585.5" y="684.0"/>
-      <point x="563.0" y="706.5"/>
-      <point x="535.0" y="706.5" type="curve"/>
-      <point x="305.0" y="706.5" type="line"/>
-      <point x="277.0" y="706.5"/>
-      <point x="254.5" y="684.0"/>
-      <point x="254.5" y="656.0" type="curve"/>
+      <point x="305" y="706.5" type="line" smooth="yes"/>
+      <point x="277" y="706.5"/>
+      <point x="254.5" y="684"/>
+      <point x="254.5" y="656" type="curve" smooth="yes"/>
       <point x="254.5" y="630.5"/>
-      <point x="273.0" y="609.5"/>
-      <point x="297.5" y="606.0" type="curve"/>
+      <point x="273" y="609.5"/>
+      <point x="297.5" y="606" type="curve"/>
+      <point x="297.5" y="471.5" type="line"/>
+      <point x="96" y="116.5" type="line" smooth="yes"/>
+      <point x="91.5" y="109"/>
+      <point x="89" y="100"/>
+      <point x="89" y="91" type="curve" smooth="yes"/>
+      <point x="89" y="77"/>
+      <point x="94.5" y="64.5"/>
+      <point x="103.5" y="55" type="curve" smooth="yes"/>
+      <point x="150.5" y="8.5" type="line" smooth="yes"/>
+      <point x="159.5" y="-1"/>
+      <point x="172" y="-6.5"/>
+      <point x="186" y="-6.5" type="curve" smooth="yes"/>
+      <point x="654" y="-6.5" type="line" smooth="yes"/>
+      <point x="666" y="-6.5"/>
+      <point x="677.5" y="-2"/>
+      <point x="686" y="5" type="curve"/>
+      <point x="687.5" y="6"/>
+      <point x="688.5" y="7"/>
+      <point x="689.5" y="8.5" type="curve"/>
+      <point x="736.5" y="55" type="line" smooth="yes"/>
+      <point x="745.5" y="64.5"/>
+      <point x="751" y="77"/>
+      <point x="751" y="91" type="curve" smooth="yes"/>
+      <point x="751" y="99.5"/>
+      <point x="749" y="107.5"/>
+      <point x="745" y="115" type="curve"/>
+      <point x="745" y="115.5"/>
+      <point x="744.5" y="116"/>
+      <point x="744" y="116.5" type="curve"/>
+      <point x="542.5" y="471.5" type="line"/>
+      <point x="542.5" y="606" type="line"/>
+      <point x="567" y="609.5"/>
+      <point x="585.5" y="630.5"/>
+      <point x="585.5" y="656" type="curve" smooth="yes"/>
+      <point x="585.5" y="684"/>
+      <point x="563" y="706.5"/>
+      <point x="535" y="706.5" type="curve" smooth="yes"/>
     </contour>
     <contour>
       <point x="589.5" y="184.5" type="line"/>

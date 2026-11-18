@@ -80,6 +80,49 @@ def autohint_otf(otf_path) -> bool:
     return True
 
 
+def autohint_ttf(ttf_path) -> bool:
+    """Release prep: TrueType hints from ttfautohint (pip install ttfautohint-py), for clearer
+    small text on Windows. Static text fonts only; the variable fonts and Symbols stay unhinted
+    with the non-hinting gasp/prep tables. Without ttfautohint the TTF is left as it is."""
+    try:
+        import ttfautohint
+    except ImportError:
+        return False
+    # hinted fonts must not use scaled or flipped components (Font Bakery
+    # transformed_components): draw those glyphs as plain outlines first
+    from fontTools.pens.ttGlyphPen import TTGlyphPen
+    from fontTools.pens.recordingPen import DecomposingRecordingPen
+    f = TTFont(str(ttf_path))
+    glyf, gs = f["glyf"], f.getGlyphSet()
+    changed = 0
+    for name in f.getGlyphOrder():
+        g = glyf[name]
+        if not g.isComposite():
+            continue
+        if all(not hasattr(c, "transform") for c in g.components):
+            continue
+        rec = DecomposingRecordingPen(gs)
+        gs[name].draw(rec)
+        pen = TTGlyphPen(None)
+        rec.replay(pen)
+        glyf[name] = pen.glyph()
+        changed += 1
+    if changed:
+        f.save(str(ttf_path))
+    tmp = ttf_path.with_suffix(".hinted.ttf")
+    try:
+        ttfautohint.ttfautohint(in_file=str(ttf_path), out_file=str(tmp), hint_composites=True,
+                                no_info=True, windows_compatibility=True)
+    except Exception as exc:  # keep the unhinted font rather than fail the build
+        print(f"    ttfautohint failed for {ttf_path.name}: {exc}")
+        return False
+    tmp.replace(ttf_path)
+    f = TTFont(str(ttf_path))
+    f["head"].flags |= 1 << 3          # integer ppem, required for hinted fonts
+    f.save(str(ttf_path))
+    return True
+
+
 def populate_ufo_metadata(
     ufo: ufoLib2.Font,
     family_name: str,
@@ -299,10 +342,14 @@ def _verify_common_font_tables(
     tt = TTFont(str(ttf_path))
     w2 = TTFont(str(woff2_path))
     for font_bin, tag in ((tt, "TTF"), (w2, "WOFF2")):
-        assert "gasp" in font_bin and font_bin["gasp"].gaspRange.get(0xFFFF) == 0x000F, f"{tag}: bad gasp"
-        assert "prep" in font_bin and list(font_bin["prep"].program.getBytecode()) == [
-            0xB8, 0x01, 0xFF, 0x85, 0xB0, 0x04, 0x8D
-        ], f"{tag}: bad prep"
+        assert "gasp" in font_bin, f"{tag}: no gasp"
+        if "fpgm" in font_bin:   # hinted by ttfautohint
+            assert font_bin["gasp"].gaspRange.get(0xFFFF) in (0x000F, 0x000A), f"{tag}: bad gasp"
+        else:
+            assert font_bin["gasp"].gaspRange.get(0xFFFF) == 0x000F, f"{tag}: bad gasp"
+            assert "prep" in font_bin and list(font_bin["prep"].program.getBytecode()) == [
+                0xB8, 0x01, 0xFF, 0x85, 0xB0, 0x04, 0x8D
+            ], f"{tag}: bad prep"
         assert round(font_bin["head"].fontRevision, 3) == float(VERSION_STR), f"{tag}: bad version {font_bin['head'].fontRevision}"
         assert font_bin["OS/2"].achVendID == "LYT ", f"{tag}: bad achVendID"
         pan = vars(font_bin["OS/2"].panose)
@@ -525,10 +572,13 @@ def _populate_ufo_and_compile(
     ttf_path = ttf_dir / f"{stem}.ttf"
     ttf_font.save(str(ttf_path))
 
+    # the web font stays unhinted (browsers mostly ignore hints; they only add size)
     woff2_font = TTFont(str(ttf_path))
     woff2_font.flavor = "woff2"
     woff2_path = woff2_dir / f"{stem}.woff2"
     woff2_font.save(str(woff2_path))
+    if not stem.startswith("AdmiraltySymbols"):
+        autohint_ttf(ttf_path)
     print(f"[{stem}] Compiled OTF / TTF / WOFF2 -> {woff2_path}")
     return ufo_path, otf_path, ttf_path, woff2_path
 

@@ -29,11 +29,11 @@
       <point x="289" y="47.5"/>
     </contour>
     <contour>
-      <point x="693.5" y="148.5" type="line"/>
       <point x="328.5" y="148.5" type="line"/>
       <point x="161.5" y="350" type="line"/>
       <point x="328.5" y="551.5" type="line"/>
       <point x="693.5" y="551.5" type="line"/>
+      <point x="693.5" y="148.5" type="line"/>
     </contour>
     <contour>
       <point x="401.5" y="405.5" type="curve" smooth="yes"/>

@@ -34,14 +34,14 @@
       <point x="495" y="6" type="curve"/>
     </contour>
     <contour>
-      <point x="582.5" y="441.5" type="line"/>
-      <point x="454" y="159.5" type="line"/>
-      <point x="413.5" y="272" type="line"/>
-    </contour>
-    <contour>
       <point x="342" y="343.5" type="line"/>
       <point x="229.5" y="384" type="line"/>
       <point x="511.5" y="512.5" type="line"/>
+    </contour>
+    <contour>
+      <point x="582.5" y="441.5" type="line"/>
+      <point x="454" y="159.5" type="line"/>
+      <point x="413.5" y="272" type="line"/>
     </contour>
   </outline>
 </glyph>

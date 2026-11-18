@@ -4,28 +4,28 @@
   <unicode hex="20BA"/>
   <outline>
     <contour>
-      <point x="477.0" y="0.0" type="line"/>
-      <point x="492.0" y="87.0" type="line"/>
-      <point x="158.0" y="87.0" type="line"/>
-      <point x="181.0" y="225.0" type="line"/>
-      <point x="212.0" y="237.0" type="line"/>
-      <point x="212.0" y="303.0" type="line"/>
-      <point x="193.0" y="295.0" type="line"/>
-      <point x="207.0" y="379.0" type="line"/>
-      <point x="238.0" y="391.0" type="line"/>
-      <point x="238.0" y="457.0" type="line"/>
-      <point x="218.0" y="449.0" type="line"/>
-      <point x="260.0" y="700.0" type="line"/>
-      <point x="150.0" y="700.0" type="line"/>
-      <point x="100.0" y="401.0" type="line"/>
-      <point x="-62.0" y="337.0" type="line"/>
-      <point x="-62.0" y="271.0" type="line"/>
-      <point x="88.0" y="332.0" type="line"/>
-      <point x="74.0" y="247.0" type="line"/>
-      <point x="-88.0" y="183.0" type="line"/>
-      <point x="-88.0" y="117.0" type="line"/>
-      <point x="63.0" y="178.0" type="line"/>
-      <point x="33.0" y="0.0" type="line"/>
+      <point x="33" y="0" type="line"/>
+      <point x="477" y="0" type="line"/>
+      <point x="492" y="87" type="line"/>
+      <point x="158" y="87" type="line"/>
+      <point x="181" y="225" type="line"/>
+      <point x="212" y="237" type="line"/>
+      <point x="212" y="303" type="line"/>
+      <point x="193" y="295" type="line"/>
+      <point x="207" y="379" type="line"/>
+      <point x="238" y="391" type="line"/>
+      <point x="238" y="457" type="line"/>
+      <point x="218" y="449" type="line"/>
+      <point x="260" y="700" type="line"/>
+      <point x="150" y="700" type="line"/>
+      <point x="100" y="401" type="line"/>
+      <point x="-62" y="337" type="line"/>
+      <point x="-62" y="271" type="line"/>
+      <point x="88" y="332" type="line"/>
+      <point x="74" y="247" type="line"/>
+      <point x="-88" y="183" type="line"/>
+      <point x="-88" y="117" type="line"/>
+      <point x="63" y="178" type="line"/>
     </contour>
   </outline>
 </glyph>

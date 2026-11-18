@@ -108,7 +108,9 @@ def run_qa_and_write_report() -> Path:
         name_map = {r.nameID: r.toUnicode() for r in tt["name"].names if r.platformID == 3}
         assert "SIL Open Font License" in name_map.get(13, "")
         assert "https://openfontlicense.org" in name_map.get(14, "")
-        if p.suffix == ".ttf":
+        if p.suffix == ".ttf" and "fpgm" in tt:   # static text TTF hinted by ttfautohint
+            assert "gasp" in tt and "prep" in tt
+        elif p.suffix == ".ttf":
             assert "gasp" in tt and tt["gasp"].gaspRange.get(0xFFFF) == 0x000F
             assert "prep" in tt and list(tt["prep"].program.getBytecode()) == [0xB8, 0x01, 0xFF, 0x85, 0xB0, 0x04, 0x8D]
         if p.suffix == ".otf":

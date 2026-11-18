@@ -27,6 +27,16 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 DIST_DIR = ROOT / "dist"
 
 
+# Dart reserved words (these cannot be used as names; built-in identifiers such as
+# `import` or `export` can, so they are not listed)
+DART_RESERVED = {
+    "assert", "break", "case", "catch", "class", "const", "continue", "default", "do", "else",
+    "enum", "extends", "false", "final", "finally", "for", "if", "in", "is", "new", "null",
+    "rethrow", "return", "super", "switch", "this", "throw", "true", "try", "var", "void",
+    "while", "with",
+}
+
+
 def _copy_glob(src_dir: Path, pattern: str, dst_dir: Path) -> List[Path]:
     dst_dir.mkdir(parents=True, exist_ok=True)
     copied: List[Path] = []
@@ -47,6 +57,37 @@ def _ufo_glyph_to_svg_path_24(ufo: ufoLib2.Font, glyph_name: str) -> str:
     tpen = TransformPen(svg_pen, (scale, 0.0, 0.0, -scale, -GRID_X0 * scale, GRID_Y0 * scale))
     g.draw(tpen)
     return svg_pen.getCommands()
+
+
+def _write_outline_svgs(ttf_dir: Path, sym_svg_dir: Path, meta: dict) -> int:
+    """Release prep: write symbols/svg/{regular,medium,bold}/*.svg as plain filled outlines taken
+    from the compiled static Symbols fonts. The drawing engine's SVGs used strokes with <mask>
+    cut-outs, which browsers draw correctly but Flutter (flutter_svg), Android Studio's importer
+    and several design tools do not. Outline SVGs look the same everywhere and match the font."""
+    from fontTools.pens.svgPathPen import SVGPathPen as _P
+    from symbols_engine import GRID_SCALE, GRID_X0, GRID_Y0
+    sc = 1.0 / GRID_SCALE
+    n = 0
+    for weight, style in (("regular", "Regular"), ("medium", "Medium"), ("bold", "Bold")):
+        tt = TTFont(str(ttf_dir / f"AdmiraltySymbols-{style}.ttf"))
+        gs = tt.getGlyphSet()
+        out_dir = sym_svg_dir / weight
+        out_dir.mkdir(parents=True, exist_ok=True)
+        for rec in meta["symbols"]:
+            variants = [(rec["glyphName"], rec["name"])]
+            if rec["rtlMirror"]:
+                variants.append((rec["glyphName"] + ".rtl", rec["name"] + "-rtl"))
+            for gname, stem in variants:
+                pen = _P(gs, lambda v: f"{round(v, 3):.3f}".rstrip("0").rstrip("."))
+                gs[gname].draw(TransformPen(pen, (sc, 0.0, 0.0, -sc, -GRID_X0 * sc, GRID_Y0 * sc)))
+                d = pen.getCommands()
+                assert d, f"empty outline for {gname} ({style})"
+                (out_dir / f"{stem}.svg").write_text(
+                    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" '
+                    f'fill="currentColor"><title>{rec["name"]}</title><path d="{d}"/></svg>\n',
+                    encoding="utf-8")
+                n += 1
+    return n
 
 
 def _subset_woff2(src_ttf: Path, out_woff2: Path, unicode_range_str: str) -> None:
@@ -244,7 +285,7 @@ def _build_web(woff2_dir: Path, var_dir: Path, sym_svg_dir: Path, meta: dict) ->
     )
     (d / "admiralty-fonts.css").write_text("\n".join(css_blocks), encoding="utf-8")
 
-    # Build deduplicated SVG Sprite from Regular SVGs (scoping <mask id="cut-*"> per icon)
+    # SVG sprite from the Regular outline SVGs
     sprite_syms: List[str] = []
     for p in sorted((sym_svg_dir / "regular").glob("*.svg")):
         raw = p.read_text(encoding="utf-8")
@@ -253,9 +294,7 @@ def _build_web(woff2_dir: Path, var_dir: Path, sym_svg_dir: Path, meta: dict) ->
             continue
         inner = m.group(1)
         sid = p.stem
-        inner = re.sub(r'id="(cut-\d+)"', rf'id="adm-{sid}-\1"', inner)
-        inner = re.sub(r'url\(#(cut-\d+)\)', rf'url(#adm-{sid}-\1)', inner)
-        sprite_syms.append(f'  <symbol id="adm-{sid}" viewBox="0 0 24 24" fill="none">{inner}</symbol>')
+        sprite_syms.append(f'  <symbol id="adm-{sid}" viewBox="0 0 24 24" fill="currentColor">{inner}</symbol>')
 
     (d / "admiralty-symbols-sprite.svg").write_text(
         '<svg xmlns="http://www.w3.org/2000/svg" style="display:none">\n'
@@ -291,6 +330,8 @@ def _build_cross_platform(ttf_dir: Path, var_dir: Path, sym_json: Path, meta: di
         ident = re.sub(r"-([a-z0-9])", lambda m: m.group(1).upper(), rec["name"])
         if ident[0].isdigit():
             ident = f"n{ident}"
+        if ident in DART_RESERVED:          # e.g. "new" is not a legal Dart name
+            ident = f"{ident}Icon"
         rtl = "true" if rec["rtlMirror"] else "false"
         dart_lines.append(
             f"  static const IconData {ident} = IconData(0x{rec['codepointInt']:04X}, "
@@ -321,6 +362,8 @@ def build_all_delivery_packages() -> None:
     sym_svg_dir = ROOT / "symbols" / "svg"
     sym_json = ROOT / "symbols" / "admiralty-symbols.json"
     meta = json.loads(sym_json.read_text(encoding="utf-8"))
+    n_svg = _write_outline_svgs(ttf_dir, sym_svg_dir, meta)
+    print(f"Wrote {n_svg} outline SVGs -> {sym_svg_dir}")
 
     _build_apple(otf_dir, var_dir, sym_svg_dir)
     _build_android(ttf_dir, var_dir, meta)

@@ -63,18 +63,15 @@
       <point x="303" y="516.5" type="line"/>
     </contour>
     <contour>
-      <point x="400.5" y="436.0" type="line"/>
-      <point x="439.5" y="436.0" type="line"/>
-      <point x="447.5" y="436.0"/>
-      <point x="477.5" y="433.0"/>
-      <point x="477.5" y="420.0" type="curve"/>
-      <point x="477.328" y="418.74"/>
-      <point x="477.084" y="417.529"/>
-      <point x="476.774" y="416.367" type="curve"/>
-      <point x="471.661" y="397.221"/>
-      <point x="448.498" y="391.0"/>
-      <point x="432.0" y="391.0" type="curve"/>
-      <point x="393.0" y="391.0" type="line"/>
+      <point x="393" y="391" type="line"/>
+      <point x="400.5" y="436" type="line"/>
+      <point x="439.5" y="436" type="line" smooth="yes"/>
+      <point x="447.5" y="436"/>
+      <point x="477.5" y="433"/>
+      <point x="477.5" y="420" type="curve"/>
+      <point x="474.5" y="398"/>
+      <point x="449.5" y="391"/>
+      <point x="432" y="391" type="curve" smooth="yes"/>
     </contour>
   </outline>
 </glyph>
