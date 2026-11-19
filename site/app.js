@@ -62,18 +62,24 @@
     for (let x = 0; x < w; x += 100) html += `<span style="left:${x}px">${x}</span>`;
     r.innerHTML = html;
   }
+  let frozen = null;
   function paintHero() {
     apply(word, "sans", H);
     // fit: the word fills the canvas width at its current settings, but never grows taller than the canvas allows
-    word.style.fontSize = "100px";
-    const w100 = word.getBoundingClientRect().width;
+    // The width scales with the font size, so measure at the current size (no reset, so a transition can run).
+    // While a handle is held the size is frozen, so the box edges follow the pointer; it only shrinks if the word would overflow.
+    const fs = parseFloat(getComputedStyle(word).fontSize) || 100;
+    const w100 = (word.getBoundingClientRect().width / fs) * 100;
     const cs = getComputedStyle(canvas);
     const avail = canvas.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight) - 24;
     const maxByH = Math.max(80, innerHeight * 0.44);
-    word.style.fontSize = Math.min((avail / w100) * 100, maxByH) + "px";
-    $("#pW").textContent = Math.round(H.w); $("#pD").textContent = Math.round(H.d) + "%"; $("#pR").textContent = Math.round(H.r);
-    $("#tipW").textContent = `weight ${Math.round(H.w)}`; $("#tipD").textContent = `width ${Math.round(H.d)}%`; $("#tipR").textContent = `radius ${Math.round(H.r)}`;
-    $("#hdW").setAttribute("aria-valuetext", Math.round(H.w));
+    const fit = Math.min((avail / w100) * 100, maxByH);
+    word.style.fontSize = (frozen ? Math.min(frozen, fit) : fit) + "px";
+    const v = { w: Math.round(H.w), d: Math.round(H.d), r: Math.round(H.r) };
+    $("#pW").textContent = v.w; $("#pD").textContent = v.d + "%"; $("#pR").textContent = v.r;
+    $("#tipW").textContent = v.w; $("#tipD").textContent = v.d + "%"; $("#tipR").textContent = v.r;
+    [["#hdW", WG, v.w, v.w], ["#hdD", WD, v.d, v.d + "%"], ["#hdR", RD, v.r, v.r]].forEach(([s, [lo, hi], now, txt]) => {
+      const el = $(s); el.setAttribute("aria-valuemin", lo); el.setAttribute("aria-valuemax", hi); el.setAttribute("aria-valuenow", now); el.setAttribute("aria-valuetext", txt); });
   }
   const handles = { hdW: "w", hdD: "d", hdR: "r" };
   const RANGE = { w: WG, d: WD, r: RD };
@@ -83,17 +89,27 @@
     let start = null;
     el.addEventListener("pointerdown", (e) => {
       e.preventDefault(); el.setPointerCapture(e.pointerId); el.classList.add("drag"); document.body.classList.add("dragging");
-      start = { x: e.clientX, y: e.clientY, v: H[key] };
+      frozen = parseFloat(getComputedStyle(word).fontSize); word.classList.remove("settle");
+      // width: the handle sits in the middle of the top edge, so it moves half as far as the right edge
+      const hb = el.getBoundingClientRect();
+      start = { x: e.clientX, y: e.clientY, v: H[key], hx: hb.left + hb.width / 2 };
     });
     el.addEventListener("pointermove", (e) => {
       if (!start) return;
       const [lo, hi] = RANGE[key], span = hi - lo;
       const dx = e.clientX - start.x, dy = e.clientY - start.y;
-      const delta = key === "w" ? -dy / 260 : key === "d" ? dx / 380 : (dx - dy) / 300;
-      H[key] = clamp(start.v + delta * span, lo, hi);
+      if (key === "d") {
+        // the width handle stays under the pointer: find the width whose top-edge middle lands at the pointer
+        const target = start.hx + dx, mid = () => { const r = sel.getBoundingClientRect(); return r.left + r.width / 2; };
+        let a = lo, b = hi;
+        for (let i = 0; i < 9; i++) { const m = (a + b) / 2; word.style.fontStretch = m + "%"; if (mid() < target) a = m; else b = m; }
+        H.d = (a + b) / 2;
+      } else H[key] = clamp(start.v + (key === "w" ? -dy / 240 : dx / 280) * span, lo, hi);
       paintHero();
     });
-    const end = () => { start = null; el.classList.remove("drag"); document.body.classList.remove("dragging"); };
+    const end = () => {
+      if (!start) return; start = null; el.classList.remove("drag"); document.body.classList.remove("dragging");
+      frozen = null; word.classList.add("settle"); paintHero(); };
     el.addEventListener("pointerup", end); el.addEventListener("pointercancel", end);
     el.addEventListener("keydown", (e) => {
       const [lo, hi] = RANGE[key], step = (hi - lo) / (e.shiftKey ? 8 : 40);
@@ -101,7 +117,7 @@
       if (!dir) return; e.preventDefault(); H[key] = clamp(H[key] + dir * step, lo, hi); paintHero();
     });
   });
-  if (matchMedia("(pointer: coarse)").matches) $("#hint").textContent = "Drag the blue dots: the top one sets the weight, the side one the width, the corner one the radius.";
+  if (matchMedia("(pointer: coarse)").matches) $("#hint").textContent = "Drag the handles on the box: the top one sets the width, the left one the weight, the corner one the radius.";
   function heroIntro() {
     if (reduce.matches) { paintHero(); return; }
     // one opening move: from Thin Compressed to Regular, then the handles pulse to invite a drag
@@ -117,7 +133,7 @@
   /* =========================================================================================
      2. Two voices: a divider through one paragraph
      ========================================================================================= */
-  const SPLIT_TEXT = "The ferry leaves Central at seven and crosses the harbour in nine minutes. On the way back the light changes over Kowloon, the cranes turn orange, and the water goes from grey to a deep, even blue. Most passengers read, a few sleep, and someone always stands at the rail to watch the city slide past.";
+  const SPLIT_TEXT = "The last ferry leaves Central at 23:30.";
   const split = $("#split"), sSerif = $("#splitSerif"), sSans = $("#splitSans"), bar = $("#splitBar");
   sSerif.textContent = SPLIT_TEXT; sSans.textContent = SPLIT_TEXT;
   let splitPos = 0.5;

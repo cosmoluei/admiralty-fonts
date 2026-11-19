@@ -86,20 +86,27 @@ input[type="range"] { accent-color: var(--blue); width: 100%; }
 .sel { position: relative; max-width: 100%; touch-action: none; }
 .word { margin: 0; font-family: var(--sans); font-weight: 400; line-height: 0.92; white-space: nowrap; letter-spacing: -0.015em; color: var(--ink); padding: 0.04em 0.05em 0.2em; user-select: none; }
 .sel-box { position: absolute; inset: 0; border: 1.5px solid var(--blue); pointer-events: none; }
-.hd { position: absolute; width: 12px; height: 12px; background: var(--surface); border: 1.5px solid var(--blue); margin: -6px 0 0 -6px; padding: 0; }
-.hd-x { pointer-events: none; }
-.hd-tl { left: 0; top: 0; } .hd-bl { left: 0; top: 100%; } .hd-br { left: 100%; top: 100%; }
-.hd-w, .hd-d, .hd-r { width: 22px; height: 22px; margin: -11px 0 0 -11px; border-radius: 50%; background: var(--blue); border: 3px solid var(--surface); box-shadow: 0 0 0 1.5px var(--blue), 0 4px 14px rgba(58,134,212,.45); cursor: grab; touch-action: none; }
-.hd-w { left: 50%; top: 0; cursor: ns-resize; }
-.hd-d { left: 100%; top: 50%; cursor: ew-resize; }
-.hd-r { left: 100%; top: 0; cursor: nesw-resize; }
-.hd:active { cursor: grabbing; }
+.hdx { position: absolute; width: 10px; height: 10px; background: var(--surface); border: 1.5px solid var(--blue); transform: translate(-50%, -50%); pointer-events: none; }
+.hdx-tl { left: 0; top: 0; } .hdx-tr { left: 100%; top: 0; } .hdx-br { left: 100%; top: 100%; }
+/* Handles are labelled pills that sit on the box edges which stay still while you drag:
+   width on the top edge (left and right), weight on the left edge (up and down), radius on the bottom-left corner. */
+.hd { position: absolute; z-index: 2; display: inline-flex; align-items: center; gap: 7px; height: 34px; padding: 0 13px 0 11px; border-radius: 17px;
+  background: var(--blue); color: #fff; border: 2px solid var(--surface); font: 600 12.5px/1 var(--mono); white-space: nowrap; font-variant-numeric: tabular-nums;
+  box-shadow: 0 0 0 1px var(--blue), 0 6px 18px rgba(58,134,212,.32); touch-action: none; -webkit-user-select: none; user-select: none; transition: box-shadow .15s; }
+.hd svg { width: 15px; height: 15px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+.hd::before { content: ""; position: absolute; inset: -8px; }  /* a bigger area to grab */
+.hd-d { left: 50%; top: 0; transform: translate(-50%, -50%); cursor: ew-resize; }
+.hd-w { left: 0; top: 50%; transform: translate(-50%, -50%) rotate(180deg); writing-mode: vertical-rl; height: auto; width: 34px; padding: 13px 0 11px; cursor: ns-resize; }
+.hd-r { left: 0; top: 100%; transform: translate(-17px, -50%); cursor: ew-resize; }
+.hd:hover, .hd.drag { box-shadow: 0 0 0 1px var(--blue), 0 0 0 7px color-mix(in srgb, var(--blue) 22%, transparent); }
+.hd.drag { cursor: grabbing; }
 .hd.pulse { animation: pulse 1.6s ease-out 2; }
-@keyframes pulse { 0% { box-shadow: 0 0 0 1.5px var(--blue), 0 0 0 0 rgba(58,134,212,.55); } 100% { box-shadow: 0 0 0 1.5px var(--blue), 0 0 0 18px rgba(58,134,212,0); } }
+@keyframes pulse { 0% { box-shadow: 0 0 0 1px var(--blue), 0 0 0 0 rgba(58,134,212,.5); } 100% { box-shadow: 0 0 0 1px var(--blue), 0 0 0 16px rgba(58,134,212,0); } }
 @media (prefers-reduced-motion: reduce) { .hd.pulse { animation: none; } }
-.tip { position: absolute; left: 50%; bottom: calc(100% + 10px); transform: translateX(-50%); background: var(--blue); color: #fff; font: 600 12px/1 var(--mono); padding: 6px 8px; border-radius: 6px; white-space: nowrap; pointer-events: none; opacity: 0; transition: opacity .15s; }
-.hd-d .tip { left: calc(100% + 12px); bottom: auto; top: 50%; transform: translateY(-50%); }
-.hd:hover .tip, .hd:focus-visible .tip, .hd.drag .tip { opacity: 1; }
+.word.settle { transition: font-size .3s ease; }
+.hd .hl { color: rgba(255,255,255,.82); font-weight: 500; }
+@media (max-width: 640px) { .hd .hl { display: none; } .hd { height: 30px; padding: 0 10px 0 8px; gap: 5px; font-size: 12px; } .hd-w { width: 30px; height: auto; padding: 9px 0 8px; } .hd-r { transform: translate(-15px, -50%); } .hero-canvas { padding-left: max(24px, var(--gutter)); padding-right: max(24px, var(--gutter)); } .word { padding: 0.32em 0.06em 0.36em 0.3em; } }
+@media (prefers-reduced-motion: reduce) { .word.settle { transition: none; } }
 .hero-bottom { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 24px 56px; align-items: end; padding: 0 var(--gutter) 44px; }
 .lede { margin: 0; font: 400 clamp(22px, 2.5vw, 34px)/1.25 var(--sans); max-width: 26ch; text-wrap: balance; }
 .v-sans { font-weight: 700; } .v-serif { font-family: var(--serif); font-style: italic; } .v-mono { font-family: var(--mono); font-size: 0.86em; }
@@ -121,7 +128,7 @@ input[type="range"] { accent-color: var(--blue); width: 100%; }
 
 /* ---------- two voices ---------- */
 .split { position: relative; background: var(--surface); border-radius: 18px; padding: clamp(28px, 5vw, 72px); border: 1px solid var(--line); overflow: hidden; touch-action: pan-y; }
-.split-text { margin: 0; font-size: clamp(22px, 2.9vw, 40px); line-height: 1.42; max-width: 32em; }
+.split-text { margin: 0; font-size: clamp(42px, 8.2vw, 132px); line-height: 1.1; letter-spacing: -0.01em; text-wrap: pretty; }
 .split-text.sans { font-family: "Admiralty Sans Released", var(--sans); }
 .split-text.serif { font-family: "Admiralty Serif Released", var(--serif); position: absolute; top: clamp(28px, 5vw, 72px); left: clamp(28px, 5vw, 72px); right: clamp(28px, 5vw, 72px); color: var(--ink); }
 .split-bar { position: absolute; top: 0; bottom: 0; left: 50%; width: 2px; background: var(--blue); cursor: ew-resize; touch-action: none; }
