@@ -401,11 +401,6 @@ export function minutes(a: Date, b: Date): number {
       "“You learn the water by its sounds,” says the duty officer, who has worked nights for eleven years. “When it is quiet, something is about to change.”",
       "By four the fishing boats from Aberdeen are already moving, and the first ferry crews arrive to check engines, ropes and life jackets. Nobody hurries. The timetable starts at six, and it has not been late in months.",
       "Then the sun comes up over Lei Yue Mun, the water turns from grey to blue, and the city takes the harbour back."] },
-    vi: { t: "Bến cảng không bao giờ ngủ", by: "Bài viết của Trần Minh Anh, 18 tháng 11 năm 2026", time: "4 phút đọc", p: [
-      "Ngay sau nửa đêm, chuyến phà cuối cùng cập bến Trung Hoàn và ca đêm bắt đầu. Tàu kéo đẩy những sà lan chở container về khu neo đậu phía tây, một chiếc tàu hoa tiêu chờ ngoài đảo Green, và phòng điều khiển bến cảng theo dõi tất cả trên một bức tường màn hình.",
-      "“Bạn học về mặt nước qua âm thanh của nó,” viên sĩ quan trực ca nói, người đã làm ca đêm suốt mười một năm. “Khi mọi thứ yên lặng, sắp có điều gì đó thay đổi.”",
-      "Đến bốn giờ sáng, thuyền đánh cá từ Aberdeen đã bắt đầu ra khơi, và những thủy thủ đầu tiên đến kiểm tra động cơ, dây neo và áo phao. Không ai vội vàng. Lịch chạy bắt đầu lúc sáu giờ, và đã nhiều tháng nay chưa trễ chuyến nào.",
-      "Rồi mặt trời mọc trên Lei Yue Mun, mặt nước chuyển từ xám sang xanh, và thành phố lại nhận về bến cảng của mình."] },
   };
   function renderArticle(l) {
     const a = ARTICLE[l];
@@ -413,7 +408,6 @@ export function minutes(a: Date, b: Date): number {
     $("#readBody").innerHTML = a.p.map((p) => `<p>${esc(p)}</p>`).join("");
     $("#scene-read .reader-page").lang = l;
   }
-  $("#lang").addEventListener("click", (e) => { const b = e.target.closest("button"); if (!b) return; $$("#lang button").forEach((x) => x.setAttribute("aria-checked", String(x === b))); renderArticle(b.dataset.l); });
   renderArticle("en");
 
   /* ----- assistant chat ----- */
