@@ -182,7 +182,7 @@ input[type="range"] { accent-color: var(--blue); width: 100%; }
 .ide-code .row.cur { background: rgba(211,221,232,.05); }
 .ide-code .ln { color: var(--i-mute); text-align: right; padding-right: 18px; user-select: none; }
 .ide-code .row.cur .ln { color: var(--i-tx); }
-.k { color: #8bb9ea; } .s { color: #e6c27c; } .n { color: #f2a36b; } .c { color: #6d8196; font-style: italic; } .f { color: #8fd8c4; } .t { color: #c7a6f2; }
+.k { color: #8bb9ea; } .m { color: #f0a0bd; } .a { color: #b5d3a8; } .p { color: #80868e; } .s { color: #e6c27c; } .n { color: #f2a36b; } .c { color: #6d8196; font-style: italic; } .f { color: #8fd8c4; } .t { color: #c7a6f2; }
 .ide-code .caret { display: inline-block; width: 2px; height: 1.2em; background: var(--blue); vertical-align: text-bottom; margin-left: -1px; animation: blink 1.1s steps(1) infinite; }
 @keyframes blink { 50% { opacity: 0; } }
 @media (prefers-reduced-motion: reduce) { .ide-code .caret { animation: none; } }
@@ -397,3 +397,6 @@ input[type="range"] { accent-color: var(--blue); width: 100%; }
 
 /* Areas you drag in never select text */
 .hero, .g-big, .chart-wrap, .pad, .sign-panel, body.dragging, body.dragging * { -webkit-user-select: none; user-select: none; }
+
+/* Syntax colours for the CSS output on light and dark surfaces */
+.css-line .vp { color: var(--blue-t); } .css-line .vs { color: var(--coral); } .css-line .vn { color: var(--mint); }

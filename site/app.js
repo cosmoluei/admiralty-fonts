@@ -205,7 +205,7 @@
     if (f.axes.wdth) out.push(`font-stretch: ${parseFloat(p["font-stretch"])}%;`);
     if (st.ital && f.italic) out.push("font-style: italic;");
     if (f.axes.radius && st.r) out.push(`font-variation-settings: "${R}" ${Math.round(st.r)};`);
-    $("#cssLine").textContent = out.join("  ");
+    $("#cssLine").innerHTML = out.map(hlCSS).join("  ");
     if (cur.id === "sign") fitSign();
     if (cur.id === "poster") fitPoster();
     if (cur.id === "code") $("#stFont").textContent = `${NAMES.mono} ${Math.round(st.w)}`;
@@ -532,6 +532,48 @@ export function minutes(a: Date, b: Date): number {
   $("#gMore").addEventListener("click", () => { gGrid.classList.add("all"); gGrid.children[70] && gGrid.children[70].focus(); });
 
   /* ---------- install tabs, footer ---------- */
+  // Syntax colours for the install code (HTML, Swift, Kotlin, Dart), with the same token classes as the editor
+  const LANG = {
+    web: { kw: /^(?:var)$/ },
+    ios: { kw: /^(?:import|let|var|func|struct|return|true|false)$/ },
+    android: { kw: /^(?:import|val|var|fun|return|true|false|null|as)$/ },
+    flutter: { kw: /^(?:import|const|final|var|return|true|false|new)$/ },
+  };
+  function hlHTML(src) {
+    const re = /(<\/?)([\w-]+)|([\w-]+)(?==)|("[^"]*")|(\/?>)/g; let out = "", last = 0, m;
+    while ((m = re.exec(src))) {
+      out += esc(src.slice(last, m.index)); last = re.lastIndex;
+      if (m[2]) out += `<span class="p">${esc(m[1])}</span><span class="k">${m[2]}</span>`;
+      else if (m[3]) out += `<span class="t">${m[3]}</span>`;
+      else if (m[4]) out += `<span class="s">${esc(m[4]).replace(/var\((--[\w-]+)\)/g, '<span class="f">var</span>(<span class="m">$1</span>)')}</span>`;
+      else out += `<span class="p">${esc(m[5])}</span>`;
+    }
+    return out + esc(src.slice(last));
+  }
+  function hlLang(src, kw) {
+    const re = /(\/\/.*$)|("[^"\n]*"|'[^'\n]*')|(\b\d+(?:\.\d+)?)|(\.[a-z][\w]*)|([A-Za-z_]\w*)(?=\s*\()|(\b[A-Z]\w*)|([a-z_]\w*)(?=\s*[:=](?!=))|([A-Za-z_]\w*)/gm;
+    let out = "", last = 0, m;
+    while ((m = re.exec(src))) {
+      out += esc(src.slice(last, m.index)); last = re.lastIndex; const t = m[0];
+      if (m[1]) out += `<span class="c">${esc(t)}</span>`;
+      else if (m[2]) out += `<span class="s">${esc(t)}</span>`;
+      else if (m[3]) out += `<span class="n">${t}</span>`;
+      else if (kw.test(t.replace(/^\./, "")) && !m[4]) out += `<span class="k">${t}</span>`;
+      else if (m[4]) out += `.<span class="m">${t.slice(1)}</span>`;
+      else if (m[5]) out += `<span class="f">${t}</span>`;
+      else if (m[6]) out += `<span class="t">${t}</span>`;
+      else if (m[7]) out += `<span class="a">${t}</span>`;
+      else out += esc(t);
+    }
+    return out + esc(src.slice(last));
+  }
+  function hlCSS(decl) { // one "property: value;" declaration
+    const m = decl.match(/^([\w-]+)(:\s*)(.*?)(;?)$/); if (!m) return esc(decl);
+    const val = esc(m[3]).replace(/(&quot;|")(.*?)\1/g, '<span class="vs">"$2"</span>').replace(/(-?\d+(?:\.\d+)?%?)(?![^<]*<\/span>)/g, '<span class="vn">$1</span>');
+    return `<span class="vp">${m[1]}</span>${m[2]}${val}${m[4]}`;
+  }
+  Object.keys(LANG).forEach((k) => { const code = $(`#p-${k} code`); const src = code.textContent;
+    code.innerHTML = k === "web" ? hlHTML(src) : hlLang(src, LANG[k].kw); });
   const ptabs = $$('#get [role="tab"]');
   ptabs.forEach((t) => t.addEventListener("click", () => ptabs.forEach((x) => { const on = x === t; x.setAttribute("aria-selected", String(on)); $("#" + x.getAttribute("aria-controls")).hidden = !on; })));
   $("#standin").textContent = T.standinNote || "";
