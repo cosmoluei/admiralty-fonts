@@ -1,7 +1,7 @@
 # Admiralty website
 
 A one-page site that introduces the Admiralty type family: a hero word you can change with
-the mouse, a same-width demo, a type tester, axis animations, eight use-case mock-ups, the 282
+the mouse letter by letter, a moving word strip, a same-width demo, a type tester, axis animations, eight use-case mock-ups, the 282
 symbols and the character set. Plain HTML, CSS and JavaScript: no build step.
 
 ## Run it
@@ -18,7 +18,7 @@ Opening `index.html` straight from the disk also works.
 | File | What it does |
 | --- | --- |
 | `index.html` | The page and all its text |
-| `styles.css` | Layout and colours (nautical-chart palette, with a night palette for dark mode) |
+| `styles.css` | Layout and colours (main colour #3A86D4 with navy ink and near-white paper; night colours for dark mode) |
 | `app.js` | Hero, same-width check, tester, axis animations, symbols, characters, tabs |
 | `fonts.css` | **Which font files the page uses** |
 | `type-config.js` | **What the fonts can do**: axis ranges, the radius axis tag, how italic works |
@@ -62,4 +62,4 @@ Nothing else needs to change: the sliders, CSS output and animations read their 
 - Same-width demo: lines are measured live; with the released fonts all lines end on the
   same word in Sans and Serif.
 - Symbol search finds by name, label and tags (for example "like" finds heart and thumbs-up).
-- Reduced motion: no opening animation, and the axis rows wait for "Play".
+- Reduced motion: the hero letters, ticker and other motion stay still; everything still works by pointer, keys and sliders.
