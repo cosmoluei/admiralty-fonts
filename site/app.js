@@ -82,7 +82,7 @@
     if (key === "r" && !SAX.radius) { el.hidden = true; return; }
     let start = null;
     el.addEventListener("pointerdown", (e) => {
-      e.preventDefault(); el.setPointerCapture(e.pointerId); el.classList.add("drag");
+      e.preventDefault(); el.setPointerCapture(e.pointerId); el.classList.add("drag"); document.body.classList.add("dragging");
       start = { x: e.clientX, y: e.clientY, v: H[key] };
     });
     el.addEventListener("pointermove", (e) => {
@@ -93,7 +93,7 @@
       H[key] = clamp(start.v + delta * span, lo, hi);
       paintHero();
     });
-    const end = () => { start = null; el.classList.remove("drag"); };
+    const end = () => { start = null; el.classList.remove("drag"); document.body.classList.remove("dragging"); };
     el.addEventListener("pointerup", end); el.addEventListener("pointercancel", end);
     el.addEventListener("keydown", (e) => {
       const [lo, hi] = RANGE[key], step = (hi - lo) / (e.shiftKey ? 8 : 40);
@@ -141,9 +141,10 @@
   }
   let splitDrag = false;
   const splitTo = (cx) => { const b = split.getBoundingClientRect(); splitPos = clamp((cx - b.left) / b.width, 0.04, 0.96); paintSplit(); };
-  split.addEventListener("pointerdown", (e) => { splitDrag = true; split.setPointerCapture(e.pointerId); splitTo(e.clientX); });
+  split.addEventListener("pointerdown", (e) => { e.preventDefault(); splitDrag = true; split.setPointerCapture(e.pointerId); document.body.classList.add("dragging"); splitTo(e.clientX); });
   split.addEventListener("pointermove", (e) => { if (splitDrag) splitTo(e.clientX); });
-  split.addEventListener("pointerup", () => (splitDrag = false));
+  const splitEnd = () => { splitDrag = false; document.body.classList.remove("dragging"); };
+  split.addEventListener("pointerup", splitEnd); split.addEventListener("pointercancel", splitEnd);
   bar.addEventListener("keydown", (e) => { const d = { ArrowLeft: -0.04, ArrowRight: 0.04 }[e.key]; if (d) { e.preventDefault(); splitPos = clamp(splitPos + d, 0.04, 0.96); paintSplit(); } });
 
   /* =========================================================================================
@@ -526,20 +527,22 @@ export function minutes(a: Date, b: Date): number {
   $("#standin").textContent = T.standinNote || "";
   const foot = $(".foot"), footWord = $(".foot-word");
   if (SAX.radius) footWord.style.fontVariationSettings = `"${R}" ${RD[1]}`;
-  // the footer word always fills the width; the pointer changes its width and weight
+  // The footer word is sized once, at its widest and heaviest, so it never changes height;
+  // the pointer then changes only its width and weight.
   function footFit() {
-    footWord.style.fontSize = "100px";
+    const keep = [footWord.style.fontStretch, footWord.style.fontWeight];
+    footWord.style.fontStretch = WD[1] + "%"; footWord.style.fontWeight = WG[1]; footWord.style.fontSize = "100px";
     const w = footWord.getBoundingClientRect().width, cs = getComputedStyle(foot);
     const avail = foot.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
     footWord.style.fontSize = (avail / w) * 100 * 0.995 + "px";
+    [footWord.style.fontStretch, footWord.style.fontWeight] = keep;
   }
   foot.addEventListener("pointermove", (e) => {
     const b = foot.getBoundingClientRect();
     footWord.style.fontStretch = lerp(WD[0], WD[1], clamp((e.clientX - b.left) / b.width, 0, 1)) + "%";
     footWord.style.fontWeight = Math.round(lerp(WG[1], WG[0] + 200, clamp((e.clientY - b.top) / b.height, 0, 1)));
-    footFit();
   });
-  foot.addEventListener("pointerleave", () => { footWord.style.fontStretch = ""; footWord.style.fontWeight = ""; footFit(); });
+  foot.addEventListener("pointerleave", () => { footWord.style.fontStretch = ""; footWord.style.fontWeight = ""; });
 
   /* ---------- start ---------- */
   function layout() { footFit(); rulerLabels(); paintHero(); paintSplit(); measureSplit(); drawChart(); if (cur.id === "sign") fitSign(); if (cur.id === "poster") fitPoster(); }

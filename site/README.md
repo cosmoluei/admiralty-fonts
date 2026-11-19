@@ -21,7 +21,7 @@ Opening `index.html` straight from the disk also works.
 | File | What it does |
 | --- | --- |
 | `index.html` | The page and all its text |
-| `styles.css` | Layout and colours (blue #3A86D4 for everything you can act on, a dotted canvas, night colours for dark mode) |
+| `styles.css` | Layout and colours (warm neutrals with blue #3A86D4 for handles, main actions and focus, plus coral, yellow and green accents; night colours for dark mode) |
 | `app.js` | Hero handles, the Serif/Sans divider and its live check, the workbench and its six interfaces, symbols, characters |
 | `fonts.css` | **Which font files the page uses** |
 | `type-config.js` | **What the fonts can do**: axis ranges, the radius axis tag, how italic works |
