@@ -1,0 +1,323 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Admiralty Type Family</title>
+<meta name="description" content="Admiralty is a type family in three voices, Sans, Serif and Mono, with variable weight, width and corner radius, and 282 matching symbols.">
+<link rel="stylesheet" href="fonts.css">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="top">
+  <a class="brand" href="#hero" aria-label="Admiralty, back to top">Admiralty</a>
+  <nav aria-label="Sections">
+    <a href="#voices">Voices</a>
+    <a href="#tester">Tester</a>
+    <a href="#uses">Uses</a>
+    <a href="#symbols">Symbols</a>
+    <a href="#characters">Characters</a>
+    <a href="#get">Get the fonts</a>
+  </nav>
+  <button class="theme" id="theme" type="button" aria-label="Switch between day and night colours">
+    <i class="sym" aria-hidden="true" data-sym="dark-mode"></i>
+  </button>
+</header>
+
+<main id="main">
+
+<!-- Hero: the word itself is the control -->
+<section id="hero" class="hero" aria-label="Admiralty">
+  <svg class="chart" id="chart" aria-hidden="true" focusable="false"></svg>
+  <div class="hero-stage" id="stage" tabindex="0" role="group"
+       aria-label="Admiralty word. Use the arrow keys to change its weight and width.">
+    <h1 class="hero-word" id="heroWord">Admiralty</h1>
+  </div>
+  <div class="hero-foot">
+    <p class="hero-lede">A type family in three voices, Sans, Serif and Mono, for interfaces, reading, code, data, brands and signs. Weight, width and corner radius go anywhere in between.</p>
+    <div class="soundings" aria-live="polite">
+      <span><b id="rdW">400</b> weight</span>
+      <span><b id="rdD">100</b> width</span>
+      <label class="radius-ctl"><b id="rdR">0</b> radius
+        <input type="range" id="heroRadius" min="0" max="100" value="0" aria-label="Corner radius of the word">
+      </label>
+    </div>
+    <p class="hint" id="hint">Move across the word: left and right change the width, up and down change the weight.</p>
+    <div class="cta">
+      <a class="btn primary" href="#tester">Try the fonts</a>
+      <a class="btn" href="#get">Get the fonts</a>
+    </div>
+  </div>
+</section>
+
+<!-- Same widths -->
+<section id="voices" class="band">
+  <div class="wrap two">
+    <div class="intro">
+      <h2>Change the voice, keep the layout</h2>
+      <p>Admiralty Sans and Admiralty Serif have the same letter widths. Switch a paragraph from one to the other and every line still breaks on the same word, so an app can give two kinds of text two voices without anything moving.</p>
+      <div class="seg" role="radiogroup" aria-label="Voice of the paragraph">
+        <button type="button" role="radio" aria-checked="true" data-voice="sans">Sans</button>
+        <button type="button" role="radio" aria-checked="false" data-voice="serif">Serif</button>
+      </div>
+      <p class="check" id="voiceCheck" aria-live="polite"></p>
+    </div>
+    <div class="voice-box">
+      <p class="voice-text" id="voiceText">The ferry leaves Central at seven and crosses the harbour in nine minutes. On the way back the light changes over Kowloon, the cranes turn orange, and the water goes from grey to a deep, even blue. Most passengers read, a few sleep, and someone always stands at the rail to watch the city slide past.</p>
+      <div class="line-marks" id="lineMarks" aria-hidden="true"></div>
+    </div>
+  </div>
+  <div class="wrap trio" aria-label="The three voices">
+    <p class="trio-sans">Sans for interfaces and labels</p>
+    <p class="trio-serif">Serif for reading and replies</p>
+    <p class="trio-mono">Mono for code, data and IDs</p>
+  </div>
+</section>
+
+<!-- Tester -->
+<section id="tester" class="wrap">
+  <h2>Set it yourself</h2>
+  <p class="sub">Pick a use to start from good settings, then change anything. The CSS below follows along.</p>
+  <div class="tester">
+    <div class="controls">
+      <fieldset>
+        <legend>Start from</legend>
+        <div class="chips" id="presets"></div>
+      </fieldset>
+      <fieldset>
+        <legend>Family</legend>
+        <div class="seg" role="radiogroup" aria-label="Family" id="famSeg">
+          <button type="button" role="radio" aria-checked="true" data-fam="sans">Sans</button>
+          <button type="button" role="radio" aria-checked="false" data-fam="serif">Serif</button>
+          <button type="button" role="radio" aria-checked="false" data-fam="mono">Mono</button>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>Style</legend>
+        <div class="seg" role="radiogroup" aria-label="Style" id="italSeg">
+          <button type="button" role="radio" aria-checked="true" data-ital="0">Upright</button>
+          <button type="button" role="radio" aria-checked="false" data-ital="1">Italic</button>
+        </div>
+      </fieldset>
+      <div class="slider"><label for="tW">Weight</label><output id="oW"></output><input id="tW" type="range" step="1"></div>
+      <div class="slider"><label for="tD">Width</label><output id="oD"></output><input id="tD" type="range" step="0.5"></div>
+      <div class="slider"><label for="tR">Radius</label><output id="oR"></output><input id="tR" type="range" step="1"></div>
+      <div class="slider"><label for="tS">Size</label><output id="oS"></output><input id="tS" type="range" min="12" max="200" step="1"></div>
+      <div class="slider"><label for="tL">Line height</label><output id="oL"></output><input id="tL" type="range" min="0.9" max="2" step="0.05"></div>
+    </div>
+    <div class="proof">
+      <div class="proof-text" id="proof" contenteditable="true" spellcheck="false" aria-label="Sample text, you can edit it">Harbour lights at 19:30. Ferries every 9 minutes.</div>
+      <div class="css-out">
+        <pre><code id="cssOut"></code></pre>
+        <button class="btn small" type="button" id="copyCss">Copy CSS</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Range -->
+<section id="range" class="band">
+  <div class="wrap">
+    <h2>Every axis, end to end</h2>
+    <p class="sub">Each line moves along one axis and nothing else.</p>
+    <div class="ranges" id="ranges">
+      <div class="rrow" data-axis="wght"><span class="rlab">Weight <b>100 to 900</b></span><span class="rword">Weight</span></div>
+      <div class="rrow" data-axis="wdth"><span class="rlab">Width <b>65 to 150%</b></span><span class="rword">Width</span></div>
+      <div class="rrow" data-axis="radius"><span class="rlab">Radius <b>0 to 100</b></span><span class="rword">Rounded</span></div>
+      <div class="rrow" data-axis="ital"><span class="rlab">Upright to italic</span><span class="rword">Slanted</span></div>
+    </div>
+    <button class="btn small" type="button" id="rangeToggle">Pause</button>
+  </div>
+</section>
+
+<!-- Uses -->
+<section id="uses" class="wrap">
+  <h2>Made for more than one job</h2>
+  <p class="sub">The same family, set for eight different kinds of work.</p>
+  <div class="mosaic">
+
+    <figure class="tile t-app">
+      <div class="phone">
+        <p class="app-title">Settings</p>
+        <ul class="app-list">
+          <li><i class="sym" data-sym="notification-settings" aria-hidden="true"></i><span>Notifications</span><i class="sym on" data-sym="toggle-on" aria-hidden="true"></i></li>
+          <li><i class="sym" data-sym="lock" aria-hidden="true"></i><span>Privacy</span><em>Strict</em></li>
+          <li><i class="sym" data-sym="theme" aria-hidden="true"></i><span>Appearance</span><em>Automatic</em></li>
+          <li><i class="sym" data-sym="language" aria-hidden="true"></i><span>Language</span><em>English</em></li>
+          <li><i class="sym" data-sym="backup" aria-hidden="true"></i><span>Backup</span><em>Today 08:12</em></li>
+        </ul>
+        <button class="app-btn" type="button" tabindex="-1"><i class="sym" data-sym="sign-out" aria-hidden="true"></i>Sign out</button>
+      </div>
+      <figcaption><b>Apps and interfaces.</b> Sans 500 for labels, 400 for values, icons drawn at the same weight as the text.</figcaption>
+    </figure>
+
+    <figure class="tile t-edit">
+      <div class="spread">
+        <h3 class="ed-head">The harbour that never sleeps</h3>
+        <p class="ed-dek">Six ferry lines, one stretch of water, and the people who keep it moving after dark.</p>
+        <div class="ed-cols">
+          <p>Just after midnight the last commuter ferry ties up and the night shift begins. Tugs nose container barges toward the western anchorage, a pilot boat waits off Green Island, and the harbour control room watches all of it on a wall of screens.</p>
+          <p>“You learn the water by its sounds,” says the duty officer, who has worked nights for eleven years. “When it is quiet, something is about to change.”</p>
+        </div>
+      </div>
+      <figcaption><b>Reading and editorial.</b> Headline in Sans 800 at 78% width, standfirst in Serif italic, body in Serif 400.</figcaption>
+    </figure>
+
+    <figure class="tile t-code">
+<pre class="code"><span class="ln">1</span><span class="cm">// type-config.js</span>
+<span class="ln">2</span><span class="kw">export const</span> voice = {
+<span class="ln">3</span>  sans:  { wght: <span class="nu">500</span>, wdth: <span class="nu">100</span> },
+<span class="ln">4</span>  serif: { wght: <span class="nu">400</span>, ital: <span class="kw">true</span> },
+<span class="ln">5</span>  mono:  { wght: <span class="nu">400</span>, zero: <span class="nu">1</span> },
+<span class="ln">6</span>};
+<span class="ln">7</span>
+<span class="ln">8</span><span class="cm">site/</span>
+<span class="ln">9</span>├── fonts.css
+<span class="ln">10</span>├── type-config.js
+<span class="ln">11</span>└── index.html   <span class="ok">0 errors 0O1lI</span></pre>
+      <figcaption><b>Developers.</b> Mono 400 for code, a slashed zero, and box drawing lines that join up.</figcaption>
+    </figure>
+
+    <figure class="tile t-data">
+      <div class="dash">
+        <div class="kpi"><span class="kpi-n">1,284</span><span class="kpi-l">crossings today</span></div>
+        <div class="kpi"><span class="kpi-n">98.6%</span><span class="kpi-l">on time</span></div>
+        <svg class="bars" viewBox="0 0 240 90" role="img" aria-label="Crossings per hour, highest at 8 and 18">
+          <g id="barsG"></g>
+        </svg>
+        <table class="tab">
+          <tr><th scope="row">Central to Tsim Sha Tsui</th><td>412</td><td>99.1%</td></tr>
+          <tr><th scope="row">Wan Chai to Hung Hom</th><td>188</td><td>97.4%</td></tr>
+          <tr><th scope="row">Central to Mui Wo</th><td>64</td><td>98.0%</td></tr>
+        </table>
+      </div>
+      <figcaption><b>Data and dashboards.</b> Sans at 82% width with figures of equal width, so columns line up.</figcaption>
+    </figure>
+
+    <figure class="tile t-poster">
+      <div class="poster">
+        <p class="po-top">Fri 12 Dec<br>19:00 to late</p>
+        <p class="po-head" data-radius="100">Harbour Nights</p>
+        <p class="po-foot">Tamar Park, Admiralty<br>Free entry</p>
+      </div>
+      <figcaption><b>Posters and brands.</b> Sans 900 at 150% width with full radius for a friendly voice.</figcaption>
+    </figure>
+
+    <figure class="tile t-sign">
+      <div class="sign">
+        <div class="sign-row"><span class="sign-key">A</span><span class="sign-name">Admiralty Centre<small lang="zh-Hant-HK">海富中心</small></span><i class="sym" data-sym="arrow-up-left" aria-hidden="true"></i></div>
+        <div class="sign-row"><span class="sign-key">C</span><span class="sign-name">Queensway<small lang="zh-Hant-HK">金鐘道</small></span><i class="sym" data-sym="arrow-up-right" aria-hidden="true"></i></div>
+      </div>
+      <figcaption><b>Signs and wayfinding.</b> Sans 600 at 88% width for long names, set beside a Chinese system font.</figcaption>
+    </figure>
+
+    <figure class="tile t-lang">
+      <ul class="langs">
+        <li lang="en">Good morning</li>
+        <li lang="vi">Chào buổi sáng</li>
+        <li lang="zh-Latn-pinyin">Zǎoshang hǎo</li>
+        <li lang="zh-Hant-HK" class="cjk">早晨</li>
+      </ul>
+      <figcaption><b>Many languages.</b> Latin, Vietnamese and Pinyin in Admiralty, with Chinese from the system font.</figcaption>
+    </figure>
+
+    <figure class="tile t-chat">
+      <div class="chat">
+        <p class="bub you">When is the last ferry to Mui Wo tonight?</p>
+        <div class="bub agent">
+          <p>The last one leaves Central Pier 6 at <b>23:30</b>. There is also a late fast ferry on Fridays:</p>
+          <pre>Fri  00:30  fast   40 min
+Sat  23:30  slow   55 min</pre>
+        </div>
+      </div>
+      <figcaption><b>Assistants and chat.</b> The person writes in Sans, the assistant answers in Serif, times in Mono.</figcaption>
+    </figure>
+
+  </div>
+</section>
+
+<!-- Symbols -->
+<section id="symbols" class="band">
+  <div class="wrap">
+    <h2>282 symbols that match the text</h2>
+    <p class="sub">Drawn on a 24 by 24 grid at the same weights as the letters. Select a symbol to copy its name.</p>
+    <div class="sym-bar">
+      <label class="search"><i class="sym" data-sym="search" aria-hidden="true"></i>
+        <input type="search" id="symSearch" placeholder="Search, for example like, lock or chart" aria-label="Search symbols"></label>
+      <div class="slider compact"><label for="symW">Weight</label><output id="oSW">400</output><input id="symW" type="range" min="400" max="700" value="400"></div>
+    </div>
+    <p class="sym-count" id="symCount" aria-live="polite"></p>
+    <div class="sym-grid" id="symGrid"></div>
+    <button class="btn small sym-more" type="button" id="symMore">Show all 282 symbols</button>
+  </div>
+</section>
+
+<!-- Characters -->
+<section id="characters" class="wrap">
+  <h2>Characters</h2>
+  <p class="sub">Latin, Latin Extended-A, Vietnamese and Pinyin. Point at a character to see it large.</p>
+  <div class="chars">
+    <div class="char-big" aria-live="polite"><span id="charBig">Ặ</span><span class="char-info" id="charInfo">U+1EB6</span></div>
+    <div class="char-grid" id="charGrid"></div>
+  </div>
+</section>
+
+<!-- Get -->
+<section id="get" class="band">
+  <div class="wrap two">
+    <div class="intro">
+      <h2>Use Admiralty</h2>
+      <p>Free under the SIL Open Font License 1.1: use it in apps, websites, print and logos. When you bundle the font files, include the license with them.</p>
+      <p>Ready-made packages for the web, iOS, Android and Flutter are in the repository, with a guide for coding agents.</p>
+      <div class="cta">
+        <a class="btn primary" href="https://github.com/cosmoluei/admiralty-fonts">Open on GitHub</a>
+        <a class="btn" href="OFL.txt">Read the license</a>
+      </div>
+    </div>
+    <div class="code-tabs">
+      <div class="seg" role="tablist" aria-label="Platform">
+        <button type="button" role="tab" aria-selected="true" aria-controls="p-web" id="tab-web">Web</button>
+        <button type="button" role="tab" aria-selected="false" aria-controls="p-ios" id="tab-ios">iOS</button>
+        <button type="button" role="tab" aria-selected="false" aria-controls="p-android" id="tab-android">Android</button>
+        <button type="button" role="tab" aria-selected="false" aria-controls="p-flutter" id="tab-flutter">Flutter</button>
+      </div>
+<pre role="tabpanel" id="p-web" aria-labelledby="tab-web"><code>&lt;link rel="stylesheet" href="/admiralty/admiralty-fonts.css"&gt;
+&lt;link rel="stylesheet" href="/admiralty/admiralty-symbols.css"&gt;
+
+&lt;p style="font-family: var(--adm-serif)"&gt;Reply …&lt;/p&gt;
+&lt;button&gt;&lt;i class="adm-icon adm-send" aria-hidden="true"&gt;&lt;/i&gt; Send&lt;/button&gt;</code></pre>
+<pre role="tabpanel" id="p-ios" aria-labelledby="tab-ios" hidden><code>import Admiralty
+
+Text(reply).font(.admiralty(.serif, size: 17))
+Text("Send").font(.admiralty(.sans, size: 15, weight: .medium))
+AdmiraltyIcon("heart-filled")</code></pre>
+<pre role="tabpanel" id="p-android" aria-labelledby="tab-android" hidden><code>Text(reply, fontFamily = AdmiraltySerif, fontSize = 16.sp)
+Icon(
+  painterResource(AdmiraltySymbol.HeartFilled.drawable),
+  contentDescription = AdmiraltySymbol.HeartFilled.label,
+)</code></pre>
+<pre role="tabpanel" id="p-flutter" aria-labelledby="tab-flutter" hidden><code>import 'package:admiralty/admiralty.dart';
+
+Text(reply, style: const TextStyle(
+  fontFamily: AdmiraltyFonts.serif, package: AdmiraltyFonts.package));
+Icon(AdmiraltyIcons.heartFilled);</code></pre>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="foot">
+  <p class="foot-name" data-radius="100">Admiralty</p>
+  <p class="foot-note" id="standin"></p>
+</footer>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="type-config.js"></script>
+<script src="symbols.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

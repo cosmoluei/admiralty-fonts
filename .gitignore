@@ -12,3 +12,4 @@ specimens/*.pdf
 .DS_Store
 sources/build.ninja
 sources/.ninja_log
+site/artifact.html
