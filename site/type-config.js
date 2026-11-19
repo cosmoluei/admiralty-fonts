@@ -17,8 +17,8 @@ window.TYPE = {
     serif: { css: '"Admiralty Serif", Georgia, serif',         label: "Serif",
              axes: { wght: [100, 900], wdth: [65, 150] }, italic: "face" },
     mono:  { css: '"Admiralty Mono", ui-monospace, monospace', label: "Mono",
-             axes: { wght: [100, 800], wdth: [75, 112.5] }, italic: null },
+             axes: { wght: [400, 700] }, italic: "face" },
   },
   // Shown in the footer while stand-ins are in use. Set to "" when the real fonts are in.
-  standinNote: "Preview: until the full Admiralty variable fonts are ready, this page uses open stand-in fonts with the same kinds of axes (Google Sans Flex, Roboto Serif and Martian Mono, all under the SIL Open Font License). Icons and the same-width demo already use the released Admiralty fonts.",
+  standinNote: "Preview: until the full Admiralty variable fonts are ready, this page uses open stand-in fonts with the same kinds of axes (Google Sans Flex and Roboto Serif, under the SIL Open Font License). Mono, the icons and the same-width demo already use the released Admiralty fonts.",
 };

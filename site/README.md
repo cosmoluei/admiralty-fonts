@@ -1,8 +1,11 @@
 # Admiralty website
 
-A one-page site that introduces the Admiralty type family: a hero word you can change with
-the mouse letter by letter, a moving word strip, a same-width demo, a type tester, axis animations, eight use-case mock-ups, the 282
-symbols and the character set. Plain HTML, CSS and JavaScript: no build step.
+A one-page site that works like a type tool. The opening word sits in a selection box: drag
+its handles to change weight, width and radius. A divider runs through one paragraph with
+Serif on one side and Sans on the other. "Put it to work" is a workbench with six real
+interfaces (code editor, operations dashboard, reading app, assistant chat, poster maker,
+station sign) whose main text follows one set of controls. Then the 282 symbols, the
+character set and install code. Plain HTML, CSS and JavaScript: no build step.
 
 ## Run it
 
@@ -18,24 +21,24 @@ Opening `index.html` straight from the disk also works.
 | File | What it does |
 | --- | --- |
 | `index.html` | The page and all its text |
-| `styles.css` | Layout and colours (main colour #3A86D4 with navy ink and near-white paper; night colours for dark mode) |
-| `app.js` | Hero, same-width check, tester, axis animations, symbols, characters, tabs |
+| `styles.css` | Layout and colours (blue #3A86D4 for everything you can act on, a dotted canvas, night colours for dark mode) |
+| `app.js` | Hero handles, the Serif/Sans divider and its live check, the workbench and its six interfaces, symbols, characters |
 | `fonts.css` | **Which font files the page uses** |
 | `type-config.js` | **What the fonts can do**: axis ranges, the radius axis tag, how italic works |
 | `symbols.js` | The symbol list (name, label, code point, category, tags) from `symbols/admiralty-symbols.json` |
 | `fonts/standin/` | Open stand-in fonts (see below) |
-| `fonts/admiralty/` | Released Admiralty files: Symbols, and Sans and Serif for the same-width demo |
+| `fonts/admiralty/` | Released Admiralty files: Mono, Symbols, and Sans and Serif for the same-width demo |
 
 ## Stand-in fonts, and how to swap in the real ones
 
 Until the full Admiralty variable fonts (weight, width and radius) are ready, the page uses
-open fonts with the same kinds of axes, all under the SIL Open Font License:
+open fonts with the same kinds of axes, under the SIL Open Font License. Mono already uses the
+released Admiralty Mono (weight 400–700, with italic and box drawing):
 
 | Page family | Stand-in | Axes used |
 | --- | --- | --- |
 | Admiralty Sans | Google Sans Flex | weight 100–900, width 65–150, radius `ROND` 0–100, slant for italic |
 | Admiralty Serif | Roboto Serif | weight 100–900, width 65–150, real italic |
-| Admiralty Mono | Martian Mono | weight 100–800, width 75–112.5, no italic |
 
 The files were reduced to these axes with fontTools (other axes fixed at their defaults). The
 page only ever refers to the names `"Admiralty Sans"`, `"Admiralty Serif"` and `"Admiralty Mono"`.
@@ -56,10 +59,12 @@ Nothing else needs to change: the sliders, CSS output and animations read their 
 
 ## Checks done
 
-- Chromium at 1440 × 900 and 390 × 844, day and night palettes: no console errors and no
-  sideways scrolling.
-- Hero: pointer and arrow keys change weight and width; the radius slider works.
-- Same-width demo: lines are measured live; with the released fonts all lines end on the
+- Chromium at 1440 × 900 and 390 × 844, day and night colours: no console errors and no
+  sideways scrolling, in every workbench interface.
+- Hero handles work with the pointer and the arrow keys.
+- The divider demo measures the lines live: with the released fonts all lines break on the
   same word in Sans and Serif.
-- Symbol search finds by name, label and tags (for example "like" finds heart and thumbs-up).
-- Reduced motion: the hero letters, ticker and other motion stay still; everything still works by pointer, keys and sliders.
+- Workbench: the controls change the main text of each interface; the dashboard period,
+  sorting and chart tooltip, the chat composer, the poster colours and layout, the sign's
+  fit-by-width and the editor's files and lines all work.
+- Reduced motion: no opening animation, no handle pulse and no blinking caret.

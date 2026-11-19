@@ -7,485 +7,544 @@
   const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
   const lerp = (a, b, t) => a + (b - a) * t;
   const R = T.radiusTag;
-  const SANS = T.families.sans, sax = SANS.axes;
-  const WG = sax.wght, WD = sax.wdth || [100, 100], RD = sax.radius || [0, 0];
+  const FAM = T.families;
+  const NAMES = { sans: "Admiralty Sans", serif: "Admiralty Serif", mono: "Admiralty Mono" };
+  const SAX = FAM.sans.axes, WG = SAX.wght, WD = SAX.wdth || [100, 100], RD = SAX.radius || [0, 0];
+  const esc = (s) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
   /* ---------- type helpers ---------- */
   // Weight and width use the standard CSS properties; radius and slant use
-  // font-variation-settings (custom or extra axes).
-  function typeStyle(famKey, s) {
-    const f = T.families[famKey], ax = f.axes, out = { fontFamily: f.css };
-    out.fontWeight = String(Math.round(clamp(s.w ?? 400, ...(ax.wght || [400, 400]))));
-    out.fontStretch = (ax.wdth ? clamp(s.d ?? 100, ...ax.wdth) : 100).toFixed(1) + "%";
+  // font-variation-settings (custom or extra axes). Values are clamped to each family's range.
+  function typeProps(famKey, s) {
+    const f = FAM[famKey], ax = f.axes, o = { "font-family": f.css };
+    o["font-weight"] = String(Math.round(clamp(s.w ?? 400, ...(ax.wght || [400, 400]))));
+    o["font-stretch"] = (ax.wdth ? clamp(s.d ?? 100, ...ax.wdth) : 100).toFixed(1) + "%";
     const fvs = [];
     if (ax.radius) fvs.push(`"${R}" ${Math.round(clamp(s.r ?? 0, ...ax.radius))}`);
-    const ital = s.ital || 0;
-    out.fontStyle = f.italic === "face" && ital > 0.5 ? "italic" : "normal";
+    const ital = f.italic ? s.ital || 0 : 0;
+    o["font-style"] = f.italic === "face" && ital > 0.5 ? "italic" : "normal";
     if (f.italic === "slnt") fvs.push(`"slnt" ${(f.slnt * ital).toFixed(2)}`);
-    out.fontVariationSettings = fvs.length ? fvs.join(", ") : "normal";
-    return out;
+    o["font-variation-settings"] = fvs.length ? fvs.join(", ") : "normal";
+    return o;
   }
-  const apply = (el, famKey, s) => Object.assign(el.style, typeStyle(famKey, s));
-  const onScreen = (el) => { const b = el.getBoundingClientRect(); return b.bottom > 0 && b.top < innerHeight; };
+  const apply = (el, famKey, s) => { const p = typeProps(famKey, s); for (const k in p) el.style.setProperty(k, p[k]); };
+  const cssText = (p) => Object.entries(p).map(([k, v]) => `${k}: ${v};`).join(" ");
 
-  /* ---------- symbols as glyphs ---------- */
+  /* ---------- symbols ---------- */
   const SYM = new Map(window.SYMBOLS.map(([name, label, cp, cat, tags]) => [name, { name, label, cp, cat, tags }]));
-  const symChar = (n) => (SYM.has(n) ? String.fromCodePoint(SYM.get(n).cp) : "");
-  const paintSyms = (root = document) => $$("[data-sym]", root).forEach((el) => el.setAttribute("data-char", symChar(el.dataset.sym)));
+  const ch = (n) => (SYM.has(n) ? String.fromCodePoint(SYM.get(n).cp) : "");
+  const symHTML = (n, extra = "") => `<i class="sym" aria-hidden="true" data-char="${ch(n)}" ${extra}></i>`;
+  const paintSyms = (root = document) => $$("[data-sym]", root).forEach((el) => el.setAttribute("data-char", ch(el.dataset.sym)));
   paintSyms();
 
-  /* ---------- toast and copy ---------- */
-  const toast = $("#toast");
-  let toastT;
-  function say(msg) {
-    toast.textContent = msg; toast.classList.add("show");
-    clearTimeout(toastT); toastT = setTimeout(() => toast.classList.remove("show"), 1800);
-  }
+  /* ---------- toast, copy ---------- */
+  const toast = $("#toast"); let toastT;
+  function say(msg) { toast.textContent = msg; toast.classList.add("show"); clearTimeout(toastT); toastT = setTimeout(() => toast.classList.remove("show"), 1800); }
   async function copy(text, msg) {
-    try { await navigator.clipboard.writeText(text); say(msg); }
-    catch { say("Copy is blocked here. Select the text and copy it yourself."); }
+    try { await navigator.clipboard.writeText(text); say(msg); } catch { say("Copy is blocked here. Select the text and copy it yourself."); }
   }
 
   /* ---------- theme ---------- */
-  const themeBtn = $("#theme"), root = document.documentElement;
+  const root = document.documentElement, themeBtn = $("#theme");
   const isDark = () => (root.dataset.theme ? root.dataset.theme === "dark" : matchMedia("(prefers-color-scheme: dark)").matches);
-  function paintTheme() {
-    $(".sym", themeBtn).dataset.sym = isDark() ? "light-mode" : "dark-mode";
-    paintSyms(themeBtn);
-    themeBtn.setAttribute("aria-label", isDark() ? "Switch to day colours" : "Switch to night colours");
-  }
+  function paintTheme() { $(".sym", themeBtn).dataset.sym = isDark() ? "light-mode" : "dark-mode"; paintSyms(themeBtn); themeBtn.setAttribute("aria-label", isDark() ? "Switch to day colours" : "Switch to night colours"); }
   try { const t = localStorage.getItem("adm-theme"); if (t) root.dataset.theme = t; } catch {}
-  themeBtn.addEventListener("click", () => {
-    root.dataset.theme = isDark() ? "light" : "dark";
-    try { localStorage.setItem("adm-theme", root.dataset.theme); } catch {}
-    paintTheme();
-  });
+  themeBtn.addEventListener("click", () => { root.dataset.theme = isDark() ? "light" : "dark"; try { localStorage.setItem("adm-theme", root.dataset.theme); } catch {} paintTheme(); drawChart(); });
   paintTheme();
-  const top = $(".top");
-  addEventListener("scroll", () => top.classList.toggle("scrolled", scrollY > $("#hero").offsetHeight - 70), { passive: true });
 
-  /* ---------- magnetic words: each letter reacts to the pointer ---------- */
-  // base: settings far from the pointer; peak: settings right under it.
-  function magnetic(wordEl, stageEl, opts) {
-    const text = wordEl.textContent;
-    wordEl.textContent = "";
-    const letters = [...text].map((c) => {
-      const s = document.createElement("span"); s.className = "ch"; s.textContent = c; s.setAttribute("aria-hidden", "true");
-      wordEl.appendChild(s); return { el: s, w: opts.base.w, d: opts.base.d, tw: opts.base.w, td: opts.base.d, cx: 0 };
-    });
-    const st = { px: null, py: 0.5, r: 0, idle: true, raf: 0, size: 100, t0: performance.now(), focus: -1 };
-    function measure(set) {
-      letters.forEach((L) => apply(L.el, "sans", { w: set.w, d: set.d, r: st.r }));
-      wordEl.style.fontSize = "100px";
-      return wordEl.getBoundingClientRect().width;
-    }
-    function fit() {
-      // size so that the base word plus about three letters at peak still fits the width
-      const wb = measure(opts.base), wp = measure(opts.peak);
-      const worst = wb + (wp - wb) * Math.min(1, 2.2 / letters.length);
-      const cs = getComputedStyle(stageEl);
-      const avail = stageEl.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
-      st.size = st.maxSize = Math.min((avail / worst) * 100, opts.maxH ? opts.maxH() : 1e9);
-      st.avail = avail;
-      wordEl.style.fontSize = st.size + "px";
-      letters.forEach((L) => apply(L.el, "sans", { w: L.w, d: L.d, r: st.r }));
-      centers();
-    }
-    function centers() {
-      const b = stageEl.getBoundingClientRect();
-      letters.forEach((L) => { const r = L.el.getBoundingClientRect(); L.cx = (r.left + r.width / 2 - b.left) / b.width; });
-    }
-    function targets(now) {
-      let px = st.px;
-      if (st.focus >= 0) px = letters[st.focus].cx;
-      else if (px === null) {
-        // idle: a slow swell travels along the word
-        if (reduce.matches) { letters.forEach((L) => { L.tw = opts.rest.w; L.td = opts.rest.d; }); return; }
-        px = 0.5 + 0.62 * Math.sin((now - st.t0) / 2600);
-      }
-      const spread = opts.spread / letters.length;
-      const lift = st.px === null && st.focus < 0 ? 0.75 : lerp(1, 0.55, st.py);   // higher pointer, heavier peak
-      letters.forEach((L) => {
-        const f = Math.exp(-(((L.cx - px) / spread) ** 2));
-        L.tw = lerp(opts.base.w, lerp(opts.base.w, opts.peak.w, lift), f);
-        L.td = lerp(opts.base.d, opts.peak.d, f);
-      });
-    }
-    let nearest = 0;
-    function frame(now) {
-      targets(now);
-      let moving = st.px === null && st.focus < 0 && !reduce.matches, best = 1e9;
-      letters.forEach((L, i) => {
-        const k = reduce.matches ? 1 : 0.16;
-        const dw = L.tw - L.w, dd = L.td - L.d;
-        if (Math.abs(dw) > 0.3 || Math.abs(dd) > 0.1) moving = true;
-        L.w += dw * k; L.d += dd * k;
-        apply(L.el, "sans", { w: L.w, d: L.d, r: st.r });
-        const dist = st.px === null ? Math.abs(L.tw - opts.peak.w) : Math.abs(L.cx - (st.focus >= 0 ? letters[st.focus].cx : st.px));
-        if (dist < best) { best = dist; nearest = i; }
-      });
-      // keep the whole word inside the width: shrink at once when it grows too wide, recover slowly
-      const wNow = wordEl.getBoundingClientRect().width;
-      if (st.avail && wNow > st.avail) { st.size *= st.avail / wNow; moving = true; }
-      else if (st.size < st.maxSize - 0.5 && wNow * 1.01 <= st.avail) { st.size = Math.min(st.maxSize, st.size * 1.01); moving = true; }
-      wordEl.style.fontSize = st.size + "px";
-      if (opts.onFrame) opts.onFrame(letters[nearest], st);
-      st.raf = moving && onScreen(stageEl) ? requestAnimationFrame(frame) : 0;
-      if (moving && !st.raf) setTimeout(kick, 400);
-    }
-    function kick() { if (!st.raf) st.raf = requestAnimationFrame(frame); }
-    stageEl.addEventListener("pointermove", (e) => {
-      const b = stageEl.getBoundingClientRect();
-      st.px = (e.clientX - b.left) / b.width; st.py = clamp((e.clientY - b.top) / b.height, 0, 1); st.focus = -1; kick();
-      if (opts.onMove) opts.onMove(e, b);
-    });
-    stageEl.addEventListener("pointerleave", () => { st.px = null; kick(); });
-    addEventListener("scroll", kick, { passive: true });
-    return { st, fit, kick, letters, centers, setRadius(r) { st.r = r; kick(); },
-      focusStep(dir) { st.px = null; st.focus = (st.focus < 0 ? (dir > 0 ? -1 : letters.length) : st.focus) + dir; st.focus = clamp(st.focus, 0, letters.length - 1); kick(); } };
+  /* =========================================================================================
+     1. Hero: drag the handles of the selected word
+     ========================================================================================= */
+  const word = $("#word"), canvas = $("#canvas"), sel = $("#sel");
+  const H = { w: 400, d: 100, r: 0 };
+  function rulerLabels() {
+    const r = $("#ruler"), w = r.clientWidth; let html = "";
+    for (let x = 0; x < w; x += 100) html += `<span style="left:${x}px">${x}</span>`;
+    r.innerHTML = html;
   }
-
-  /* ---------- hero ---------- */
-  const stage = $("#stage"), rdW = $("#rdW"), rdD = $("#rdD"), rdR = $("#rdR"), heroR = $("#heroRadius");
-  const ring = document.createElementNS("http://www.w3.org/2000/svg", "g");
-  const hero = magnetic($("#heroWord"), stage, {
-    base: { w: Math.max(WG[0], 200), d: WD[0] + (WD[1] - WD[0]) * 0.18 },
-    peak: { w: WG[1], d: WD[1] - (WD[1] - WD[0]) * 0.12 },
-    rest: { w: 500, d: 100 }, spread: 2.4,
-    maxH: () => (stage.clientHeight * 0.92) / 0.84,
-    onFrame(L) { rdW.textContent = Math.round(L.w); rdD.textContent = Math.round(L.d); rdR.textContent = Math.round(hero ? hero.st.r : 0); },
-    onMove(e) {
-      const c = $("#chart").getBoundingClientRect();
-      ring.setAttribute("transform", `translate(${(e.clientX - c.left).toFixed(0)} ${(e.clientY - c.top).toFixed(0)})`);
-      ring.style.opacity = 1;
-    },
+  function paintHero() {
+    apply(word, "sans", H);
+    // fit: the word fills the canvas width at its current settings, but never grows taller than the canvas allows
+    word.style.fontSize = "100px";
+    const w100 = word.getBoundingClientRect().width;
+    const cs = getComputedStyle(canvas);
+    const avail = canvas.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight) - 24;
+    const maxByH = Math.max(80, innerHeight * 0.44);
+    word.style.fontSize = Math.min((avail / w100) * 100, maxByH) + "px";
+    $("#pW").textContent = Math.round(H.w); $("#pD").textContent = Math.round(H.d) + "%"; $("#pR").textContent = Math.round(H.r);
+    $("#tipW").textContent = `weight ${Math.round(H.w)}`; $("#tipD").textContent = `width ${Math.round(H.d)}%`; $("#tipR").textContent = `radius ${Math.round(H.r)}`;
+    $("#hdW").setAttribute("aria-valuetext", Math.round(H.w));
+  }
+  const handles = { hdW: "w", hdD: "d", hdR: "r" };
+  const RANGE = { w: WG, d: WD, r: RD };
+  Object.entries(handles).forEach(([id, key]) => {
+    const el = $("#" + id);
+    if (key === "r" && !SAX.radius) { el.hidden = true; return; }
+    let start = null;
+    el.addEventListener("pointerdown", (e) => {
+      e.preventDefault(); el.setPointerCapture(e.pointerId); el.classList.add("drag");
+      start = { x: e.clientX, y: e.clientY, v: H[key] };
+    });
+    el.addEventListener("pointermove", (e) => {
+      if (!start) return;
+      const [lo, hi] = RANGE[key], span = hi - lo;
+      const dx = e.clientX - start.x, dy = e.clientY - start.y;
+      const delta = key === "w" ? -dy / 260 : key === "d" ? dx / 380 : (dx - dy) / 300;
+      H[key] = clamp(start.v + delta * span, lo, hi);
+      paintHero();
+    });
+    const end = () => { start = null; el.classList.remove("drag"); };
+    el.addEventListener("pointerup", end); el.addEventListener("pointercancel", end);
+    el.addEventListener("keydown", (e) => {
+      const [lo, hi] = RANGE[key], step = (hi - lo) / (e.shiftKey ? 8 : 40);
+      const dir = { ArrowUp: 1, ArrowRight: 1, ArrowDown: -1, ArrowLeft: -1 }[e.key];
+      if (!dir) return; e.preventDefault(); H[key] = clamp(H[key] + dir * step, lo, hi); paintHero();
+    });
   });
-  stage.addEventListener("pointerleave", () => (ring.style.opacity = 0));
-  stage.addEventListener("keydown", (e) => {
-    if (e.key === "ArrowRight" || e.key === "ArrowLeft") { e.preventDefault(); hero.focusStep(e.key === "ArrowRight" ? 1 : -1); }
-    if (e.key === "ArrowUp" || e.key === "ArrowDown") { e.preventDefault(); heroR.value = clamp(+heroR.value + (e.key === "ArrowUp" ? 10 : -10), 0, 100); hero.setRadius(+heroR.value); }
-  });
-  stage.addEventListener("blur", () => { hero.st.focus = -1; hero.kick(); });
-  heroR.addEventListener("input", () => hero.setRadius(+heroR.value));
-  if (!sax.radius) heroR.closest(".radius-ctl").hidden = true;
-  if (matchMedia("(pointer: coarse)").matches) $("#hint").textContent = "Drag across the word to make each letter heavier and wider.";
-
-  function drawChart() {
-    const svg = $("#chart"), w = svg.clientWidth, h = svg.clientHeight;
-    if (!w || !h) return;
-    svg.setAttribute("viewBox", `0 0 ${w} ${h}`);
-    const cx = w * 0.82, cy = h * 0.12, s = Math.max(w, h);
-    const blob = (rad, wob, ph) => {
-      let d = "";
-      for (let i = 0; i <= 96; i++) {
-        const a = (i / 96) * Math.PI * 2;
-        const rr = rad * (1 + wob * (0.5 * Math.sin(3 * a + ph) + 0.3 * Math.sin(5 * a + ph * 1.7) + 0.2 * Math.sin(9 * a - ph)));
-        d += (i ? "L" : "M") + (cx + Math.cos(a) * rr * 1.35).toFixed(1) + " " + (cy + Math.sin(a) * rr).toFixed(1);
-      }
-      return d + "Z";
+  if (matchMedia("(pointer: coarse)").matches) $("#hint").textContent = "Drag the blue dots: the top one sets the weight, the side one the width, the corner one the radius.";
+  function heroIntro() {
+    if (reduce.matches) { paintHero(); return; }
+    // one opening move: from Thin Compressed to Regular, then the handles pulse to invite a drag
+    const from = { w: WG[0], d: WD[0] }, t0 = performance.now(), dur = 1300;
+    const step = (now) => {
+      const k = clamp((now - t0) / dur, 0, 1), e = 1 - Math.pow(1 - k, 3);
+      H.w = lerp(from.w, 400, e); H.d = lerp(from.d, 100, e); paintHero();
+      if (k < 1) requestAnimationFrame(step); else $$(".hd-w, .hd-d, .hd-r").forEach((h) => h.classList.add("pulse"));
     };
-    svg.innerHTML = [0.12, 0.22, 0.34, 0.48, 0.64, 0.82].map((k, i) => `<path class="iso" d="${blob(s * k, 0.07 + i * 0.012, 0.6 + i)}"/>`).join("");
-    ring.innerHTML = [28, 56, 92].map((r) => `<circle class="ring" r="${r}"/>`).join("");
-    ring.style.opacity = 0; ring.style.transition = "opacity .3s";
-    svg.appendChild(ring);
+    requestAnimationFrame(step);
   }
 
-  /* ---------- ticker: speed follows scrolling ---------- */
-  const WORDS = ["Interfaces", "Reading", "Code", "Data", "Brands", "Signs", "Posters", "Chat", "Wayfinding", "Dashboards", "Editorial", "Packaging"];
-  const tracks = [$("#tk1"), $("#tk2")];
-  tracks.forEach((tr, ti) => {
-    const one = WORDS.map((w, i) => {
-      const k = (i * 7 + ti * 3) % 10 / 9;
-      const s = typeStyle("sans", { w: lerp(WG[0] + 100, WG[1], k), d: lerp(WD[0], WD[1], 1 - k), r: i % 3 === 0 ? RD[1] : 0, ital: i % 4 === 1 ? 1 : 0 });
-      const style = `font-weight:${s.fontWeight};font-stretch:${s.fontStretch};font-variation-settings:${s.fontVariationSettings.replace(/"/g, "'")}`;
-      return `<span style="${style}">${w}</span><span class="dot" aria-hidden="true">${symChar("sparkle")}</span>`;
-    }).join("");
-    tr.innerHTML = one + one;
-  });
-  const tk = { x: [0, 0], v: 0, lastY: scrollY, raf: 0 };
-  function tick() {
-    const dy = scrollY - tk.lastY; tk.lastY = scrollY;
-    tk.v = lerp(tk.v, dy, 0.1);
-    const speed = 0.7 + Math.min(Math.abs(tk.v) * 0.6, 22);
-    tracks.forEach((tr, i) => {
-      const half = tr.scrollWidth / 2, dir = i ? 1 : -1;
-      tk.x[i] = (tk.x[i] + dir * speed + half) % half - (dir > 0 ? half : 0);
-      if (dir < 0 && tk.x[i] > 0) tk.x[i] -= half;
-      tr.style.transform = `translate3d(${tk.x[i].toFixed(1)}px,0,0)`;
-    });
-    tk.raf = tickerOn ? requestAnimationFrame(tick) : 0;
+  /* =========================================================================================
+     2. Two voices: a divider through one paragraph
+     ========================================================================================= */
+  const SPLIT_TEXT = "The ferry leaves Central at seven and crosses the harbour in nine minutes. On the way back the light changes over Kowloon, the cranes turn orange, and the water goes from grey to a deep, even blue. Most passengers read, a few sleep, and someone always stands at the rail to watch the city slide past.";
+  const split = $("#split"), sSerif = $("#splitSerif"), sSans = $("#splitSans"), bar = $("#splitBar");
+  sSerif.textContent = SPLIT_TEXT; sSans.textContent = SPLIT_TEXT;
+  let splitPos = 0.5;
+  function paintSplit() {
+    const b = split.getBoundingClientRect(), x = splitPos * b.width;
+    bar.style.left = x + "px"; bar.setAttribute("aria-valuenow", Math.round(splitPos * 100));
+    const sr = sSerif.getBoundingClientRect(), nr = sSans.getBoundingClientRect();
+    sSerif.style.clipPath = `inset(-20px ${Math.max(0, sr.right - (b.left + x))}px -20px -20px)`;
+    sSans.style.clipPath = `inset(-20px -20px -20px ${Math.max(0, b.left + x - nr.left)}px)`;
   }
-  let tickerOn = false;
-  new IntersectionObserver((es) => {
-    tickerOn = es[0].isIntersecting && !reduce.matches;
-    if (tickerOn && !tk.raf) { tk.lastY = scrollY; tk.raf = requestAnimationFrame(tick); }
-  }).observe($(".ticker"));
-
-  /* ---------- same widths ---------- */
-  const vText = $("#voiceText"), marks = $("#lineMarks"), vCheck = $("#voiceCheck");
-  let voice = "sans", autoT = 0;
-  function lineEnds() {
-    const node = vText.firstChild, txt = node.textContent, ends = [], rects = [];
-    const re = /\S+/g; let m, lastTop = null, lastIdx = -1, lastRect = null, idx = 0;
+  function lineEnds(p) {
+    const node = p.firstChild, txt = node.textContent, ends = []; const re = /\S+/g; let m, lastTop = null, idx = 0, last = -1;
     const range = document.createRange();
-    while ((m = re.exec(txt))) {
-      range.setStart(node, m.index); range.setEnd(node, m.index + m[0].length);
-      const r = range.getClientRects()[0];
-      if (lastTop !== null && r.top > lastTop + 2) { ends.push(lastIdx); rects.push(lastRect); }
-      lastTop = r.top; lastIdx = idx; lastRect = r; idx++;
-    }
-    ends.push(lastIdx); rects.push(lastRect);
-    return { ends, rects };
+    while ((m = re.exec(txt))) { range.setStart(node, m.index); range.setEnd(node, m.index + m[0].length); const r = range.getClientRects()[0]; if (lastTop !== null && r.top > lastTop + 2) ends.push(last); lastTop = r.top; last = idx++; }
+    ends.push(last); return ends;
   }
-  function checkVoices() {
-    vText.classList.remove("serif"); const a = lineEnds();
-    vText.classList.add("serif"); const b = lineEnds();
-    vText.classList.toggle("serif", voice === "serif");
-    const cur = voice === "serif" ? b : a, box = vText.parentElement.getBoundingClientRect();
-    marks.innerHTML = cur.rects.map((r) => `<span style="left:${(box.width - 30).toFixed(1)}px;top:${(r.top - box.top + r.height / 2 - 1.5).toFixed(1)}px"></span>`).join("");
-    const same = a.ends.length === b.ends.length && a.ends.every((v, i) => v === b.ends[i]);
-    vCheck.textContent = same
-      ? `Measured now: all ${a.ends.length} lines end on the same word in Sans and in Serif.`
-      : `Measured now: ${a.ends.filter((v, i) => v === b.ends[i]).length} of ${a.ends.length} lines end on the same word.`;
+  function measureSplit() {
+    const a = lineEnds(sSans), b = lineEnds(sSerif);
+    const same = a.length === b.length && a.every((v, i) => v === b[i]);
+    $("#measure").textContent = same ? `Measured now: all ${a.length} lines break on the same word in Sans and Serif.` : `Measured now: ${a.filter((v, i) => v === b[i]).length} of ${a.length} lines break on the same word.`;
   }
-  function setVoice(v) {
-    voice = v;
-    $$("[data-voice]").forEach((x) => x.setAttribute("aria-checked", String(x.dataset.voice === v)));
-    checkVoices();
-  }
-  $$("[data-voice]").forEach((b) => b.addEventListener("click", () => setVoice(b.dataset.voice)));
-  $("#voiceAuto").addEventListener("change", (e) => {
-    clearInterval(autoT);
-    if (e.target.checked) autoT = setInterval(() => setVoice(voice === "sans" ? "serif" : "sans"), 2000);
-  });
-  $(".trio-sans").style.fontFamily = SANS.css;
+  let splitDrag = false;
+  const splitTo = (cx) => { const b = split.getBoundingClientRect(); splitPos = clamp((cx - b.left) / b.width, 0.04, 0.96); paintSplit(); };
+  split.addEventListener("pointerdown", (e) => { splitDrag = true; split.setPointerCapture(e.pointerId); splitTo(e.clientX); });
+  split.addEventListener("pointermove", (e) => { if (splitDrag) splitTo(e.clientX); });
+  split.addEventListener("pointerup", () => (splitDrag = false));
+  bar.addEventListener("keydown", (e) => { const d = { ArrowLeft: -0.04, ArrowRight: 0.04 }[e.key]; if (d) { e.preventDefault(); splitPos = clamp(splitPos + d, 0.04, 0.96); paintSplit(); } });
 
-  /* ---------- tester ---------- */
-  const PRESETS = [
-    { name: "Interface", fam: "sans", w: 500, d: 100, r: 0, ital: 0, size: 26, lh: 1.35, text: "Notifications  Privacy  Sign out" },
-    { name: "Reading", fam: "serif", w: 400, d: 100, r: 0, ital: 0, size: 24, lh: 1.6, text: "The ferry leaves Central at seven and crosses the harbour in nine minutes. On the way back the light changes over Kowloon." },
-    { name: "Code", fam: "mono", w: 400, d: 100, r: 0, ital: 0, size: 20, lh: 1.5, text: "const next = await ferry.depart('Central', 'Mui Wo'); // 0O1lI" },
-    { name: "Dashboard", fam: "sans", w: 650, d: 82, r: 0, ital: 0, size: 88, lh: 1.02, text: "1,284 crossings 98.6%" },
-    { name: "Poster", fam: "sans", w: 900, d: 150, r: 100, ital: 0, size: 150, lh: 0.88, text: "Harbour Nights" },
-    { name: "Signage", fam: "sans", w: 600, d: 88, r: 0, ital: 0, size: 96, lh: 1.02, text: "Exit C Queensway" },
+  /* =========================================================================================
+     3. Put it to work: six real interfaces, one set of controls
+     ========================================================================================= */
+  const SCENES = [
+    { id: "code", label: "Code editor", icon: "code", fam: "mono", role: "Code and terminal text", rules: [["#ideCode", "14px"], ["#term", "13px"]], def: { w: 400, d: 100, r: 0, ital: 0, s: 100 } },
+    { id: "dash", label: "Dashboard", icon: "bar-chart", fam: "sans", role: "Figures and headings", rules: [[".num", "clamp(24px, 5.6vw, 34px)"], [".dash-title", "28px"]], def: { w: 700, d: 82, r: 0, ital: 0, s: 100 } },
+    { id: "read", label: "Reading app", icon: "document", fam: "serif", role: "Article text", rules: [["#readBody", "19px"]], def: { w: 400, d: 100, r: 0, ital: 0, s: 100 } },
+    { id: "chat", label: "Assistant", icon: "chat", fam: "serif", role: "Assistant replies", rules: [[".msg.bot .bt", "17px"]], def: { w: 400, d: 100, r: 0, ital: 0, s: 100 } },
+    { id: "poster", label: "Poster", icon: "image", fam: "sans", role: "Poster headline", rules: [["#poH", "19cqi"], ["#po.line #poH", "11cqi"]], def: { w: 900, d: 150, r: 100, ital: 0, s: 100 } },
+    { id: "sign", label: "Station sign", icon: "location", fam: "sans", role: "Place names", rules: [[".sign-dest", "8.5cqi"], [".sign-name", "5.6cqi"]], def: { w: 600, d: 88, r: 0, ital: 0, s: 100 } },
   ];
-  const st = { ...PRESETS[4] };
-  const tW = $("#tW"), tD = $("#tD"), tR = $("#tR"), tS = $("#tS"), tL = $("#tL"), proof = $("#proof"), cssOut = $("#cssOut");
-  const presetBox = $("#presets"), pad = $("#pad"), padDot = $("#padDot");
-  presetBox.innerHTML = PRESETS.map((p, i) => `<button type="button" aria-pressed="${i === 4}" data-p="${i}">${p.name}</button>`).join("");
-  function setRange(input, ax, val) {
-    const row = input.closest(".slider");
-    if (!ax) { input.disabled = true; row.classList.add("disabled"); return; }
-    input.disabled = false; row.classList.remove("disabled");
-    input.min = ax[0]; input.max = ax[1]; input.value = clamp(val, ax[0], ax[1]);
+  const tabs = $("#sceneTabs"), benchStyle = document.createElement("style");
+  document.head.appendChild(benchStyle);
+  tabs.innerHTML = SCENES.map((s, i) => `<button type="button" role="tab" id="tab-${s.id}" aria-controls="scene-${s.id}" aria-selected="${i === 0}">${symHTML(s.icon)}${s.label}</button>`).join("");
+  const state = Object.fromEntries(SCENES.map((s) => [s.id, { ...s.def }]));
+  let cur = SCENES[0];
+  const cW = $("#cW"), cD = $("#cD"), cR = $("#cR"), cS = $("#cS"), cI = $("#cI");
+  function setCtl(input, ax, v) {
+    const row = input.closest(".ctl");
+    if (!ax) { input.disabled = true; row.classList.add("off"); return; }
+    input.disabled = false; row.classList.remove("off"); input.min = ax[0]; input.max = ax[1]; input.value = clamp(v, ax[0], ax[1]);
   }
-  function syncControls() {
-    const f = T.families[st.fam];
-    setRange(tW, f.axes.wght, st.w); setRange(tD, f.axes.wdth, st.d); setRange(tR, f.axes.radius, st.r);
-    tS.value = st.size; tL.value = st.lh;
-    $$("#famSeg button").forEach((b) => b.setAttribute("aria-checked", String(b.dataset.fam === st.fam)));
-    $$("#italSeg button").forEach((b) => {
-      b.disabled = b.dataset.ital === "1" && !f.italic;
-      b.setAttribute("aria-checked", String(+b.dataset.ital === (f.italic ? st.ital : 0)));
-    });
-    renderProof();
+  function syncBench() {
+    const f = FAM[cur.fam], st = state[cur.id];
+    setCtl(cW, f.axes.wght, st.w); setCtl(cD, f.axes.wdth, st.d); setCtl(cR, f.axes.radius, st.r); cS.value = st.s;
+    cI.disabled = !f.italic; cI.setAttribute("aria-pressed", String(!!(f.italic && st.ital)));
+    $("#role").innerHTML = `Editing: ${cur.role} <b>${NAMES[cur.fam]}</b>`;
+    paintBench();
   }
-  function renderProof() {
-    const f = T.families[st.fam], wa = f.axes.wght, da = f.axes.wdth;
-    const s = { w: +tW.value, d: da ? +tD.value : 100, r: f.axes.radius ? +tR.value : 0, ital: f.italic ? st.ital : 0 };
-    Object.assign(st, s, { size: +tS.value, lh: +tL.value });
-    apply(proof, st.fam, s);
-    proof.style.fontSize = st.size + "px"; proof.style.lineHeight = st.lh;
-    fitProof();
-    $("#oW").textContent = Math.round(s.w); $("#oD").textContent = da ? s.d + "%" : "fixed";
-    $("#oR").textContent = f.axes.radius ? Math.round(s.r) : "none"; $("#oS").textContent = st.size + " px"; $("#oL").textContent = st.lh.toFixed(2);
-    const fx = da ? (s.d - da[0]) / (da[1] - da[0]) : 0.5, fy = 1 - (s.w - wa[0]) / (wa[1] - wa[0]);
-    padDot.style.left = `calc(${fx * 100}% - ${fx * 26}px)`; padDot.style.top = `calc(${fy * 100}% - ${fy * 26}px)`;
-    pad.setAttribute("aria-valuetext", `weight ${Math.round(s.w)}, width ${da ? s.d + "%" : "fixed"}`);
-    const famName = { sans: "Admiralty Sans", serif: "Admiralty Serif", mono: "Admiralty Mono" }[st.fam];
-    const lines = [`font-family: "${famName}";`, `font-weight: ${Math.round(s.w)};`];
-    if (da) lines.push(`font-stretch: ${s.d}%;`);
-    if (s.ital) lines.push("font-style: italic;");
-    if (f.axes.radius && s.r) lines.push(`font-variation-settings: "${R}" ${Math.round(s.r)};`);
-    lines.push(`font-size: ${st.size}px;`, `line-height: ${st.lh};`);
-    cssOut.textContent = lines.join("\n");
+  function paintBench() {
+    const st = state[cur.id], f = FAM[cur.fam];
+    st.w = +cW.value; if (!cD.disabled) st.d = +cD.value; if (!cR.disabled) st.r = +cR.value; st.s = +cS.value;
+    const p = typeProps(cur.fam, st);
+    benchStyle.textContent = SCENES.map((sc) => {
+      const s2 = state[sc.id], p2 = cssText(typeProps(sc.fam, s2));
+      return sc.rules.map(([selr, base]) => `#scene-${sc.id} ${selr} { ${p2} font-size: calc(${base} * ${s2.s / 100}); }`).join("\n");
+    }).join("\n");
+    $("#oW").textContent = Math.round(st.w); $("#oD").textContent = cD.disabled ? "fixed" : st.d + "%"; $("#oR").textContent = cR.disabled ? "none" : Math.round(st.r); $("#oS").textContent = st.s + "%";
+    const out = [`font-family: "${NAMES[cur.fam]}";`, `font-weight: ${p["font-weight"]};`];
+    if (f.axes.wdth) out.push(`font-stretch: ${parseFloat(p["font-stretch"])}%;`);
+    if (st.ital && f.italic) out.push("font-style: italic;");
+    if (f.axes.radius && st.r) out.push(`font-variation-settings: "${R}" ${Math.round(st.r)};`);
+    $("#cssLine").textContent = out.join("  ");
+    if (cur.id === "sign") fitSign();
+    if (cur.id === "poster") fitPoster();
+    if (cur.id === "code") $("#stFont").textContent = `${NAMES.mono} ${Math.round(st.w)}`;
   }
-  // Big sizes shrink on screen until the longest word fits on one line; the CSS keeps the chosen size.
-  const probe = document.createElement("span");
-  Object.assign(probe.style, { position: "absolute", visibility: "hidden", whiteSpace: "nowrap", left: "-9999px", top: "0" });
-  document.body.appendChild(probe);
-  function fitProof() {
-    const longest = (proof.textContent.split(/\s+/).sort((a, b) => b.length - a.length)[0] || "W");
-    Object.assign(probe.style, typeStyle(st.fam, { w: st.w, d: st.d, r: st.r, ital: st.ital }), { fontSize: st.size + "px" });
-    probe.textContent = longest;
-    const ww = probe.getBoundingClientRect().width, avail = proof.clientWidth;
-    if (ww > avail && avail > 0) proof.style.fontSize = Math.max(12, Math.floor(st.size * avail / ww * 0.98)) + "px";
-  }
-  proof.addEventListener("input", fitProof);
-  const unpress = () => $$("button", presetBox).forEach((x) => x.setAttribute("aria-pressed", "false"));
-  presetBox.addEventListener("click", (e) => {
+  tabs.addEventListener("click", (e) => {
     const b = e.target.closest("button"); if (!b) return;
-    const p = PRESETS[+b.dataset.p]; Object.assign(st, p); proof.textContent = p.text;
-    $$("button", presetBox).forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
-    syncControls();
+    cur = SCENES.find((s) => "tab-" + s.id === b.id);
+    $$("button", tabs).forEach((x) => x.setAttribute("aria-selected", String(x === b)));
+    SCENES.forEach((s) => ($("#scene-" + s.id).hidden = s !== cur));
+    syncBench();
+    if (cur.id === "dash") drawChart();
   });
-  $$("#famSeg button").forEach((b) => b.addEventListener("click", () => { st.fam = b.dataset.fam; syncControls(); }));
-  $$("#italSeg button").forEach((b) => b.addEventListener("click", () => { if (!b.disabled) { st.ital = +b.dataset.ital; syncControls(); } }));
-  [tW, tD, tR, tS, tL].forEach((i) => i.addEventListener("input", () => { unpress(); renderProof(); }));
-  function padSet(fx, fy) {
-    const f = T.families[st.fam], wa = f.axes.wght, da = f.axes.wdth;
-    tW.value = Math.round(lerp(wa[1], wa[0], clamp(fy, 0, 1)));
-    if (da) tD.value = (Math.round(lerp(da[0], da[1], clamp(fx, 0, 1)) * 2) / 2).toFixed(1);
-    unpress(); renderProof();
-  }
-  let padDrag = false;
-  pad.addEventListener("pointerdown", (e) => { padDrag = true; pad.setPointerCapture(e.pointerId); const b = pad.getBoundingClientRect(); padSet((e.clientX - b.left) / b.width, (e.clientY - b.top) / b.height); });
-  pad.addEventListener("pointermove", (e) => { if (!padDrag) return; const b = pad.getBoundingClientRect(); padSet((e.clientX - b.left) / b.width, (e.clientY - b.top) / b.height); });
-  pad.addEventListener("pointerup", () => (padDrag = false));
-  pad.addEventListener("keydown", (e) => {
-    const m = { ArrowUp: [0, 20, 0], ArrowDown: [0, -20, 0], ArrowRight: [0, 0, 2.5], ArrowLeft: [0, 0, -2.5] }[e.key];
-    if (!m) return; e.preventDefault();
-    tW.value = +tW.value + m[1]; if (!tD.disabled) tD.value = +tD.value + m[2]; unpress(); renderProof();
+  tabs.addEventListener("keydown", (e) => {
+    const i = SCENES.indexOf(cur), d = { ArrowRight: 1, ArrowLeft: -1 }[e.key]; if (!d) return;
+    const b = $$("button", tabs)[(i + d + SCENES.length) % SCENES.length]; b.focus(); b.click();
   });
-  $("#copyCss").addEventListener("click", () => copy(cssOut.textContent, "Copied the CSS"));
-  proof.textContent = st.text;
-  syncControls();
-  addEventListener("resize", () => renderProof());
+  [cW, cD, cR, cS].forEach((i) => i.addEventListener("input", paintBench));
+  cI.addEventListener("click", () => { if (cI.disabled) return; state[cur.id].ital = state[cur.id].ital ? 0 : 1; syncBench(); });
+  $("#cReset").addEventListener("click", () => { state[cur.id] = { ...cur.def }; syncBench(); });
+  $("#cCopy").addEventListener("click", () => copy($("#cssLine").textContent.replace(/  /g, "\n"), "Copied the CSS"));
 
-  /* ---------- range rows: scroll position or pointer sets each axis ---------- */
-  const rows = $$(".rrow");
-  const fmt = { wght: (v) => Math.round(v), wdth: (v) => Math.round(v) + "%", radius: (v) => Math.round(v), ital: (v) => (Math.abs(SANS.slnt || 10) * v).toFixed(1) + "°" };
-  function paintRow(row, k) {
-    const ax = row.dataset.axis, s = { w: 500, d: 100, r: 0, ital: 0 };
-    let v = 0;
-    if (ax === "wght") v = s.w = lerp(WG[0], WG[1], k);
-    if (ax === "wdth") v = s.d = lerp(WD[0], WD[1], k);
-    if (ax === "radius") { s.w = 800; v = s.r = lerp(RD[0], RD[1], k); }
-    if (ax === "ital") { s.ital = SANS.italic === "slnt" ? k : k > 0.5 ? 1 : 0; v = s.ital; }
-    apply($(".rword", row), "sans", s);
-    $("[data-out]", row).textContent = fmt[ax](v);
+  /* ----- code editor ----- */
+  const FILES = {
+    "ferries.ts": `import { Pier, Route, minutes } from "../schedule";
+
+// Next departures from a pier, soonest first
+export async function nextFerries(pier: Pier, limit = 3): Promise<Route[]> {
+  const now = new Date();
+  const routes = await pier.routes();
+
+  return routes
+    .filter((r) => r.departs > now && r.status !== "suspended")
+    .sort((a, b) => a.departs.getTime() - b.departs.getTime())
+    .slice(0, limit);
+}
+
+export function waitTime(route: Route, now = new Date()): string {
+  const m = minutes(route.departs, now);
+  if (m <= 0) return "Boarding";
+  return m === 1 ? "1 min" : \`\${m} min\`;
+}
+
+// Central Pier 6: 0O 1lI {} [] => !== <= >=
+export const CENTRAL_6 = { id: "CPR6", lat: 22.2873, lng: 114.1617 };`,
+    "schedule.ts": `export type Status = "on-time" | "delayed" | "suspended";
+
+export interface Route {
+  id: string;
+  from: string;
+  to: string;
+  departs: Date;
+  status: Status;
+}
+
+export interface Pier {
+  id: string;
+  name: string;
+  routes(): Promise<Route[]>;
+}
+
+// Whole minutes between two times, rounded up
+export function minutes(a: Date, b: Date): number {
+  return Math.ceil((a.getTime() - b.getTime()) / 60000);
+}`,
+    "package.json": `{
+  "name": "harbour-api",
+  "version": "1.4.0",
+  "private": true,
+  "scripts": {
+    "test": "vitest run",
+    "dev": "tsx watch src/server.ts"
+  },
+  "dependencies": {
+    "hono": "4.6.3"
   }
-  const hover = new Map();
-  function paintRows() {
-    rows.forEach((row) => {
-      if (hover.has(row)) return paintRow(row, hover.get(row));
-      const b = row.getBoundingClientRect();
-      const k = clamp((innerHeight - b.top) / (innerHeight + b.height), 0, 1);
-      paintRow(row, k * k * (3 - 2 * k));
+}`,
+  };
+  const TREE = [["dir", "src", 0], ["dir", "routes", 1], ["file", "ferries.ts", 2], ["file", "schedule.ts", 2], ["dir", "tests", 0], ["file", "ferries.test.ts", 1], ["file", "package.json", 0], ["file", "README.md", 0]];
+  let openTabs = ["ferries.ts", "schedule.ts"], curFile = "ferries.ts", curLine = 4;
+  const KW = /\b(import|from|export|async|function|const|let|return|if|await|type|interface|new|true|false)\b/;
+  function hl(line) {
+    const re = /(\/\/.*$)|("(?:[^"\\]|\\.)*"|`(?:[^`\\]|\\.)*`)|(\b\d+(?:\.\d+)?\b)|([A-Za-z_$][\w$]*)(?=\s*\()|(\b[A-Z][A-Za-z0-9_]*\b)|([A-Za-z_$][\w$]*)/g;
+    let out = "", last = 0, m;
+    while ((m = re.exec(line))) {
+      out += esc(line.slice(last, m.index)); last = re.lastIndex;
+      const t = m[0];
+      if (m[1]) out += `<span class="c">${esc(t)}</span>`;
+      else if (m[2]) out += `<span class="s">${esc(t)}</span>`;
+      else if (m[3]) out += `<span class="n">${t}</span>`;
+      else if (KW.test(t) && (m[4] || m[6])) out += `<span class="k">${t}</span>`;
+      else if (m[4]) out += `<span class="f">${t}</span>`;
+      else if (m[5]) out += `<span class="t">${t}</span>`;
+      else out += KW.test(t) ? `<span class="k">${t}</span>` : esc(t);
+    }
+    return out + esc(line.slice(last));
+  }
+  function renderCode() {
+    const lines = FILES[curFile].split("\n");
+    curLine = clamp(curLine, 1, lines.length);
+    $("#ideCode").innerHTML = lines.map((l, i) => `<div class="row${i + 1 === curLine ? " cur" : ""}" data-l="${i + 1}"><span class="ln">${i + 1}</span><span class="cd">${hl(l)}${i + 1 === curLine ? '<span class="caret"></span>' : ""}</span></div>`).join("");
+    $("#stPos").textContent = `Ln ${curLine}, Col ${lines[curLine - 1].length + 1}`;
+    $("#ideTabs").innerHTML = openTabs.map((f) => `<button type="button" class="${f === curFile ? "on" : ""}" data-f="${f}">${symHTML("code-file")}${f}</button>`).join("");
+    $("#tree").innerHTML = TREE.map(([k, n, lv]) => `<li class="${k}${n === curFile ? " on" : ""}" data-f="${k === "file" ? n : ""}" style="padding-left:${14 + lv * 14}px">${symHTML(k === "dir" ? "folder" : "code-file")}${n}</li>`).join("");
+    paintSyms($("#scene-code"));
+  }
+  function openFile(f) {
+    if (!FILES[f]) { say(`${f} is not part of this demo. Try ferries.ts, schedule.ts or package.json.`); return; }
+    if (!openTabs.includes(f)) openTabs.push(f);
+    curFile = f; curLine = 1; renderCode();
+  }
+  $("#tree").addEventListener("click", (e) => { const li = e.target.closest("li"); if (li && li.dataset.f) openFile(li.dataset.f); });
+  $("#ideTabs").addEventListener("click", (e) => { const b = e.target.closest("button"); if (b) openFile(b.dataset.f); });
+  $("#ideCode").addEventListener("click", (e) => { const r = e.target.closest(".row"); if (r) { curLine = +r.dataset.l; renderCode(); } });
+  $("#ideCode").addEventListener("keydown", (e) => { const d = { ArrowDown: 1, ArrowUp: -1 }[e.key]; if (d) { e.preventDefault(); curLine += d; renderCode(); } });
+  function terminal() {
+    const rows = [["Central to Tsim Sha Tsui", 412, "99.1%"], ["Wan Chai to Hung Hom", 188, "97.4%"], ["Central to Mui Wo", 64, "98.0%"], ["Central to Peng Chau", 0, "n/a"]];
+    const w = [26, 7, 9], line = (l, m, r) => l + w.map((n) => "─".repeat(n)).join(m) + r;
+    const cell = (a, b, c) => `│ ${String(a).padEnd(w[0] - 2)} │ ${String(b).padStart(w[1] - 2)} │ ${String(c).padStart(w[2] - 2)} │`;
+    $("#term").innerHTML = [
+      `<span class="pr">~/harbour-api</span> <span class="dim">main</span> $ npm test`, "",
+      ` <span class="ok">PASS</span>  tests/ferries.test.ts <span class="dim">(0.84 s)</span>`,
+      line("┌", "┬", "┐"), cell("route", "trips", "on time"), line("├", "┼", "┤"),
+      ...rows.map((r) => cell(...r)), line("└", "┴", "┘"),
+      ` Tests  <span class="ok">12 passed</span> <span class="dim">(12)</span>`,
+    ].join("\n");
+  }
+  renderCode(); terminal();
+
+  /* ----- dashboard ----- */
+  const wave = (n, base, amp, peaks, seed) => Array.from({ length: n }, (_, i) => Math.round(base + amp * peaks.reduce((s, [c, wd, h]) => s + h * Math.exp(-(((i - c) / wd) ** 2)), 0) + 6 * Math.sin(i * 1.7 + seed)));
+  const DATA = {
+    day: { labels: Array.from({ length: 18 }, (_, i) => `${String(6 + i).padStart(2, "0")}:00`),
+      a: wave(18, 38, 70, [[2.5, 1.6, 1], [12, 1.8, 0.92]], 1), b: wave(18, 36, 66, [[2.5, 1.6, 1], [12, 1.8, 0.85]], 3),
+      kpi: [["Crossings", "1,284", "+3.2%", 1], ["On time", "98.6%", "+0.4 pt", 1], ["Passengers", "152,940", "+5.1%", 1], ["Average wait", "4.1 min", "−0.3 min", 1]],
+      routes: [["Central to Tsim Sha Tsui", 412], ["Wan Chai to Hung Hom", 188], ["Central to Cheung Chau", 102], ["Central to Mui Wo", 64], ["Central to Lamma", 58]] },
+    week: { labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+      a: [1240, 1262, 1251, 1288, 1340, 1495, 1436], b: [1218, 1240, 1236, 1260, 1302, 1452, 1410],
+      kpi: [["Crossings", "9,312", "+2.4%", 1], ["On time", "97.9%", "−0.3 pt", 0], ["Passengers", "1,031,400", "+3.8%", 1], ["Average wait", "4.6 min", "+0.2 min", 0]],
+      routes: [["Central to Tsim Sha Tsui", 2884], ["Wan Chai to Hung Hom", 1316], ["Central to Cheung Chau", 714], ["Central to Mui Wo", 448], ["Central to Lamma", 406]] },
+    month: { labels: Array.from({ length: 30 }, (_, i) => String(i + 1)),
+      a: wave(30, 1240, 260, [[5, 1, 0.5], [12, 1, 0.6], [19, 1, 0.55], [26, 1, 0.7]], 2), b: wave(30, 1220, 240, [[5, 1, 0.5], [12, 1, 0.55], [19, 1, 0.5], [26, 1, 0.62]], 5),
+      kpi: [["Crossings", "38,240", "+1.9%", 1], ["On time", "98.2%", "+0.1 pt", 1], ["Passengers", "4,412,800", "+4.4%", 1], ["Average wait", "4.4 min", "−0.1 min", 1]],
+      routes: [["Central to Tsim Sha Tsui", 12360], ["Wan Chai to Hung Hom", 5640], ["Central to Cheung Chau", 3060], ["Central to Mui Wo", 1920], ["Central to Lamma", 1740]] },
+  };
+  const TABLE = [
+    { route: "Central to Tsim Sha Tsui", trips: 412, ontime: 99.1, wait: 3.2, st: ["ok", "On time"] },
+    { route: "Wan Chai to Hung Hom", trips: 188, ontime: 97.4, wait: 4.8, st: ["warn", "Minor delays"] },
+    { route: "Central to Cheung Chau", trips: 102, ontime: 98.8, wait: 5.1, st: ["ok", "On time"] },
+    { route: "Central to Mui Wo", trips: 64, ontime: 98.0, wait: 6.4, st: ["ok", "On time"] },
+    { route: "Central to Peng Chau", trips: 0, ontime: 0, wait: 0, st: ["bad", "Suspended"] },
+  ];
+  let period = "day", sortK = "trips", sortDir = -1;
+  function renderDash() {
+    const D = DATA[period];
+    $("#kpis").innerHTML = D.kpi.map(([l, v, d, good]) => `<div class="kpi"><p>${l}</p><p class="num t-main">${v}</p><span class="delta ${good ? "up" : "down"}">${d}</span></div>`).join("");
+    const max = Math.max(...D.routes.map((r) => r[1]));
+    $("#routeBars").innerHTML = D.routes.map(([n, v]) => `<div class="rb"><div class="rb-t"><span>${n}</span><b>${v.toLocaleString("en")}</b></div><div class="rb-bar"><i style="width:${(v / max) * 100}%"></i></div></div>`).join("");
+    const rows = [...TABLE].sort((a, b) => (a[sortK] > b[sortK] ? 1 : a[sortK] < b[sortK] ? -1 : 0) * sortDir);
+    $("#table tbody").innerHTML = rows.map((r) => `<tr><td>${r.route}</td><td>${r.trips || "–"}</td><td>${r.ontime ? r.ontime.toFixed(1) + "%" : "–"}</td><td>${r.wait ? r.wait.toFixed(1) + " min" : "–"}</td><td><span class="pill ${r.st[0]}">${r.st[1]}</span></td></tr>`).join("");
+    $$("#table th button").forEach((b) => { if (b.dataset.k === sortK) b.setAttribute("aria-sort", sortDir > 0 ? "ascending" : "descending"); else b.removeAttribute("aria-sort"); });
+    drawChart();
+  }
+  function drawChart() {
+    const svg = $("#lineChart"); if (!svg || $("#scene-dash").hidden) return;
+    const D = DATA[period], W = svg.clientWidth || 600, Hh = svg.clientHeight || 210, padL = 40, padB = 22, padT = 8, padR = 8;
+    const all = [...D.a, ...D.b], lo = 0, hi = Math.ceil(Math.max(...all) * 1.12 / 10) * 10;
+    const X = (i) => padL + (i / (D.a.length - 1)) * (W - padL - padR), Y = (v) => padT + (1 - (v - lo) / (hi - lo)) * (Hh - padT - padB);
+    const path = (arr) => arr.map((v, i) => `${i ? "L" : "M"}${X(i).toFixed(1)},${Y(v).toFixed(1)}`).join("");
+    let g = "";
+    for (let k = 0; k <= 4; k++) { const v = lo + (hi - lo) * k / 4, y = Y(v); g += `<line class="grid" x1="${padL}" x2="${W - padR}" y1="${y}" y2="${y}"/><text class="ax" x="${padL - 6}" y="${y + 4}" text-anchor="end">${Math.round(v).toLocaleString("en")}</text>`; }
+    const every = Math.ceil(D.labels.length / 7);
+    D.labels.forEach((l, i) => { if (i % every === 0) g += `<text class="ax" x="${X(i)}" y="${Hh - 6}" text-anchor="middle">${l}</text>`; });
+    g += `<path class="area" d="${path(D.a)}L${X(D.a.length - 1)},${Y(lo)}L${X(0)},${Y(lo)}Z"/><path class="lb" d="${path(D.b)}"/><path class="la" d="${path(D.a)}"/>`;
+    g += `<line class="cross" id="cross" y1="${padT}" y2="${Hh - padB}" x1="-10" x2="-10"/><circle class="pt" id="pt" r="5" cx="-10" cy="-10"/>`;
+    svg.setAttribute("viewBox", `0 0 ${W} ${Hh}`); svg.innerHTML = g;
+    svg.onpointermove = (e) => {
+      const b = svg.getBoundingClientRect(), i = clamp(Math.round(((e.clientX - b.left) - padL) / (W - padL - padR) * (D.a.length - 1)), 0, D.a.length - 1);
+      $("#cross").setAttribute("x1", X(i)); $("#cross").setAttribute("x2", X(i)); $("#pt").setAttribute("cx", X(i)); $("#pt").setAttribute("cy", Y(D.a[i]));
+      const tip = $("#tooltip"); tip.hidden = false;
+      tip.innerHTML = `<b>${period === "month" ? "Day " : ""}${D.labels[i]}</b><br>${D.a[i].toLocaleString("en")} this period<br>${D.b[i].toLocaleString("en")} last period`;
+      tip.style.left = clamp(X(i) + 12, 0, W - 150) + "px";
+    };
+    svg.onpointerleave = () => { $("#tooltip").hidden = true; $("#pt").setAttribute("cx", -10); $("#cross").setAttribute("x1", -10); $("#cross").setAttribute("x2", -10); };
+  }
+  $("#period").addEventListener("click", (e) => { const b = e.target.closest("button"); if (!b) return; period = b.dataset.p; $$("#period button").forEach((x) => x.setAttribute("aria-checked", String(x === b))); renderDash(); });
+  $("#table thead").addEventListener("click", (e) => { const b = e.target.closest("button"); if (!b) return; if (sortK === b.dataset.k) sortDir = -sortDir; else { sortK = b.dataset.k; sortDir = b.dataset.k === "route" ? 1 : -1; } renderDash(); });
+  renderDash();
+
+  /* ----- reading app ----- */
+  const ARTICLE = {
+    en: { t: "The harbour that never sleeps", by: "Story by Wing Chan, 18 November 2026", time: "4 min read", p: [
+      "Just after midnight the last commuter ferry ties up at Central and the night shift begins. Tugs push container barges toward the western anchorage, a pilot boat waits off Green Island, and the harbour control room watches all of it on a wall of screens.",
+      "“You learn the water by its sounds,” says the duty officer, who has worked nights for eleven years. “When it is quiet, something is about to change.”",
+      "By four the fishing boats from Aberdeen are already moving, and the first ferry crews arrive to check engines, ropes and life jackets. Nobody hurries. The timetable starts at six, and it has not been late in months.",
+      "Then the sun comes up over Lei Yue Mun, the water turns from grey to blue, and the city takes the harbour back."] },
+    vi: { t: "Bến cảng không bao giờ ngủ", by: "Bài viết của Trần Minh Anh, 18 tháng 11 năm 2026", time: "4 phút đọc", p: [
+      "Ngay sau nửa đêm, chuyến phà cuối cùng cập bến Trung Hoàn và ca đêm bắt đầu. Tàu kéo đẩy những sà lan chở container về khu neo đậu phía tây, một chiếc tàu hoa tiêu chờ ngoài đảo Green, và phòng điều khiển bến cảng theo dõi tất cả trên một bức tường màn hình.",
+      "“Bạn học về mặt nước qua âm thanh của nó,” viên sĩ quan trực ca nói, người đã làm ca đêm suốt mười một năm. “Khi mọi thứ yên lặng, sắp có điều gì đó thay đổi.”",
+      "Đến bốn giờ sáng, thuyền đánh cá từ Aberdeen đã bắt đầu ra khơi, và những thủy thủ đầu tiên đến kiểm tra động cơ, dây neo và áo phao. Không ai vội vàng. Lịch chạy bắt đầu lúc sáu giờ, và đã nhiều tháng nay chưa trễ chuyến nào.",
+      "Rồi mặt trời mọc trên Lei Yue Mun, mặt nước chuyển từ xám sang xanh, và thành phố lại nhận về bến cảng của mình."] },
+  };
+  function renderArticle(l) {
+    const a = ARTICLE[l];
+    $("#readTitle").textContent = a.t; $("#readBy").textContent = a.by; $("#readTime").textContent = a.time;
+    $("#readBody").innerHTML = a.p.map((p) => `<p>${esc(p)}</p>`).join("");
+    $("#scene-read .reader-page").lang = l;
+  }
+  $("#lang").addEventListener("click", (e) => { const b = e.target.closest("button"); if (!b) return; $$("#lang button").forEach((x) => x.setAttribute("aria-checked", String(x === b))); renderArticle(b.dataset.l); });
+  renderArticle("en");
+
+  /* ----- assistant chat ----- */
+  const log = $("#chatLog");
+  const botTools = `<div class="msg-tools"><button type="button" aria-label="Copy reply">${symHTML("copy")}</button><button type="button" aria-label="Good reply">${symHTML("thumbs-up")}</button><button type="button" aria-label="Try again">${symHTML("regenerate")}</button></div>`;
+  function addMsg(who, html) {
+    const d = document.createElement("div");
+    d.className = "msg " + who;
+    d.innerHTML = who === "you" ? html : `<span class="av">${symHTML("agent")}</span><div class="bt">${html}${botTools}</div>`;
+    log.appendChild(d); log.scrollTop = log.scrollHeight; return d;
+  }
+  const REPLIES = [
+    [/pier|wheelchair|access/i, "<p>Central Pier 6 has step-free access from the footbridge, and lifts to both decks. Staff can set up a boarding ramp if you ask at the counter.</p>"],
+    [/weather|typhoon|rain|signal/i, "<p>Ferries keep running under Signal No. 1 and usually under Signal No. 3, with fewer trips. When Signal No. 8 is announced, most outlying-island services stop about two hours later.</p>"],
+    [/fare|price|cost|octopus/i, "<p>An ordinary ferry to Mui Wo costs less on weekdays than on Sundays and holidays. Fast ferries cost about twice as much. Octopus cards work at every pier.</p><pre>Ordinary  Mon–Sat   standard\nOrdinary  Sun, hol  + about 50%\nFast      any day   about 2×</pre>"],
+  ];
+  function reply(q) {
+    const hit = REPLIES.find(([re]) => re.test(q));
+    return hit ? hit[1] : "<p>Here are the next departures from Central Pier 6. Times can change in bad weather, so check the board before you board.</p><pre>Route        Departs  Type\nMui Wo       21:40    ordinary\nMui Wo       22:30    fast\nMui Wo       23:30    ordinary</pre>";
+  }
+  addMsg("you", "When is the last ferry to Mui Wo tonight?");
+  addMsg("bot", "<p>The last one leaves Central Pier 6 at <b>23:30</b>. On Fridays there is also a late fast ferry:</p><pre>Day  Departs  Type   Time\nFri  00:30    fast   40 min\nSat  23:30    slow   55 min</pre><p>Ask me about piers, fares or the weather.</p>");
+  $("#composer").addEventListener("submit", (e) => {
+    e.preventDefault(); const inp = $("#msg"), q = inp.value.trim(); if (!q) return; inp.value = "";
+    addMsg("you", esc(q));
+    const typing = addMsg("bot", "<p>…</p>");
+    setTimeout(() => { $(".bt", typing).innerHTML = reply(q) + botTools; log.scrollTop = log.scrollHeight; }, reduce.matches ? 0 : 650);
+  });
+  log.addEventListener("click", (e) => { const b = e.target.closest(".msg-tools button"); if (!b) return; if (b.getAttribute("aria-label") === "Copy reply") copy(b.closest(".bt").innerText.trim(), "Copied the reply"); else say("Thanks, noted"); });
+
+  /* ----- poster ----- */
+  const po = $("#po");
+  $("#swatches").addEventListener("click", (e) => { const b = e.target.closest("button"); if (!b) return; po.dataset.c = b.dataset.c; $$("#swatches button").forEach((x) => x.classList.toggle("on", x === b)); });
+  $("#poLayout").addEventListener("click", (e) => { const b = e.target.closest("button"); if (!b) return; po.classList.toggle("line", b.dataset.a === "line"); $$("#poLayout button").forEach((x) => x.setAttribute("aria-checked", String(x === b))); fitPoster(); });
+  $("#poH").addEventListener("keydown", (e) => { if (e.key === "Enter") e.preventDefault(); });
+  // the headline shrinks until its longest word (or, on one line, the whole line) fits the poster
+  const poProbe = document.createElement("span");
+  Object.assign(poProbe.style, { position: "absolute", visibility: "hidden", whiteSpace: "nowrap", left: "-9999px", top: "0" });
+  function fitPoster() {
+    const h = $("#poH"); h.style.removeProperty("font-size");
+    const one = po.classList.contains("line"), cs = getComputedStyle(h);
+    const text = one ? h.textContent : (h.textContent.split(/\s+/).sort((a, b) => b.length - a.length)[0] || "W");
+    po.appendChild(poProbe);
+    ["fontFamily", "fontWeight", "fontStretch", "fontStyle", "fontVariationSettings", "fontSize", "letterSpacing"].forEach((k) => (poProbe.style[k] = cs[k]));
+    poProbe.textContent = text;
+    const need = poProbe.getBoundingClientRect().width, have = h.clientWidth;
+    if (need > have && have > 0) h.style.fontSize = parseFloat(cs.fontSize) * have / need * 0.97 + "px";
+    poProbe.remove();
+  }
+  $("#poH").addEventListener("input", fitPoster);
+
+  /* ----- station sign ----- */
+  const ZH = { "central": "中環", "tsim sha tsui": "尖沙咀", "tsim sha tsui east": "尖東", "hong kong station": "香港", "hong kong international airport": "香港國際機場", "admiralty": "金鐘", "mui wo": "梅窩", "wan chai": "灣仔" };
+  const dest = $("#signDest"), destIn = $("#destIn"), fitW = $("#fitW");
+  function fitSign() {
+    const st = state.sign, base = typeProps("sans", st);
+    [dest, ...$$(".sign-name")].forEach((el) => el.style.removeProperty("font-stretch"));
+    if (!fitW.checked || !SAX.wdth) { $("#signNote").textContent = "Long names are cut off when they do not fit."; return; }
+    let note = "Every name fits at the chosen width.";
+    [dest, ...$$(".sign-name")].forEach((el) => {
+      if (el.scrollWidth <= el.clientWidth + 1) return;
+      let lo = WD[0], hi = parseFloat(base["font-stretch"]);
+      for (let i = 0; i < 12; i++) { const mid = (lo + hi) / 2; el.style.fontStretch = mid + "%"; if (el.scrollWidth <= el.clientWidth + 1) lo = mid; else hi = mid; }
+      el.style.fontStretch = lo + "%";
+      if (el === dest) note = el.scrollWidth > el.clientWidth + 1 ? `This name is too long even at ${Math.round(WD[0])}% width. Use a shorter name or a smaller size.` : `Width set to ${Math.round(lo)}% so “${el.textContent}” fits without a smaller size.`;
     });
+    $("#signNote").textContent = note;
   }
-  rows.forEach((row) => {
-    row.addEventListener("pointermove", (e) => { const b = row.getBoundingClientRect(); hover.set(row, clamp((e.clientX - b.left) / b.width, 0, 1)); paintRow(row, hover.get(row)); });
-    row.addEventListener("pointerleave", () => { hover.delete(row); paintRows(); });
-  });
-  let rowRAF = 0;
-  addEventListener("scroll", () => { if (!rowRAF) rowRAF = requestAnimationFrame(() => { rowRAF = 0; paintRows(); }); }, { passive: true });
-  if (!sax.radius) rows.find((r) => r.dataset.axis === "radius").hidden = true;
-  if (!SANS.italic) rows.find((r) => r.dataset.axis === "ital").hidden = true;
-  paintRows();
+  function setDest(v) { dest.textContent = v || " "; $("#signZh").textContent = ZH[v.trim().toLowerCase()] || ""; fitSign(); }
+  destIn.addEventListener("input", () => setDest(destIn.value));
+  fitW.addEventListener("change", fitSign);
+  $(".sign-try").addEventListener("click", (e) => { const b = e.target.closest("button"); if (!b) return; destIn.value = b.dataset.d; setDest(b.dataset.d); });
 
-  /* ---------- uses ---------- */
-  const hours = [12, 30, 62, 88, 70, 48, 40, 44, 46, 50, 58, 84, 92, 66, 42, 28];
-  $("#barsG").innerHTML = hours.map((v, i) => `<rect x="${i * 15}" y="${90 - v}" width="11" height="${v}" ${v > 80 ? 'class="hi"' : ""}/>`).join("");
-  $$(".tgl").forEach((t) => t.addEventListener("click", () => {
-    const on = t.getAttribute("aria-checked") !== "true";
-    t.setAttribute("aria-checked", String(on)); $(".sym", t).dataset.sym = on ? "toggle-on" : "toggle-off"; paintSyms(t);
-  }));
-  // poster: pointer sets width (x) and weight (y)
-  const poster = $("#poster"), poHead = $("#poHead");
-  const poRest = { w: WG[1], d: WD[1], r: RD[1] };
-  apply(poHead, "sans", poRest);
-  poster.addEventListener("pointermove", (e) => {
-    const b = poster.getBoundingClientRect();
-    apply(poHead, "sans", { w: lerp(WG[1], 300, clamp((e.clientY - b.top) / b.height, 0, 1)), d: lerp(WD[0], WD[1], clamp((e.clientX - b.left) / b.width, 0, 1)), r: RD[1] });
-  });
-  poster.addEventListener("pointerleave", () => apply(poHead, "sans", poRest));
-  // sign: pointer sets the width of the names
-  const sign = $("#sign"), names = $$(".sign-name", sign);
-  const signRest = () => names.forEach((n) => apply(n, "sans", { w: 600, d: 88 }));
-  signRest();
-  sign.addEventListener("pointermove", (e) => {
-    const b = sign.getBoundingClientRect(), d = lerp(WD[0], 115, clamp((e.clientX - b.left) / b.width, 0, 1));
-    names.forEach((n) => apply(n, "sans", { w: 600, d }));
-  });
-  sign.addEventListener("pointerleave", signRest);
-
-  /* ---------- symbols ---------- */
+  /* =========================================================================================
+     4. Symbols
+     ========================================================================================= */
   const grid = $("#symGrid"), search = $("#symSearch"), count = $("#symCount"), symW = $("#symW"), more = $("#symMore");
-  const symBig = $("#symBig"), symName = $("#symName"), symLabel = $("#symLabel"), symWeights = $("#symWeights");
-  grid.innerHTML = window.SYMBOLS.map(([n, l]) => `<button type="button" data-n="${n}" aria-pressed="false" aria-label="${l}"><i class="sym" aria-hidden="true" data-char="${symChar(n)}"></i><small>${n}</small></button>`).join("");
+  grid.innerHTML = window.SYMBOLS.map(([n, l]) => `<button type="button" data-n="${n}" aria-pressed="false" aria-label="${l}">${symHTML(n)}<small>${n}</small></button>`).join("");
   const btns = $$("button", grid);
-  let showAll = false, chosen = "heart-filled";
-  // show five full rows at first, however many columns fit
-  const firstCount = () => Math.max(1, getComputedStyle(grid).gridTemplateColumns.split(" ").length) * 5;
-  function choose(n) {
-    chosen = n; const s = SYM.get(n);
-    symBig.setAttribute("data-char", symChar(n)); symName.textContent = n; symLabel.textContent = `${s.label}, in ${s.cat}`;
-    symWeights.innerHTML = [400, 500, 700].map((w) => `<span><i class="sym" style="font-weight:${w}" data-char="${symChar(n)}"></i><small>${w}</small></span>`).join("");
-    btns.forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.n === n)));
+  let chosen = "heart-filled", showAll = false;
+  const firstCount = () => Math.max(1, getComputedStyle(grid).gridTemplateColumns.split(" ").length) * 4;
+  function inspect(n) {
+    const s = SYM.get(n);
+    $("#symBig").setAttribute("data-char", ch(n)); $("#symName").textContent = n; $("#symLabel").textContent = `${s.label}, in ${s.cat}`;
+    $("#symWeights").innerHTML = [400, 500, 700].map((w) => `<span><i class="sym" style="font-weight:${w}" data-char="${ch(n)}"></i><small>${w}</small></span>`).join("");
+    $("#symInline").innerHTML = [400, 500, 700].map((w) => `<span style="font-weight:${w}"><i class="sym" style="font-weight:${w}" data-char="${ch(n)}"></i>${s.label}</span>`).join("");
   }
+  function choose(n) { chosen = n; inspect(n); btns.forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.n === n))); }
   function filterSyms() {
-    const q = search.value.trim().toLowerCase();
-    let shown = 0;
-    btns.forEach((b, i) => {
-      const s = SYM.get(b.dataset.n), hay = `${s.name} ${s.label} ${s.cat} ${s.tags}`.toLowerCase();
-      const ok = q ? q.split(/\s+/).every((w) => hay.includes(w)) : showAll || i < firstCount();
-      b.hidden = !ok; if (ok) shown++;
-    });
+    const q = search.value.trim().toLowerCase(); let shown = 0; const fc = firstCount();
+    btns.forEach((b, i) => { const s = SYM.get(b.dataset.n), hay = `${s.name} ${s.label} ${s.cat} ${s.tags}`.toLowerCase(); const ok = q ? q.split(/\s+/).every((w) => hay.includes(w)) : showAll || i < fc; b.hidden = !ok; if (ok) shown++; });
     more.hidden = !!q || showAll;
-    count.textContent = q
-      ? shown ? `${shown} of ${btns.length} symbols match “${search.value.trim()}”` : `No symbol matches “${search.value.trim()}”. Try a shorter word, such as file or user.`
-      : showAll ? `All ${btns.length} symbols` : `${shown} of ${btns.length} symbols`;
+    count.textContent = q ? (shown ? `${shown} of ${btns.length} match “${search.value.trim()}”` : `Nothing matches “${search.value.trim()}”. Try a shorter word, such as file or user.`) : `${shown} of ${btns.length}`;
   }
   search.addEventListener("input", filterSyms);
   more.addEventListener("click", () => { const n = firstCount(); showAll = true; filterSyms(); btns[n] && btns[n].focus(); });
-  addEventListener("resize", () => { if (!showAll && !search.value) filterSyms(); });
   grid.addEventListener("click", (e) => { const b = e.target.closest("button"); if (b) choose(b.dataset.n); });
-  grid.addEventListener("pointerover", (e) => { const b = e.target.closest("button"); if (b && matchMedia("(hover: hover)").matches) choose(b.dataset.n); });
+  grid.addEventListener("pointerover", (e) => { const b = e.target.closest("button"); if (b && matchMedia("(hover: hover)").matches) inspect(b.dataset.n); });
+  grid.addEventListener("pointerleave", () => inspect(chosen));
   $("#symCopy").addEventListener("click", () => copy(chosen, `Copied ${chosen}`));
   symW.addEventListener("input", () => { $("#symbols").style.setProperty("--symW", symW.value); $("#oSW").textContent = symW.value; });
   choose(chosen); filterSyms();
+  addEventListener("resize", () => { if (!showAll && !search.value) filterSyms(); });
 
-  /* ---------- characters ---------- */
+  /* =========================================================================================
+     5. Characters
+     ========================================================================================= */
   const CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789&@#%?!*()[]{}$€£¥₫" +
     "ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÑÒÓÔÕÖØÙÚÛÜÝßàáâãäåæçèéêëìíîïñòóôõöøùúûüýÿ" +
     "ĀāĂăĄąĆćČčĎďĐđĒēĘęĚěĞğĪīİıŁłŃńŇňŌōŐőŒœŘřŚśŠšŤťŪūŮůŰűŸŹźŻżŽž" +
-    "ẠạẢảẤấẦầẨẩẪẫẬậẮắẰằẲẳẴẵẶặẸẹẺẻẼẽẾếỀềỂểỄễỆệỈỉỊịỌọỎỏỐốỒồỔổỖỗỘộỚớỜờỞởỠỡỢợỤụỦủỨứỪừỬửỮữỰựỲỳỴỵỶỷỸỹƠơƯư" +
-    "ǍǎǏǐǑǒǓǔǕǖǗǘǙǚǛǜ";
-  const cGrid = $("#charGrid"), big = $("#charBig"), info = $("#charInfo"), charStage = $("#charStage");
+    "ẠạẢảẤấẦầẨẩẪẫẬậẮắẰằẲẳẴẵẶặẸẹẺẻẼẽẾếỀềỂểỄễỆệỈỉỊịỌọỎỏỐốỒồỔổỖỗỘộỚớỜờỞởỠỡỢợỤụỦủỨứỪừỬửỮữỰựỲỳỴỵỶỷỸỹƠơƯư" + "ǍǎǏǐǑǒǓǔǕǖǗǘǙǚǛǜ";
   const hex = (c) => "U+" + c.codePointAt(0).toString(16).toUpperCase().padStart(4, "0");
-  cGrid.innerHTML = [...CHARS].map((c) => `<button type="button" aria-label="${c}, ${hex(c)}">${c}</button>`).join("");
-  let charSet = { w: 400, d: 100 };
-  function show(b) {
-    const c = b.textContent; big.textContent = c; paintInfo();
-    $$("button[aria-pressed]", cGrid).forEach((x) => x.removeAttribute("aria-pressed")); b.setAttribute("aria-pressed", "true");
-  }
-  function paintInfo() { apply(big, "sans", charSet); info.textContent = `${hex(big.textContent)}   weight ${Math.round(charSet.w)}   width ${Math.round(charSet.d)}%`; }
-  cGrid.addEventListener("pointerover", (e) => { const b = e.target.closest("button"); if (b) show(b); });
-  cGrid.addEventListener("focusin", (e) => { const b = e.target.closest("button"); if (b) show(b); });
-  charStage.addEventListener("pointermove", (e) => {
-    const b = charStage.getBoundingClientRect();
-    charSet = { w: lerp(WG[1], WG[0], clamp((e.clientY - b.top) / b.height, 0, 1)), d: lerp(WD[0], WD[1], clamp((e.clientX - b.left) / b.width, 0, 1)) };
-    paintInfo();
-  });
-  paintInfo();
+  const gGrid = $("#gGrid"), gBig = $("#gBig"), gInfo = $("#gInfo"), gStage = $("#gStage");
+  gGrid.innerHTML = [...CHARS].map((c) => `<button type="button" aria-label="${c}, ${hex(c)}">${c}</button>`).join("");
+  let G = { w: 400, d: 100 };
+  const paintG = () => { apply(gBig, "sans", G); gInfo.textContent = `${hex(gBig.textContent)}   weight ${Math.round(G.w)}   width ${Math.round(G.d)}%`; };
+  function showG(b) { gBig.textContent = b.textContent; $$("button[aria-pressed]", gGrid).forEach((x) => x.removeAttribute("aria-pressed")); b.setAttribute("aria-pressed", "true"); paintG(); }
+  gGrid.addEventListener("pointerover", (e) => { const b = e.target.closest("button"); if (b) showG(b); });
+  gGrid.addEventListener("focusin", (e) => { const b = e.target.closest("button"); if (b) showG(b); });
+  gStage.addEventListener("pointermove", (e) => { const b = gStage.getBoundingClientRect(); G = { w: lerp(WG[1], WG[0], clamp((e.clientY - b.top) / b.height, 0, 1)), d: lerp(WD[0], WD[1], clamp((e.clientX - b.left) / b.width, 0, 1)) }; paintG(); });
+  paintG();
+  $("#gMore").addEventListener("click", () => { gGrid.classList.add("all"); gGrid.children[70] && gGrid.children[70].focus(); });
 
-  /* ---------- install tabs ---------- */
-  const tabs = $$('[role="tab"]');
-  tabs.forEach((t) => t.addEventListener("click", () => {
-    tabs.forEach((x) => { const on = x === t; x.setAttribute("aria-selected", String(on)); $("#" + x.getAttribute("aria-controls")).hidden = !on; });
-  }));
-
-  /* ---------- footer ---------- */
+  /* ---------- install tabs, footer ---------- */
+  const ptabs = $$('#get [role="tab"]');
+  ptabs.forEach((t) => t.addEventListener("click", () => ptabs.forEach((x) => { const on = x === t; x.setAttribute("aria-selected", String(on)); $("#" + x.getAttribute("aria-controls")).hidden = !on; })));
   $("#standin").textContent = T.standinNote || "";
-  const foot = magnetic($("#footWord"), $("#foot"), {
-    base: { w: WG[0], d: WD[0] + (WD[1] - WD[0]) * 0.1 }, peak: { w: WG[1], d: WD[1] }, rest: { w: 700, d: 120 }, spread: 2.2,
+  const foot = $(".foot"), footWord = $(".foot-word");
+  if (SAX.radius) footWord.style.fontVariationSettings = `"${R}" ${RD[1]}`;
+  // the footer word always fills the width; the pointer changes its width and weight
+  function footFit() {
+    footWord.style.fontSize = "100px";
+    const w = footWord.getBoundingClientRect().width, cs = getComputedStyle(foot);
+    const avail = foot.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+    footWord.style.fontSize = (avail / w) * 100 * 0.995 + "px";
+  }
+  foot.addEventListener("pointermove", (e) => {
+    const b = foot.getBoundingClientRect();
+    footWord.style.fontStretch = lerp(WD[0], WD[1], clamp((e.clientX - b.left) / b.width, 0, 1)) + "%";
+    footWord.style.fontWeight = Math.round(lerp(WG[1], WG[0] + 200, clamp((e.clientY - b.top) / b.height, 0, 1)));
+    footFit();
   });
-  if (sax.radius) foot.setRadius(RD[1]);
+  foot.addEventListener("pointerleave", () => { footWord.style.fontStretch = ""; footWord.style.fontWeight = ""; footFit(); });
 
   /* ---------- start ---------- */
-  function layout() { hero.fit(); foot.fit(); drawChart(); checkVoices(); paintRows(); hero.kick(); foot.kick(); }
+  function layout() { footFit(); rulerLabels(); paintHero(); paintSplit(); measureSplit(); drawChart(); if (cur.id === "sign") fitSign(); if (cur.id === "poster") fitPoster(); }
   const released = Promise.all(['400 20px "Admiralty Sans Released"', '400 20px "Admiralty Serif Released"'].map((f) => document.fonts.load(f)));
-  Promise.all([document.fonts.ready, released]).then(layout);
+  syncBench();
+  Promise.all([document.fonts.ready, released]).then(() => { layout(); heroIntro(); });
   let rz; addEventListener("resize", () => { clearTimeout(rz); rz = setTimeout(layout, 120); });
 })();
