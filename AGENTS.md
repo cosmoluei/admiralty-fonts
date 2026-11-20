@@ -11,7 +11,7 @@ you do not need to run the build scripts to *use* the fonts.
 | **Admiralty Sans** | Interface text and the user's own messages | Regular 400, Medium 500, Bold 700, each with Italic |
 | **Admiralty Serif** | The agent's (assistant's) messages | Same six styles. Same letter widths and kerning as Sans, so switching between them never changes line breaks |
 | **Admiralty Mono** | Code, logs, IDs, terminal output | Same six styles. Every character is 600 units wide. Box drawing `U+2500`–`U+259F` joins at line height 1.3 |
-| **Admiralty Symbols** | 282 interface icons on a 24 × 24 grid | Regular, Medium, Bold |
+| **Admiralty Symbols** | 311 interface icons on a 24 × 24 grid | Regular, Medium, Bold |
 
 Character coverage: Latin (Google Fonts Latin Core and Latin Plus), Latin Extended-A, Pinyin,
 Vietnamese. **No Chinese, Japanese or Korean**: always put a CJK fallback after Admiralty
@@ -24,7 +24,7 @@ Version 0.300 is a test release; names and code points of existing symbols will 
 | Path | What |
 | --- | --- |
 | `packages/ios/Admiralty` + `Package.swift` (repo root) | Swift package: all fonts, `Font.admiralty(...)`, `AdmiraltyIcon("name")` |
-| `packages/android/admiralty` | Android library module: fonts, `<font-family>` XML, 282 vector drawables, `AdmiraltySymbol` enum |
+| `packages/android/admiralty` | Android library module: fonts, `<font-family>` XML, 311 vector drawables, `AdmiraltySymbol` enum |
 | `packages/flutter/admiralty` | Flutter package: fonts, `AdmiraltyFonts`, `AdmiraltyIcons` |
 | `packages/web` | `admiralty-fonts.css` (text fonts) and `admiralty-symbols.css` (icon classes), with the font files |
 | `symbols/admiralty-symbols.json` | **The list of all symbols**: `name`, `label`, `codepoint`, `category`, `tags`, `rtlMirror` |
@@ -36,7 +36,9 @@ Version 0.300 is a test release; names and code points of existing symbols will 
 ## Rules
 
 1. **Find symbols by name in `symbols/admiralty-symbols.json`.** Search `name`, `label` and
-   `tags` (for example "like" finds `heart`). Never invent a name, and never hard-code a
+   `tags` (for example "like" finds `heart`). The `aliases` map resolves `globe` to
+   `language`, `pause-filled` to `pause`, and `phone-off` to `end-call`. Look up the
+   canonical name for raw SVG files. Never invent a name, and never hard-code a
    Private Use Area code point such as `\uE118` (heart-filled) in app code: use the package APIs below.
    Filled variants end in `-filled` (`heart-filled`, `play-filled`, `star-filled` ...); use
    them for the selected or active state.

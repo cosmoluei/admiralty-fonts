@@ -4,7 +4,7 @@ much like SF Symbols. All are written to packages/ (tracked in git) by build_del
 
   * iOS     packages/ios/Admiralty           Swift package (Package.swift at the repo root)
               .font(.admiralty(.serif, size: 17))   AdmiraltyIcon("heart-filled")
-  * Android packages/android/admiralty        library module (fonts + 282 vector drawables)
+  * Android packages/android/admiralty        library module (fonts + symbol vector drawables)
               AdmiraltySymbol.HeartFilled.drawable   AdmiraltyFonts.SANS
   * Flutter packages/flutter/admiralty        Dart package with the fonts
               Icon(AdmiraltyIcons.heartFilled)       TextStyle(fontFamily: 'AdmiraltySans', package: 'admiralty')
@@ -31,6 +31,18 @@ SWIFT_KEYWORDS = {
     "where", "while", "as", "catch", "false", "is", "nil", "super", "self", "throw", "throws", "true",
     "try", "Any", "Type", "some", "any",
 }
+
+
+def public_symbols(meta: dict):
+    """Resolve API spellings while sharing the canonical font and vector artwork."""
+    catalog = {s["name"]: s for s in meta["symbols"]}
+    yield from catalog.values()
+    for alias, target in meta.get("aliases", {}).items():
+        if alias in catalog:
+            raise ValueError(f"Alias shadows symbol {alias}")
+        item = catalog[target]
+        label = "Globe" if alias == "globe" else item["label"]
+        yield {**item, "name": alias, "assetName": target, "label": label}
 
 
 def _camel(name: str) -> str:
@@ -276,7 +288,7 @@ def build_swift_package(meta: dict, ttf_dir: Path, out_root: Path, version: str)
         encoding="utf-8",
     )
 
-    syms = meta["symbols"]
+    syms = list(public_symbols(meta))
     cases, cps, rtl, labels = [], [], [], []
     for s in syms:
         c = _camel(s["name"])
@@ -290,8 +302,8 @@ def build_swift_package(meta: dict, ttf_dir: Path, out_root: Path, version: str)
         f"// Generated from admiralty-symbols.json (Admiralty {version}). Do not edit by hand.\n"
         "// Licensed under the SIL Open Font License 1.1 (see OFL.txt).\n\n"
         "import SwiftUI\nimport CoreText\n#if canImport(UIKit)\nimport UIKit\n#endif\n\n"
-        f"/// All {len(syms)} Admiralty Symbols. The raw value is the symbol's name, as in the\n"
-        "/// SVG files and the inspector: `AdmiraltySymbol(rawValue: \"heart-filled\")`.\n"
+        f"/// Names for {len(meta['symbols'])} Admiralty Symbols, including their public aliases.\n"
+        "/// Look up a symbol with `AdmiraltySymbol(rawValue: \"heart-filled\")`.\n"
         "public enum AdmiraltySymbol: String, CaseIterable, Sendable {\n"
         + "\n".join(cases)
         + "\n\n    /// The Private Use Area code point of the symbol in the Admiralty Symbols font.\n"
@@ -356,8 +368,8 @@ def build_android_library(meta: dict, ttf_dir: Path, drawable_dir: Path, out_roo
         encoding="utf-8",
     )
     entries = []
-    for s in meta["symbols"]:
-        res = "ic_adm_" + s["name"].replace("-", "_")
+    for s in public_symbols(meta):
+        res = "ic_adm_" + s.get("assetName", s["name"]).replace("-", "_")
         entries.append(
             f"    {_pascal(s['name'])}({_kotlin_str(s['name'])}, {_kotlin_str(s['label'])}, "
             f"R.drawable.{res}, 0x{s['codepointInt']:04X}, {'true' if s['rtlMirror'] else 'false'})"
@@ -461,7 +473,7 @@ def build_flutter_package(meta: dict, ttf_dir: Path, out_root: Path, version: st
         encoding="utf-8",
     )
     lines, names = [], []
-    for s_ in meta["symbols"]:
+    for s_ in public_symbols(meta):
         ident = _camel(s_["name"])
         if ident in DART_RESERVED:
             ident += "Icon"
@@ -513,9 +525,9 @@ def build_web_package(meta: dict, dist_web: Path, var_dir: Path, out_root: Path,
     shutil.copyfile(var_dir / "AdmiraltySymbols[wght].woff2", web / "fonts" / "AdmiraltySymbols-VF.woff2")
     shutil.copyfile(ROOT / "OFL.txt", web / "OFL.txt")
     rules = []
-    for s_ in meta["symbols"]:
+    for s_ in public_symbols(meta):
         rules.append(f".adm-{s_['name']}::before {{ content: \"\\{s_['codepointInt']:X}\"; }}")
-    mirrored = ", ".join(f'[dir="rtl"] .adm-{s_["name"]}::before' for s_ in meta["symbols"] if s_["rtlMirror"])
+    mirrored = ", ".join(f'.adm-{s_["name"]}:dir(rtl)::before' for s_ in public_symbols(meta) if s_["rtlMirror"])
     (web / "admiralty-symbols.css").write_text(
         f"/* Admiralty Symbols {version}: icons by name. SIL Open Font License 1.1.\n"
         "   <i class=\"adm-icon adm-heart-filled\" aria-hidden=\"true\"></i>\n"
@@ -524,6 +536,8 @@ def build_web_package(meta: dict, dist_web: Path, var_dir: Path, out_root: Path,
         "  font-weight: 400 700;\n  font-style: normal;\n  font-display: block;\n}\n"
         ".adm-icon {\n  font-family: 'Admiralty Symbols';\n  font-style: normal;\n  font-weight: inherit;\n"
         "  line-height: 1;\n  display: inline-block;\n  speak: never;\n  -webkit-font-smoothing: antialiased;\n}\n"
+        ".adm-icon::before {\n  display: inline-block;\n  direction: ltr;\n  unicode-bidi: isolate;\n"
+        '  font-feature-settings: "rtlm" 0;\n}\n'
         + mirrored + " {\n  transform: scaleX(-1);\n}\n"
         + "\n".join(rules) + "\n",
         encoding="utf-8",

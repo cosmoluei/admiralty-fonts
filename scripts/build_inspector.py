@@ -97,7 +97,8 @@ def build_payload() -> tuple[str, int, int, float, float, float]:
             rec["name"],
             rec["codepointInt"],
             rec["category"],
-            rec["tags"],
+            list(dict.fromkeys([*rec["tags"], *(name for name, target in
+                sym_meta.get("aliases", {}).items() if target == rec["name"])])),
             1 if rec["rtlMirror"] else 0,
             1 if rec["filled"] else 0,
         ]
@@ -125,7 +126,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Admiralty Font Inspector — v0.300 (7 Variable Fonts + 21 Static + 282 Symbols)</title>
+  <title>Admiralty Font Inspector — v0.300 (7 Variable Fonts + 21 Static + __SYMBOL_COUNT__ Symbols)</title>
   <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
   <style id="admiralty-font-face"></style>
   <style>
@@ -205,7 +206,7 @@ __STANDALONE_VARS__</head>
           <button data-tab="microscope" class="tab-btn px-3 py-1.5 rounded-md font-medium text-[var(--muted-foreground)]">单字解剖显微镜</button>
           <button data-tab="lab" class="tab-btn px-3 py-1.5 rounded-md font-medium text-[var(--muted-foreground)]">易混与字距实验室</button>
           <button data-tab="chat" class="tab-btn px-3 py-1.5 rounded-md font-medium text-[var(--muted-foreground)]">三字体 App 原型</button>
-          <button data-tab="symbols" class="tab-btn px-3 py-1.5 rounded-md font-medium text-[var(--muted-foreground)]">Symbols 图标库 (282)</button>
+          <button data-tab="symbols" class="tab-btn px-3 py-1.5 rounded-md font-medium text-[var(--muted-foreground)]">Symbols 图标库 (__SYMBOL_COUNT__)</button>
           <button data-tab="specs" class="tab-btn px-3 py-1.5 rounded-md font-medium text-[var(--muted-foreground)]">度量与 Kerning 表</button>
         </div>
       </div>
@@ -528,7 +529,7 @@ Il1 O0 rn/m   $1,480.95 €290 £75 ¥3,600   § © ª ← ↑ → ↓ ↩</div>
               <span>RTL Mirror (rtlm)</span>
             </label>
           </div>
-          <div id="sym-count-lbl" class="font-mono text-[var(--muted-foreground)]">显示 282 / 282 个 24×24 原创图标 (U+E000..U+E119)</div>
+          <div id="sym-count-lbl" class="font-mono text-[var(--muted-foreground)]">显示 __SYMBOL_COUNT__ / __SYMBOL_COUNT__ 个 24×24 原创图标 (U+E000..__LAST_PUA__)</div>
         </div>
 
         <div id="sym-cat-bar" class="flex flex-wrap gap-1 pt-2 border-t border-[var(--card-border)]"></div>
@@ -1293,9 +1294,12 @@ STANDALONE_THEME_CSS = """  <style>
 
 def main() -> None:
     payload_str, n_glyphs, n_kern, vf_kb, static_kb, sym_vf_kb = build_payload()
+    catalog = json.loads(payload_str)["symbolCatalog"]
     filled = (
         HTML_TEMPLATE.replace("__PAYLOAD_JSON__", payload_str)
         .replace("__N_GLYPHS__", str(n_glyphs))
+        .replace("__SYMBOL_COUNT__", str(len(catalog)))
+        .replace("__LAST_PUA__", f"U+{catalog[-1][1]:04X}")
         .replace("__VF_KB__", f"{vf_kb:.1f}")
         .replace("__STATIC_KB__", f"{static_kb:.1f}")
         .replace("__SYM_KB__", f"{sym_vf_kb:.1f}")
@@ -1306,7 +1310,7 @@ def main() -> None:
     out_path.write_text(standalone_html, encoding="utf-8")
     print(
         f"Built Milestone 8 Inspector v0.300 (7 VF {vf_kb:.1f} KB + 21 Static {static_kb:.1f} KB, "
-        f"282 Symbols, {n_kern} class rules) -> {out_path} ({out_path.stat().st_size // 1024} KB)"
+        f"{len(catalog)} Symbols, {n_kern} class rules) -> {out_path} ({out_path.stat().st_size // 1024} KB)"
     )
 
 

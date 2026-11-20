@@ -7,8 +7,8 @@ import CoreText
 import UIKit
 #endif
 
-/// All 282 Admiralty Symbols. The raw value is the symbol's name, as in the
-/// SVG files and the inspector: `AdmiraltySymbol(rawValue: "heart-filled")`.
+/// Names for 311 Admiralty Symbols, including their public aliases.
+/// Look up a symbol with `AdmiraltySymbol(rawValue: "heart-filled")`.
 public enum AdmiraltySymbol: String, CaseIterable, Sendable {
     case send = "send"
     case stop = "stop"
@@ -292,6 +292,38 @@ public enum AdmiraltySymbol: String, CaseIterable, Sendable {
     case bug = "bug"
     case heartFilled = "heart-filled"
     case playFilled = "play-filled"
+    case plus = "plus"
+    case plusCircleFilled = "plus-circle-filled"
+    case minus = "minus"
+    case bellOff = "bell-off"
+    case chevronUpDown = "chevron-up-down"
+    case closeCircleFilled = "close-circle-filled"
+    case circle = "circle"
+    case checkCircleFilled = "check-circle-filled"
+    case whisper = "whisper"
+    case whisperFilled = "whisper-filled"
+    case takeover = "takeover"
+    case cloudComputer = "cloud-computer"
+    case cloudPhone = "cloud-phone"
+    case toolbox = "toolbox"
+    case sendCheck = "send-check"
+    case chatFilled = "chat-filled"
+    case settingsFilled = "settings-filled"
+    case lockFilled = "lock-filled"
+    case shieldCheckFilled = "shield-check-filled"
+    case folderFilled = "folder-filled"
+    case endCall = "end-call"
+    case videoCall = "video-call"
+    case flight = "flight"
+    case train = "train"
+    case hotel = "hotel"
+    case dining = "dining"
+    case walk = "walk"
+    case userRemove = "user-remove"
+    case shieldOff = "shield-off"
+    case globe = "globe"
+    case pauseFilled = "pause-filled"
+    case phoneOff = "phone-off"
 
     /// The Private Use Area code point of the symbol in the Admiralty Symbols font.
     public var codepoint: UInt32 {
@@ -578,6 +610,38 @@ public enum AdmiraltySymbol: String, CaseIterable, Sendable {
         case .bug: return 0xE117
         case .heartFilled: return 0xE118
         case .playFilled: return 0xE119
+        case .plus: return 0xE11A
+        case .plusCircleFilled: return 0xE11B
+        case .minus: return 0xE11C
+        case .bellOff: return 0xE11D
+        case .chevronUpDown: return 0xE11E
+        case .closeCircleFilled: return 0xE11F
+        case .circle: return 0xE120
+        case .checkCircleFilled: return 0xE121
+        case .whisper: return 0xE122
+        case .whisperFilled: return 0xE123
+        case .takeover: return 0xE124
+        case .cloudComputer: return 0xE125
+        case .cloudPhone: return 0xE126
+        case .toolbox: return 0xE127
+        case .sendCheck: return 0xE128
+        case .chatFilled: return 0xE129
+        case .settingsFilled: return 0xE12A
+        case .lockFilled: return 0xE12B
+        case .shieldCheckFilled: return 0xE12C
+        case .folderFilled: return 0xE12D
+        case .endCall: return 0xE12E
+        case .videoCall: return 0xE12F
+        case .flight: return 0xE130
+        case .train: return 0xE131
+        case .hotel: return 0xE132
+        case .dining: return 0xE133
+        case .walk: return 0xE134
+        case .userRemove: return 0xE135
+        case .shieldOff: return 0xE136
+        case .globe: return 0xE09C
+        case .pauseFilled: return 0xE106
+        case .phoneOff: return 0xE12E
         }
     }
 
@@ -866,13 +930,45 @@ public enum AdmiraltySymbol: String, CaseIterable, Sendable {
         case .bug: return "Bug"
         case .heartFilled: return "Heart, active"
         case .playFilled: return "Play, active"
+        case .plus: return "Plus"
+        case .plusCircleFilled: return "Plus circle, active"
+        case .minus: return "Minus"
+        case .bellOff: return "Notifications muted"
+        case .chevronUpDown: return "Chevron up down"
+        case .closeCircleFilled: return "Close circle, active"
+        case .circle: return "Circle"
+        case .checkCircleFilled: return "Check circle, active"
+        case .whisper: return "Private message"
+        case .whisperFilled: return "Private message, active"
+        case .takeover: return "Take control"
+        case .cloudComputer: return "Cloud computer"
+        case .cloudPhone: return "Cloud phone"
+        case .toolbox: return "Toolbox"
+        case .sendCheck: return "Sent to external group"
+        case .chatFilled: return "Chat, active"
+        case .settingsFilled: return "Settings, active"
+        case .lockFilled: return "Lock, active"
+        case .shieldCheckFilled: return "Shield check, active"
+        case .folderFilled: return "Folder, active"
+        case .endCall: return "End call"
+        case .videoCall: return "Video call"
+        case .flight: return "Flight"
+        case .train: return "Train"
+        case .hotel: return "Hotel"
+        case .dining: return "Dining"
+        case .walk: return "Walk"
+        case .userRemove: return "Remove member"
+        case .shieldOff: return "Shield off"
+        case .globe: return "Globe"
+        case .pauseFilled: return "Pause"
+        case .phoneOff: return "End call"
         }
     }
 
     /// True for direction symbols (send, back, reply ...) that mirror in right-to-left languages.
     public var mirrorsInRightToLeft: Bool {
         switch self {
-        case .send, .reply, .forwardMessage, .taskList, .handoff, .back, .forward, .chevronLeft, .chevronRight, .arrowUpRight, .arrowDownLeft, .arrowUpLeft, .arrowDownRight, .doubleChevronLeft, .doubleChevronRight, .sidebarLeft, .sidebarRight, .list, .newWindow, .share, .export, .`import`, .restore, .history, .sortAscending, .sortDescending, .auditLog, .restoreBackup, .signIn, .signOut, .shareApp, .scheduleSend, .play, .volume, .mute, .readAloud, .trendingUp, .playFilled: return true
+        case .send, .reply, .forwardMessage, .taskList, .handoff, .back, .forward, .chevronLeft, .chevronRight, .arrowUpRight, .arrowDownLeft, .arrowUpLeft, .arrowDownRight, .doubleChevronLeft, .doubleChevronRight, .sidebarLeft, .sidebarRight, .list, .newWindow, .share, .export, .`import`, .restore, .history, .sortAscending, .sortDescending, .auditLog, .restoreBackup, .signIn, .signOut, .shareApp, .scheduleSend, .play, .volume, .mute, .readAloud, .trendingUp, .playFilled, .sendCheck: return true
         default: return false
         }
     }

@@ -167,7 +167,7 @@ def check(font, weight, width):
         assert abs(shape.area-ink) < .3, (name, shape.area-ink)
         # Classify intersections using the design, independently of the decoded
         # font. At a fork, a normal can legitimately enter a neighbouring stroke.
-        design = letter_outline(name,advance,weight,width)
+        design = letter_outline(name,advance,weight,width,blend_branches=True)
         for spine in geometry.spines:
             for curve in fair_curves(spine):
                 for t in np.linspace(0,1,101):

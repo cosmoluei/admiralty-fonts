@@ -42,7 +42,7 @@ def face_rule(family, font):
     return f"@font-face{{font-family:{family};src:url(data:font/woff2;base64,{encoded}) format('woff2')}}"
 
 
-def make_instance(weight, width, prior, allowance=False):
+def make_instance(weight, width, prior, allowance=False, *, blend_branches=True):
     # Carry forward the corresponding first proof, including its A/B spacing.
     font = TTFont(BytesIO(base64.b64decode(prior)), recalcTimestamp=False)
     glyphs = font.getGlyphSet()
@@ -53,7 +53,7 @@ def make_instance(weight, width, prior, allowance=False):
             advance = round(260 * width / 100)
         pen = T2CharStringPen(advance, glyphs, roundTolerance=0)
         if name in LETTERS:
-            shape = letter_outline(name, advance, weight, width)
+            shape = letter_outline(name, advance, weight, width, blend_branches=blend_branches)
             # Absolute grid positions remain exactly representable as Type 2 deltas.
             shape.draw(RoundingPen(pen, roundFunc=lambda x: round(x * 4096) / 4096))
             font["hmtx"][name] = (advance, round(shape.bounds[0]))

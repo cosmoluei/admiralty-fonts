@@ -44,7 +44,7 @@ def master_glyph_sets():
         elif w == 400:
             gs = pilot.getGlyphSet(location={"wght": w, "wdth": d})
         else:
-            gs = make_instance(w, d, prior[f"First{w}x{d}"]).getGlyphSet()
+            gs = make_instance(w, d, prior[f"First{w}x{d}"], blend_branches=False).getGlyphSet()
         masters.append(gs)
     return masters
 

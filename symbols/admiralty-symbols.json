@@ -13,8 +13,13 @@
     500,
     700
   ],
-  "puaRange": "U+E000-U+E119",
-  "count": 282,
+  "puaRange": "U+E000-U+E136",
+  "count": 311,
+  "aliases": {
+    "globe": "language",
+    "pause-filled": "pause",
+    "phone-off": "end-call"
+  },
   "symbols": [
     {
       "name": "send",
@@ -5177,6 +5182,502 @@
       "svgRegularRtl": "svg/regular/play-filled-rtl.svg",
       "svgMediumRtl": "svg/medium/play-filled-rtl.svg",
       "svgBoldRtl": "svg/bold/play-filled-rtl.svg"
+    },
+    {
+      "name": "plus",
+      "label": "Plus",
+      "glyphName": "plus",
+      "codepoint": "U+E11A",
+      "codepointInt": 57626,
+      "category": "Common",
+      "tags": [
+        "add",
+        "new"
+      ],
+      "rtlMirror": false,
+      "filled": false,
+      "svgRegular": "svg/regular/plus.svg",
+      "svgMedium": "svg/medium/plus.svg",
+      "svgBold": "svg/bold/plus.svg"
+    },
+    {
+      "name": "plus-circle-filled",
+      "label": "Plus circle, active",
+      "glyphName": "plus_circle_filled",
+      "codepoint": "U+E11B",
+      "codepointInt": 57627,
+      "category": "Common",
+      "tags": [
+        "add",
+        "attachment"
+      ],
+      "rtlMirror": false,
+      "filled": true,
+      "svgRegular": "svg/regular/plus-circle-filled.svg",
+      "svgMedium": "svg/medium/plus-circle-filled.svg",
+      "svgBold": "svg/bold/plus-circle-filled.svg"
+    },
+    {
+      "name": "minus",
+      "label": "Minus",
+      "glyphName": "minus",
+      "codepoint": "U+E11C",
+      "codepointInt": 57628,
+      "category": "Common",
+      "tags": [
+        "remove",
+        "subtract"
+      ],
+      "rtlMirror": false,
+      "filled": false,
+      "svgRegular": "svg/regular/minus.svg",
+      "svgMedium": "svg/medium/minus.svg",
+      "svgBold": "svg/bold/minus.svg"
+    },
+    {
+      "name": "bell-off",
+      "label": "Notifications muted",
+      "glyphName": "bell_off",
+      "codepoint": "U+E11D",
+      "codepointInt": 57629,
+      "category": "Status",
+      "tags": [
+        "mute",
+        "notifications"
+      ],
+      "rtlMirror": false,
+      "filled": false,
+      "svgRegular": "svg/regular/bell-off.svg",
+      "svgMedium": "svg/medium/bell-off.svg",
+      "svgBold": "svg/bold/bell-off.svg"
+    },
+    {
+      "name": "chevron-up-down",
+      "label": "Chevron up down",
+      "glyphName": "chevron_up_down",
+      "codepoint": "U+E11E",
+      "codepointInt": 57630,
+      "category": "Navigation",
+      "tags": [
+        "picker",
+        "select"
+      ],
+      "rtlMirror": false,
+      "filled": false,
+      "svgRegular": "svg/regular/chevron-up-down.svg",
+      "svgMedium": "svg/medium/chevron-up-down.svg",
+      "svgBold": "svg/bold/chevron-up-down.svg"
+    },
+    {
+      "name": "close-circle-filled",
+      "label": "Close circle, active",
+      "glyphName": "close_circle_filled",
+      "codepoint": "U+E11F",
+      "codepointInt": 57631,
+      "category": "Common",
+      "tags": [
+        "clear",
+        "dismiss"
+      ],
+      "rtlMirror": false,
+      "filled": true,
+      "svgRegular": "svg/regular/close-circle-filled.svg",
+      "svgMedium": "svg/medium/close-circle-filled.svg",
+      "svgBold": "svg/bold/close-circle-filled.svg"
+    },
+    {
+      "name": "circle",
+      "label": "Circle",
+      "glyphName": "circle",
+      "codepoint": "U+E120",
+      "codepointInt": 57632,
+      "category": "Status",
+      "tags": [
+        "unselected",
+        "empty"
+      ],
+      "rtlMirror": false,
+      "filled": false,
+      "svgRegular": "svg/regular/circle.svg",
+      "svgMedium": "svg/medium/circle.svg",
+      "svgBold": "svg/bold/circle.svg"
+    },
+    {
+      "name": "check-circle-filled",
+      "label": "Check circle, active",
+      "glyphName": "check_circle_filled",
+      "codepoint": "U+E121",
+      "codepointInt": 57633,
+      "category": "Status",
+      "tags": [
+        "selected",
+        "complete"
+      ],
+      "rtlMirror": false,
+      "filled": true,
+      "svgRegular": "svg/regular/check-circle-filled.svg",
+      "svgMedium": "svg/medium/check-circle-filled.svg",
+      "svgBold": "svg/bold/check-circle-filled.svg"
+    },
+    {
+      "name": "whisper",
+      "label": "Private message",
+      "glyphName": "whisper",
+      "codepoint": "U+E122",
+      "codepointInt": 57634,
+      "category": "Chat",
+      "tags": [
+        "private",
+        "message"
+      ],
+      "rtlMirror": false,
+      "filled": false,
+      "svgRegular": "svg/regular/whisper.svg",
+      "svgMedium": "svg/medium/whisper.svg",
+      "svgBold": "svg/bold/whisper.svg"
+    },
+    {
+      "name": "whisper-filled",
+      "label": "Private message, active",
+      "glyphName": "whisper_filled",
+      "codepoint": "U+E123",
+      "codepointInt": 57635,
+      "category": "Chat",
+      "tags": [
+        "private",
+        "selected"
+      ],
+      "rtlMirror": false,
+      "filled": true,
+      "svgRegular": "svg/regular/whisper-filled.svg",
+      "svgMedium": "svg/medium/whisper-filled.svg",
+      "svgBold": "svg/bold/whisper-filled.svg"
+    },
+    {
+      "name": "takeover",
+      "label": "Take control",
+      "glyphName": "takeover",
+      "codepoint": "U+E124",
+      "codepointInt": 57636,
+      "category": "Agent",
+      "tags": [
+        "human",
+        "control"
+      ],
+      "rtlMirror": false,
+      "filled": false,
+      "svgRegular": "svg/regular/takeover.svg",
+      "svgMedium": "svg/medium/takeover.svg",
+      "svgBold": "svg/bold/takeover.svg"
+    },
+    {
+      "name": "cloud-computer",
+      "label": "Cloud computer",
+      "glyphName": "cloud_computer",
+      "codepoint": "U+E125",
+      "codepointInt": 57637,
+      "category": "Devices",
+      "tags": [
+        "remote",
+        "desktop"
+      ],
+      "rtlMirror": false,
+      "filled": false,
+      "svgRegular": "svg/regular/cloud-computer.svg",
+      "svgMedium": "svg/medium/cloud-computer.svg",
+      "svgBold": "svg/bold/cloud-computer.svg"
+    },
+    {
+      "name": "cloud-phone",
+      "label": "Cloud phone",
+      "glyphName": "cloud_phone",
+      "codepoint": "U+E126",
+      "codepointInt": 57638,
+      "category": "Devices",
+      "tags": [
+        "remote",
+        "mobile"
+      ],
+      "rtlMirror": false,
+      "filled": false,
+      "svgRegular": "svg/regular/cloud-phone.svg",
+      "svgMedium": "svg/medium/cloud-phone.svg",
+      "svgBold": "svg/bold/cloud-phone.svg"
+    },
+    {
+      "name": "toolbox",
+      "label": "Toolbox",
+      "glyphName": "toolbox",
+      "codepoint": "U+E127",
+      "codepointInt": 57639,
+      "category": "Agent",
+      "tags": [
+        "tools",
+        "connections"
+      ],
+      "rtlMirror": false,
+      "filled": false,
+      "svgRegular": "svg/regular/toolbox.svg",
+      "svgMedium": "svg/medium/toolbox.svg",
+      "svgBold": "svg/bold/toolbox.svg"
+    },
+    {
+      "name": "send-check",
+      "label": "Sent to external group",
+      "glyphName": "send_check",
+      "codepoint": "U+E128",
+      "codepointInt": 57640,
+      "category": "Chat",
+      "tags": [
+        "sent",
+        "outbound"
+      ],
+      "rtlMirror": true,
+      "filled": false,
+      "svgRegular": "svg/regular/send-check.svg",
+      "svgMedium": "svg/medium/send-check.svg",
+      "svgBold": "svg/bold/send-check.svg",
+      "svgRegularRtl": "svg/regular/send-check-rtl.svg",
+      "svgMediumRtl": "svg/medium/send-check-rtl.svg",
+      "svgBoldRtl": "svg/bold/send-check-rtl.svg"
+    },
+    {
+      "name": "chat-filled",
+      "label": "Chat, active",
+      "glyphName": "chat_filled",
+      "codepoint": "U+E129",
+      "codepointInt": 57641,
+      "category": "Chat",
+      "tags": [
+        "conversation",
+        "selected"
+      ],
+      "rtlMirror": false,
+      "filled": true,
+      "svgRegular": "svg/regular/chat-filled.svg",
+      "svgMedium": "svg/medium/chat-filled.svg",
+      "svgBold": "svg/bold/chat-filled.svg"
+    },
+    {
+      "name": "settings-filled",
+      "label": "Settings, active",
+      "glyphName": "settings_filled",
+      "codepoint": "U+E12A",
+      "codepointInt": 57642,
+      "category": "Settings and preferences",
+      "tags": [
+        "gear",
+        "selected"
+      ],
+      "rtlMirror": false,
+      "filled": true,
+      "svgRegular": "svg/regular/settings-filled.svg",
+      "svgMedium": "svg/medium/settings-filled.svg",
+      "svgBold": "svg/bold/settings-filled.svg"
+    },
+    {
+      "name": "lock-filled",
+      "label": "Lock, active",
+      "glyphName": "lock_filled",
+      "codepoint": "U+E12B",
+      "codepointInt": 57643,
+      "category": "Security and privacy",
+      "tags": [
+        "locked",
+        "private"
+      ],
+      "rtlMirror": false,
+      "filled": true,
+      "svgRegular": "svg/regular/lock-filled.svg",
+      "svgMedium": "svg/medium/lock-filled.svg",
+      "svgBold": "svg/bold/lock-filled.svg"
+    },
+    {
+      "name": "shield-check-filled",
+      "label": "Shield check, active",
+      "glyphName": "shield_check_filled",
+      "codepoint": "U+E12C",
+      "codepointInt": 57644,
+      "category": "Security and privacy",
+      "tags": [
+        "protected",
+        "sealed"
+      ],
+      "rtlMirror": false,
+      "filled": true,
+      "svgRegular": "svg/regular/shield-check-filled.svg",
+      "svgMedium": "svg/medium/shield-check-filled.svg",
+      "svgBold": "svg/bold/shield-check-filled.svg"
+    },
+    {
+      "name": "folder-filled",
+      "label": "Folder, active",
+      "glyphName": "folder_filled",
+      "codepoint": "U+E12D",
+      "codepointInt": 57645,
+      "category": "Files",
+      "tags": [
+        "directory",
+        "selected"
+      ],
+      "rtlMirror": false,
+      "filled": true,
+      "svgRegular": "svg/regular/folder-filled.svg",
+      "svgMedium": "svg/medium/folder-filled.svg",
+      "svgBold": "svg/bold/folder-filled.svg"
+    },
+    {
+      "name": "end-call",
+      "label": "End call",
+      "glyphName": "end_call",
+      "codepoint": "U+E12E",
+      "codepointInt": 57646,
+      "category": "Communication",
+      "tags": [
+        "hang-up",
+        "phone-off"
+      ],
+      "rtlMirror": false,
+      "filled": false,
+      "svgRegular": "svg/regular/end-call.svg",
+      "svgMedium": "svg/medium/end-call.svg",
+      "svgBold": "svg/bold/end-call.svg"
+    },
+    {
+      "name": "video-call",
+      "label": "Video call",
+      "glyphName": "video_call",
+      "codepoint": "U+E12F",
+      "codepointInt": 57647,
+      "category": "Communication",
+      "tags": [
+        "camera",
+        "meeting"
+      ],
+      "rtlMirror": false,
+      "filled": false,
+      "svgRegular": "svg/regular/video-call.svg",
+      "svgMedium": "svg/medium/video-call.svg",
+      "svgBold": "svg/bold/video-call.svg"
+    },
+    {
+      "name": "flight",
+      "label": "Flight",
+      "glyphName": "flight",
+      "codepoint": "U+E130",
+      "codepointInt": 57648,
+      "category": "Travel",
+      "tags": [
+        "airplane",
+        "airport"
+      ],
+      "rtlMirror": false,
+      "filled": false,
+      "svgRegular": "svg/regular/flight.svg",
+      "svgMedium": "svg/medium/flight.svg",
+      "svgBold": "svg/bold/flight.svg"
+    },
+    {
+      "name": "train",
+      "label": "Train",
+      "glyphName": "train",
+      "codepoint": "U+E131",
+      "codepointInt": 57649,
+      "category": "Travel",
+      "tags": [
+        "rail",
+        "metro"
+      ],
+      "rtlMirror": false,
+      "filled": false,
+      "svgRegular": "svg/regular/train.svg",
+      "svgMedium": "svg/medium/train.svg",
+      "svgBold": "svg/bold/train.svg"
+    },
+    {
+      "name": "hotel",
+      "label": "Hotel",
+      "glyphName": "hotel",
+      "codepoint": "U+E132",
+      "codepointInt": 57650,
+      "category": "Travel",
+      "tags": [
+        "bed",
+        "lodging"
+      ],
+      "rtlMirror": false,
+      "filled": false,
+      "svgRegular": "svg/regular/hotel.svg",
+      "svgMedium": "svg/medium/hotel.svg",
+      "svgBold": "svg/bold/hotel.svg"
+    },
+    {
+      "name": "dining",
+      "label": "Dining",
+      "glyphName": "dining",
+      "codepoint": "U+E133",
+      "codepointInt": 57651,
+      "category": "Travel",
+      "tags": [
+        "restaurant",
+        "meal"
+      ],
+      "rtlMirror": false,
+      "filled": false,
+      "svgRegular": "svg/regular/dining.svg",
+      "svgMedium": "svg/medium/dining.svg",
+      "svgBold": "svg/bold/dining.svg"
+    },
+    {
+      "name": "walk",
+      "label": "Walk",
+      "glyphName": "walk",
+      "codepoint": "U+E134",
+      "codepointInt": 57652,
+      "category": "Travel",
+      "tags": [
+        "pedestrian",
+        "walking"
+      ],
+      "rtlMirror": false,
+      "filled": false,
+      "svgRegular": "svg/regular/walk.svg",
+      "svgMedium": "svg/medium/walk.svg",
+      "svgBold": "svg/bold/walk.svg"
+    },
+    {
+      "name": "user-remove",
+      "label": "Remove member",
+      "glyphName": "user_remove",
+      "codepoint": "U+E135",
+      "codepointInt": 57653,
+      "category": "Security and privacy",
+      "tags": [
+        "guest",
+        "remove"
+      ],
+      "rtlMirror": false,
+      "filled": false,
+      "svgRegular": "svg/regular/user-remove.svg",
+      "svgMedium": "svg/medium/user-remove.svg",
+      "svgBold": "svg/bold/user-remove.svg"
+    },
+    {
+      "name": "shield-off",
+      "label": "Shield off",
+      "glyphName": "shield_off",
+      "codepoint": "U+E136",
+      "codepointInt": 57654,
+      "category": "Security and privacy",
+      "tags": [
+        "unprotected",
+        "disabled"
+      ],
+      "rtlMirror": false,
+      "filled": false,
+      "svgRegular": "svg/regular/shield-off.svg",
+      "svgMedium": "svg/medium/shield-off.svg",
+      "svgBold": "svg/bold/shield-off.svg"
     }
   ]
 }

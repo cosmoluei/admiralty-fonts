@@ -1,6 +1,6 @@
 # Admiralty Font Family — App Team Usage Guide (`v0.300`)
 
-Machine-readable tokens: [`admiralty-design-tokens.json`](../tokens/admiralty-design-tokens.json) · License: **SIL Open Font License 1.1** (no Reserved Font Name) · Latin (Google Fonts Latin Core and Latin Plus, Latin Extended-A, Pinyin, Vietnamese) + **282 original PUA UI icons** (`U+E000–U+E119`). Ready-made packages for iOS, Android, Flutter and the web are in [`packages/`](../packages); the short guide for coding agents is [`AGENTS.md`](../AGENTS.md).
+Machine-readable tokens: [`admiralty-design-tokens.json`](../tokens/admiralty-design-tokens.json) · License: **SIL Open Font License 1.1** (no Reserved Font Name) · Latin (Google Fonts Latin Core and Latin Plus, Latin Extended-A, Pinyin, Vietnamese) + **311 original PUA UI icons** (`U+E000–U+E136`). Ready-made packages for iOS, Android, Flutter and the web are in [`packages/`](../packages); the short guide for coding agents is [`AGENTS.md`](../AGENTS.md).
 
 ---
 
@@ -48,7 +48,7 @@ Always honor OS font scaling so users at the largest Dynamic Type / Accessibilit
 ## 4. Symbols Next to Text (`Admiralty Symbols`)
 
 - **Same Size, Cap-Centered**: Use the **exact same `font-size`** (`1.0×`) and **weight (`400 / 500 / 700`)** as adjacent `Admiralty Sans` text; every `24×24` icon sits in an `840u` advance box centered around `y = 350u` (`CapHeight / 2`), aligning cleanly on the baseline without vertical CSS offsets (`display: inline-flex; align-items: baseline; gap: 0.38em; line-height: inherit`).
-- **Colors & RTL**: Inherit `color: currentColor` from parent button text; enable `direction: rtl` + OpenType `rtlm` (or `android:autoMirrored="true"` on VectorDrawables) for the 38 directional icons (`send`, `back`, `chevron-*`, etc.).
+- **Colors & RTL**: Inherit `color: currentColor` from parent button text; enable `direction: rtl` + OpenType `rtlm` (or `android:autoMirrored="true"` on VectorDrawables) for the 39 directional icons (`send`, `back`, `chevron-*`, etc.).
 
 ---
 
@@ -81,7 +81,7 @@ Text("Summary ready").font(.admiralty(.sans, size: 16, weight: .medium))
 AdmiraltyIcon("heart-filled")
 ```
 
-**Android (module `packages/android/admiralty`)** &bull; Fonts, `<font-family>` XML and the 282 vector drawables (build `AdmiraltySerif` as shown in [`AGENTS.md`](../AGENTS.md)):
+**Android (module `packages/android/admiralty`)** &bull; Fonts, `<font-family>` XML and the 311 vector drawables (build `AdmiraltySerif` as shown in [`AGENTS.md`](../AGENTS.md)):
 
 ```kotlin
 Text(text = response, fontFamily = AdmiraltySerif, fontSize = 16.sp, lineHeight = 24.sp)

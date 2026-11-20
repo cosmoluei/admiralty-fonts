@@ -3,7 +3,7 @@
 package io.github.cosmoluei.admiralty
 
 /**
- * All 282 Admiralty Symbols.
+ * All 311 Admiralty Symbols.
  *
  * Compose:  Icon(painterResource(AdmiraltySymbol.HeartFilled.drawable), AdmiraltySymbol.HeartFilled.label)
  * Views:    imageView.setImageResource(AdmiraltySymbol.HeartFilled.drawable)
@@ -305,7 +305,39 @@ enum class AdmiraltySymbol(
     Heart("heart", "Heart", R.drawable.ic_adm_heart, 0xE116, false),
     Bug("bug", "Bug", R.drawable.ic_adm_bug, 0xE117, false),
     HeartFilled("heart-filled", "Heart, active", R.drawable.ic_adm_heart_filled, 0xE118, false),
-    PlayFilled("play-filled", "Play, active", R.drawable.ic_adm_play_filled, 0xE119, true);
+    PlayFilled("play-filled", "Play, active", R.drawable.ic_adm_play_filled, 0xE119, true),
+    Plus("plus", "Plus", R.drawable.ic_adm_plus, 0xE11A, false),
+    PlusCircleFilled("plus-circle-filled", "Plus circle, active", R.drawable.ic_adm_plus_circle_filled, 0xE11B, false),
+    Minus("minus", "Minus", R.drawable.ic_adm_minus, 0xE11C, false),
+    BellOff("bell-off", "Notifications muted", R.drawable.ic_adm_bell_off, 0xE11D, false),
+    ChevronUpDown("chevron-up-down", "Chevron up down", R.drawable.ic_adm_chevron_up_down, 0xE11E, false),
+    CloseCircleFilled("close-circle-filled", "Close circle, active", R.drawable.ic_adm_close_circle_filled, 0xE11F, false),
+    Circle("circle", "Circle", R.drawable.ic_adm_circle, 0xE120, false),
+    CheckCircleFilled("check-circle-filled", "Check circle, active", R.drawable.ic_adm_check_circle_filled, 0xE121, false),
+    Whisper("whisper", "Private message", R.drawable.ic_adm_whisper, 0xE122, false),
+    WhisperFilled("whisper-filled", "Private message, active", R.drawable.ic_adm_whisper_filled, 0xE123, false),
+    Takeover("takeover", "Take control", R.drawable.ic_adm_takeover, 0xE124, false),
+    CloudComputer("cloud-computer", "Cloud computer", R.drawable.ic_adm_cloud_computer, 0xE125, false),
+    CloudPhone("cloud-phone", "Cloud phone", R.drawable.ic_adm_cloud_phone, 0xE126, false),
+    Toolbox("toolbox", "Toolbox", R.drawable.ic_adm_toolbox, 0xE127, false),
+    SendCheck("send-check", "Sent to external group", R.drawable.ic_adm_send_check, 0xE128, true),
+    ChatFilled("chat-filled", "Chat, active", R.drawable.ic_adm_chat_filled, 0xE129, false),
+    SettingsFilled("settings-filled", "Settings, active", R.drawable.ic_adm_settings_filled, 0xE12A, false),
+    LockFilled("lock-filled", "Lock, active", R.drawable.ic_adm_lock_filled, 0xE12B, false),
+    ShieldCheckFilled("shield-check-filled", "Shield check, active", R.drawable.ic_adm_shield_check_filled, 0xE12C, false),
+    FolderFilled("folder-filled", "Folder, active", R.drawable.ic_adm_folder_filled, 0xE12D, false),
+    EndCall("end-call", "End call", R.drawable.ic_adm_end_call, 0xE12E, false),
+    VideoCall("video-call", "Video call", R.drawable.ic_adm_video_call, 0xE12F, false),
+    Flight("flight", "Flight", R.drawable.ic_adm_flight, 0xE130, false),
+    Train("train", "Train", R.drawable.ic_adm_train, 0xE131, false),
+    Hotel("hotel", "Hotel", R.drawable.ic_adm_hotel, 0xE132, false),
+    Dining("dining", "Dining", R.drawable.ic_adm_dining, 0xE133, false),
+    Walk("walk", "Walk", R.drawable.ic_adm_walk, 0xE134, false),
+    UserRemove("user-remove", "Remove member", R.drawable.ic_adm_user_remove, 0xE135, false),
+    ShieldOff("shield-off", "Shield off", R.drawable.ic_adm_shield_off, 0xE136, false),
+    Globe("globe", "Globe", R.drawable.ic_adm_language, 0xE09C, false),
+    PauseFilled("pause-filled", "Pause", R.drawable.ic_adm_pause, 0xE106, false),
+    PhoneOff("phone-off", "End call", R.drawable.ic_adm_end_call, 0xE12E, false);
 
     /** The symbol as text in the Admiralty Symbols font (R.font.admiralty_symbols_regular ...). */
     val character: String get() = String(Character.toChars(codepoint))

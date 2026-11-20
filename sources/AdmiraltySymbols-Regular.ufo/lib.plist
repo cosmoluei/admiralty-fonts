@@ -326,6 +326,36 @@
       <string>heart_filled</string>
       <string>play_filled</string>
       <string>play_filled.rtl</string>
+      <string>plus</string>
+      <string>plus_circle_filled</string>
+      <string>minus</string>
+      <string>bell_off</string>
+      <string>chevron_up_down</string>
+      <string>close_circle_filled</string>
+      <string>circle</string>
+      <string>check_circle_filled</string>
+      <string>whisper</string>
+      <string>whisper_filled</string>
+      <string>takeover</string>
+      <string>cloud_computer</string>
+      <string>cloud_phone</string>
+      <string>toolbox</string>
+      <string>send_check</string>
+      <string>send_check.rtl</string>
+      <string>chat_filled</string>
+      <string>settings_filled</string>
+      <string>lock_filled</string>
+      <string>shield_check_filled</string>
+      <string>folder_filled</string>
+      <string>end_call</string>
+      <string>video_call</string>
+      <string>flight</string>
+      <string>train</string>
+      <string>hotel</string>
+      <string>dining</string>
+      <string>walk</string>
+      <string>user_remove</string>
+      <string>shield_off</string>
       <string>camera.rvrn700</string>
       <string>paste.rvrn500</string>
       <string>paste.rvrn700</string>
@@ -361,6 +391,9 @@
       <string>subtitles.rvrn700</string>
       <string>pie_chart.rvrn700</string>
       <string>bug.rvrn700</string>
+      <string>send_check.rvrn700</string>
+      <string>send_check.rtl.rvrn700</string>
+      <string>user_remove.rvrn700</string>
     </array>
   </dict>
 </plist>

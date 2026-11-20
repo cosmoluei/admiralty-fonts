@@ -6,7 +6,7 @@ from functools import lru_cache
 from accent_masters import as_path, tracks_for
 from check_word_proof import Edges, section
 from compatible import OutlinePen, ordered_contours
-from stroke_geometry import round_branches, stroke
+from stroke_geometry import stroke
 from study_shapes import Drawing, contour_sides, draw_d_bowl, draw_g, draw_letter
 from build_axis_study import master_glyph_sets, master_outline
 
@@ -38,8 +38,6 @@ def inherited_italic_tracks(design,name,cells):
             for spine in draw_letter(letter,advance,w,d).spines:
                 path.addPath(stroke([[z+slant*(z.imag-260) for z in seg] for seg in spine],24))
             path.simplify(clockwise=True)
-            if letter=='g':
-                path=round_branches(path,24)
             path.transform(1,0,-slant,1,260*slant,0).draw(p)
         else:
             geometry.draw(p)
@@ -133,7 +131,36 @@ def mono_g(outline, scale, shift, weight, width):
     drawing=Drawing(origin,span,stem,horizontal/stem)
     draw_g(drawing.add,530-horizontal/2,-10+horizontal/2,horizontal/2,weight,width,span)
     drawing.path.simplify(clockwise=True)
-    return round_branches(drawing.path,stem).transform(1,0,0,horizontal/stem)
+    return drawing.path.transform(1,0,0,horizontal/stem)
+
+
+def black_mono_bowl(left, right, top, bottom):
+    # The two notches stay on the shaft even when the fixed cell leaves
+    # too little room to outline a Black pen around a compressed spine.
+    wall = right - 123
+    span = wall - left
+    crown = left + .54*span
+    x = left + min(123, .55*span)
+    eye = x + .5*(wall-x)
+    path = pathops.Path()
+    path.moveTo(wall, top)
+    path.lineTo(right, top)
+    path.lineTo(right, bottom)
+    path.lineTo(wall, bottom)
+    path.lineTo(wall, 55)
+    path.cubicTo(wall-.12*span, 16, crown+.22*span, -10, crown, -10)
+    path.cubicTo(left+.20*span, -10, left, 96, left, 255)
+    path.cubicTo(left, 423, left+.20*span, 530, crown, 530)
+    path.cubicTo(crown+.22*span, 530, wall-.12*span, 505, wall, 467)
+    path.close()
+    path.moveTo(wall, 174)
+    path.lineTo(wall, 348)
+    path.cubicTo(wall, 390, eye+.20*(wall-x), 428, eye, 428)
+    path.cubicTo(x+.18*(wall-x), 428, x, 360, x, 256)
+    path.cubicTo(x, 158, x+.18*(wall-x), 92, eye, 92)
+    path.cubicTo(eye+.20*(wall-x), 92, wall, 134, wall, 174)
+    path.close()
+    return path
 
 
 def mono_bowl(design,name,plain,scale,shift,weight):
@@ -141,12 +168,15 @@ def mono_bowl(design,name,plain,scale,shift,weight):
     bar=24 if weight==100 else 102
     x0,_,x1,_=plain.bounds
     left,right=x0*scale+shift,x1*scale+shift
-    g=Drawing(left+stroke_width/2,right-left-stroke_width,stroke_width,bar/stroke_width)
     top,bottom=(740,-220) if name=='thorn' else (740,0)
-    g.add((1,top),(1,bottom))
-    draw_d_bowl(g.add,530-bar/2,-10+bar/2)
-    g.path.simplify(clockwise=True)
-    path=round_branches(g.path,stroke_width).transform(1,0,0,bar/stroke_width)
+    if weight == 900:
+        path = black_mono_bowl(left, right, top, bottom)
+    else:
+        g=Drawing(left+stroke_width/2,right-left-stroke_width,stroke_width,bar/stroke_width)
+        g.add((1,top),(1,bottom))
+        draw_d_bowl(g.add,530-bar/2,-10+bar/2)
+        g.path.simplify(clockwise=True)
+        path=g.path.transform(1,0,0,bar/stroke_width)
     if name in ('b','p','thorn'):
         path=path.transform(-1,0,0,1,left+right,0)
     if name in ('p','q'):

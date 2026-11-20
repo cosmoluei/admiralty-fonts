@@ -9,7 +9,7 @@ Admiralty is a font family made for a personal agent app: a calm, professional l
 | **Admiralty Sans** | A humanist sans serif for interface text and the user's messages. |
 | **Admiralty Serif** | A low-contrast text serif for the agent's messages. It has the same letter widths and kerning as Sans in every weight, so switching between the two never changes line breaks. |
 | **Admiralty Mono** | A monospaced companion for code, logs and IDs (every character is 600 units wide). Optional programming ligatures are in `ss01`. |
-| **Admiralty Symbols** | 282 interface icons on a 24 × 24 grid in the Private Use Area (`U+E000`–`U+E119`), centred on the height of the capital letters, so they line up with the text. |
+| **Admiralty Symbols** | 311 interface icons on a 24 × 24 grid in the Private Use Area (`U+E000`–`U+E136`), centred on the height of the capital letters, so they line up with the text. |
 
 Sans, Serif and Mono each have six static styles and upright and italic variable fonts. Symbols has three static weights and one variable font. The full-range edition provides weight 100–900, width 65–150% and corner radius 0–100, with a default text design based on 0.300 Regular and revised drawings for æ and ₺. The text families cover the Google Fonts Latin Core and Latin Plus sets, Latin Extended-A, Pinyin and Vietnamese. Mono also has the box drawing and block characters (`U+2500`–`U+259F`) for terminal interfaces.
 
@@ -84,7 +84,7 @@ Checked automatically (see [`docs/QA_AND_ORIGINALITY_REPORT.md`](docs/QA_AND_ORI
 - Font Bakery (Google Fonts profile): the only failure is the version number, which must be 1.000 or higher for Google Fonts.
 - OTS passes for every font file.
 - No glyph breaks between weights in any variable font.
-- The symbol SVG files and Android drawables match the font outlines for all 282 symbols.
+- The symbol SVG files and Android drawables match the font outlines for all 311 symbols.
 - Shape comparison with open fonts of the same style (Regular, Bold, Italic, Bold Italic): no close copies (see the review notes).
 
 Before 1.000:

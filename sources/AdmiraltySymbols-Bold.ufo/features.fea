@@ -42,4 +42,6 @@ feature rtlm {
     sub read_aloud by read_aloud.rtl;
     sub trending_up by trending_up.rtl;
     sub play_filled by play_filled.rtl;
+    sub send_check by send_check.rtl;
+    sub send_check.rvrn700 by send_check.rtl.rvrn700;
 } rtlm;

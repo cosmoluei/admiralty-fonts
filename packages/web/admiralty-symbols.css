@@ -17,7 +17,13 @@
   speak: never;
   -webkit-font-smoothing: antialiased;
 }
-[dir="rtl"] .adm-send::before, [dir="rtl"] .adm-reply::before, [dir="rtl"] .adm-forward-message::before, [dir="rtl"] .adm-task-list::before, [dir="rtl"] .adm-handoff::before, [dir="rtl"] .adm-back::before, [dir="rtl"] .adm-forward::before, [dir="rtl"] .adm-chevron-left::before, [dir="rtl"] .adm-chevron-right::before, [dir="rtl"] .adm-arrow-up-right::before, [dir="rtl"] .adm-arrow-down-left::before, [dir="rtl"] .adm-arrow-up-left::before, [dir="rtl"] .adm-arrow-down-right::before, [dir="rtl"] .adm-double-chevron-left::before, [dir="rtl"] .adm-double-chevron-right::before, [dir="rtl"] .adm-sidebar-left::before, [dir="rtl"] .adm-sidebar-right::before, [dir="rtl"] .adm-list::before, [dir="rtl"] .adm-new-window::before, [dir="rtl"] .adm-share::before, [dir="rtl"] .adm-export::before, [dir="rtl"] .adm-import::before, [dir="rtl"] .adm-restore::before, [dir="rtl"] .adm-history::before, [dir="rtl"] .adm-sort-ascending::before, [dir="rtl"] .adm-sort-descending::before, [dir="rtl"] .adm-audit-log::before, [dir="rtl"] .adm-restore-backup::before, [dir="rtl"] .adm-sign-in::before, [dir="rtl"] .adm-sign-out::before, [dir="rtl"] .adm-share-app::before, [dir="rtl"] .adm-schedule-send::before, [dir="rtl"] .adm-play::before, [dir="rtl"] .adm-volume::before, [dir="rtl"] .adm-mute::before, [dir="rtl"] .adm-read-aloud::before, [dir="rtl"] .adm-trending-up::before, [dir="rtl"] .adm-play-filled::before {
+.adm-icon::before {
+  display: inline-block;
+  direction: ltr;
+  unicode-bidi: isolate;
+  font-feature-settings: "rtlm" 0;
+}
+.adm-send:dir(rtl)::before, .adm-reply:dir(rtl)::before, .adm-forward-message:dir(rtl)::before, .adm-task-list:dir(rtl)::before, .adm-handoff:dir(rtl)::before, .adm-back:dir(rtl)::before, .adm-forward:dir(rtl)::before, .adm-chevron-left:dir(rtl)::before, .adm-chevron-right:dir(rtl)::before, .adm-arrow-up-right:dir(rtl)::before, .adm-arrow-down-left:dir(rtl)::before, .adm-arrow-up-left:dir(rtl)::before, .adm-arrow-down-right:dir(rtl)::before, .adm-double-chevron-left:dir(rtl)::before, .adm-double-chevron-right:dir(rtl)::before, .adm-sidebar-left:dir(rtl)::before, .adm-sidebar-right:dir(rtl)::before, .adm-list:dir(rtl)::before, .adm-new-window:dir(rtl)::before, .adm-share:dir(rtl)::before, .adm-export:dir(rtl)::before, .adm-import:dir(rtl)::before, .adm-restore:dir(rtl)::before, .adm-history:dir(rtl)::before, .adm-sort-ascending:dir(rtl)::before, .adm-sort-descending:dir(rtl)::before, .adm-audit-log:dir(rtl)::before, .adm-restore-backup:dir(rtl)::before, .adm-sign-in:dir(rtl)::before, .adm-sign-out:dir(rtl)::before, .adm-share-app:dir(rtl)::before, .adm-schedule-send:dir(rtl)::before, .adm-play:dir(rtl)::before, .adm-volume:dir(rtl)::before, .adm-mute:dir(rtl)::before, .adm-read-aloud:dir(rtl)::before, .adm-trending-up:dir(rtl)::before, .adm-play-filled:dir(rtl)::before, .adm-send-check:dir(rtl)::before {
   transform: scaleX(-1);
 }
 .adm-send::before { content: "\E000"; }
@@ -302,3 +308,35 @@
 .adm-bug::before { content: "\E117"; }
 .adm-heart-filled::before { content: "\E118"; }
 .adm-play-filled::before { content: "\E119"; }
+.adm-plus::before { content: "\E11A"; }
+.adm-plus-circle-filled::before { content: "\E11B"; }
+.adm-minus::before { content: "\E11C"; }
+.adm-bell-off::before { content: "\E11D"; }
+.adm-chevron-up-down::before { content: "\E11E"; }
+.adm-close-circle-filled::before { content: "\E11F"; }
+.adm-circle::before { content: "\E120"; }
+.adm-check-circle-filled::before { content: "\E121"; }
+.adm-whisper::before { content: "\E122"; }
+.adm-whisper-filled::before { content: "\E123"; }
+.adm-takeover::before { content: "\E124"; }
+.adm-cloud-computer::before { content: "\E125"; }
+.adm-cloud-phone::before { content: "\E126"; }
+.adm-toolbox::before { content: "\E127"; }
+.adm-send-check::before { content: "\E128"; }
+.adm-chat-filled::before { content: "\E129"; }
+.adm-settings-filled::before { content: "\E12A"; }
+.adm-lock-filled::before { content: "\E12B"; }
+.adm-shield-check-filled::before { content: "\E12C"; }
+.adm-folder-filled::before { content: "\E12D"; }
+.adm-end-call::before { content: "\E12E"; }
+.adm-video-call::before { content: "\E12F"; }
+.adm-flight::before { content: "\E130"; }
+.adm-train::before { content: "\E131"; }
+.adm-hotel::before { content: "\E132"; }
+.adm-dining::before { content: "\E133"; }
+.adm-walk::before { content: "\E134"; }
+.adm-user-remove::before { content: "\E135"; }
+.adm-shield-off::before { content: "\E136"; }
+.adm-globe::before { content: "\E09C"; }
+.adm-pause-filled::before { content: "\E106"; }
+.adm-phone-off::before { content: "\E12E"; }

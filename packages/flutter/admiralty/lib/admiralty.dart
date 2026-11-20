@@ -14,7 +14,7 @@ abstract final class AdmiraltyFonts {
   static const String symbols = 'AdmiraltySymbols';
 }
 
-/// All 282 Admiralty Symbols: `Icon(AdmiraltyIcons.heartFilled)`, or by name:
+/// All 311 Admiralty Symbols: `Icon(AdmiraltyIcons.heartFilled)`, or by name:
 /// `Icon(AdmiraltyIcons.named('heart-filled'))`. Direction icons mirror in right-to-left text.
 abstract final class AdmiraltyIcons {
   static const String _family = 'AdmiraltySymbols';
@@ -302,6 +302,38 @@ abstract final class AdmiraltyIcons {
   static const IconData bug = IconData(0xE117, fontFamily: _family, fontPackage: _package, matchTextDirection: false);
   static const IconData heartFilled = IconData(0xE118, fontFamily: _family, fontPackage: _package, matchTextDirection: false);
   static const IconData playFilled = IconData(0xE119, fontFamily: _family, fontPackage: _package, matchTextDirection: true);
+  static const IconData plus = IconData(0xE11A, fontFamily: _family, fontPackage: _package, matchTextDirection: false);
+  static const IconData plusCircleFilled = IconData(0xE11B, fontFamily: _family, fontPackage: _package, matchTextDirection: false);
+  static const IconData minus = IconData(0xE11C, fontFamily: _family, fontPackage: _package, matchTextDirection: false);
+  static const IconData bellOff = IconData(0xE11D, fontFamily: _family, fontPackage: _package, matchTextDirection: false);
+  static const IconData chevronUpDown = IconData(0xE11E, fontFamily: _family, fontPackage: _package, matchTextDirection: false);
+  static const IconData closeCircleFilled = IconData(0xE11F, fontFamily: _family, fontPackage: _package, matchTextDirection: false);
+  static const IconData circle = IconData(0xE120, fontFamily: _family, fontPackage: _package, matchTextDirection: false);
+  static const IconData checkCircleFilled = IconData(0xE121, fontFamily: _family, fontPackage: _package, matchTextDirection: false);
+  static const IconData whisper = IconData(0xE122, fontFamily: _family, fontPackage: _package, matchTextDirection: false);
+  static const IconData whisperFilled = IconData(0xE123, fontFamily: _family, fontPackage: _package, matchTextDirection: false);
+  static const IconData takeover = IconData(0xE124, fontFamily: _family, fontPackage: _package, matchTextDirection: false);
+  static const IconData cloudComputer = IconData(0xE125, fontFamily: _family, fontPackage: _package, matchTextDirection: false);
+  static const IconData cloudPhone = IconData(0xE126, fontFamily: _family, fontPackage: _package, matchTextDirection: false);
+  static const IconData toolbox = IconData(0xE127, fontFamily: _family, fontPackage: _package, matchTextDirection: false);
+  static const IconData sendCheck = IconData(0xE128, fontFamily: _family, fontPackage: _package, matchTextDirection: true);
+  static const IconData chatFilled = IconData(0xE129, fontFamily: _family, fontPackage: _package, matchTextDirection: false);
+  static const IconData settingsFilled = IconData(0xE12A, fontFamily: _family, fontPackage: _package, matchTextDirection: false);
+  static const IconData lockFilled = IconData(0xE12B, fontFamily: _family, fontPackage: _package, matchTextDirection: false);
+  static const IconData shieldCheckFilled = IconData(0xE12C, fontFamily: _family, fontPackage: _package, matchTextDirection: false);
+  static const IconData folderFilled = IconData(0xE12D, fontFamily: _family, fontPackage: _package, matchTextDirection: false);
+  static const IconData endCall = IconData(0xE12E, fontFamily: _family, fontPackage: _package, matchTextDirection: false);
+  static const IconData videoCall = IconData(0xE12F, fontFamily: _family, fontPackage: _package, matchTextDirection: false);
+  static const IconData flight = IconData(0xE130, fontFamily: _family, fontPackage: _package, matchTextDirection: false);
+  static const IconData train = IconData(0xE131, fontFamily: _family, fontPackage: _package, matchTextDirection: false);
+  static const IconData hotel = IconData(0xE132, fontFamily: _family, fontPackage: _package, matchTextDirection: false);
+  static const IconData dining = IconData(0xE133, fontFamily: _family, fontPackage: _package, matchTextDirection: false);
+  static const IconData walk = IconData(0xE134, fontFamily: _family, fontPackage: _package, matchTextDirection: false);
+  static const IconData userRemove = IconData(0xE135, fontFamily: _family, fontPackage: _package, matchTextDirection: false);
+  static const IconData shieldOff = IconData(0xE136, fontFamily: _family, fontPackage: _package, matchTextDirection: false);
+  static const IconData globe = IconData(0xE09C, fontFamily: _family, fontPackage: _package, matchTextDirection: false);
+  static const IconData pauseFilled = IconData(0xE106, fontFamily: _family, fontPackage: _package, matchTextDirection: false);
+  static const IconData phoneOff = IconData(0xE12E, fontFamily: _family, fontPackage: _package, matchTextDirection: false);
 
   /// Every symbol by its name, as in the SVG files ("heart-filled").
   static const Map<String, IconData> all = {
@@ -587,6 +619,38 @@ abstract final class AdmiraltyIcons {
     'bug': bug,
     'heart-filled': heartFilled,
     'play-filled': playFilled,
+    'plus': plus,
+    'plus-circle-filled': plusCircleFilled,
+    'minus': minus,
+    'bell-off': bellOff,
+    'chevron-up-down': chevronUpDown,
+    'close-circle-filled': closeCircleFilled,
+    'circle': circle,
+    'check-circle-filled': checkCircleFilled,
+    'whisper': whisper,
+    'whisper-filled': whisperFilled,
+    'takeover': takeover,
+    'cloud-computer': cloudComputer,
+    'cloud-phone': cloudPhone,
+    'toolbox': toolbox,
+    'send-check': sendCheck,
+    'chat-filled': chatFilled,
+    'settings-filled': settingsFilled,
+    'lock-filled': lockFilled,
+    'shield-check-filled': shieldCheckFilled,
+    'folder-filled': folderFilled,
+    'end-call': endCall,
+    'video-call': videoCall,
+    'flight': flight,
+    'train': train,
+    'hotel': hotel,
+    'dining': dining,
+    'walk': walk,
+    'user-remove': userRemove,
+    'shield-off': shieldOff,
+    'globe': globe,
+    'pause-filled': pauseFilled,
+    'phone-off': phoneOff,
   };
 
   /// The symbol with this name, or null.

@@ -39,6 +39,7 @@ from symbols_phase1_a import SYMBOLS_PHASE1_A
 from symbols_phase1_b import SYMBOLS_PHASE1_B
 from symbols_refine_r2 import SYMBOL_OVERRIDES_R2
 from symbols_phase2 import SYMBOLS_PHASE2
+from symbols_client import SYMBOLS_CLIENT, ALIASES
 
 PUA_START = 0xE000
 SYMBOLS_VERSION_MINOR = 300
@@ -59,6 +60,12 @@ _LABEL_OVERRIDES = {
     "back": "Back",
     "forward": "Forward",
     "new": "New",
+    "send-check": "Sent to external group",
+    "takeover": "Take control",
+    "whisper": "Private message",
+    "bell-off": "Notifications muted",
+    "end-call": "End call",
+    "user-remove": "Remove member",
     "info": "Information",
     "tips": "Tips",
 }
@@ -83,7 +90,7 @@ def ufo_glyph_name(name: str) -> str:
 def get_phase1_catalog() -> List[SymbolSpec]:
     assert len(SYMBOLS_PHASE1_A + SYMBOLS_PHASE1_B) == 218, "Phase 1 must keep its 218 code points"
     # Phase 2 (0.300): new symbols get the code points after Phase 1, so old code points never move
-    all_specs = SYMBOLS_PHASE1_A + SYMBOLS_PHASE1_B + SYMBOLS_PHASE2
+    all_specs = SYMBOLS_PHASE1_A + SYMBOLS_PHASE1_B + SYMBOLS_PHASE2 + SYMBOLS_CLIENT
     unknown = set(SYMBOL_OVERRIDES_R2) - {sp.name for sp in all_specs}
     assert not unknown, f"Review 2 overrides for unknown symbols: {sorted(unknown)}"
     seen: set[str] = set()
@@ -294,6 +301,7 @@ def build_all_symbols() -> Tuple[Path, Path, Path, Path]:
         "weights": [400, 500, 700],
         "puaRange": f"U+{PUA_START:04X}-U+{PUA_START + len(catalog) - 1:04X}",
         "count": len(catalog),
+        "aliases": ALIASES,
         "symbols": metadata_records,
     }
     json_path.write_text(json.dumps(json_payload, indent=2) + "\n", encoding="utf-8")

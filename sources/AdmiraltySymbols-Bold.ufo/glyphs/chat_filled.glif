@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<glyph name="chat_filled" format="2">
+  <advance width="840"/>
+  <unicode hex="E129"/>
+  <outline>
+    <contour>
+      <point x="204" y="152" type="curve" smooth="yes"/>
+      <point x="233" y="152" type="line"/>
+      <point x="233" y="19" type="line"/>
+      <point x="399.5" y="152" type="line"/>
+      <point x="636" y="152" type="line" smooth="yes"/>
+      <point x="705.5" y="152"/>
+      <point x="762" y="208.5"/>
+      <point x="762" y="278" type="curve" smooth="yes"/>
+      <point x="762" y="548" type="line" smooth="yes"/>
+      <point x="762" y="617.5"/>
+      <point x="705.5" y="674"/>
+      <point x="636" y="674" type="curve" smooth="yes"/>
+      <point x="204" y="674" type="line" smooth="yes"/>
+      <point x="134.5" y="674"/>
+      <point x="78" y="617.5"/>
+      <point x="78" y="548" type="curve" smooth="yes"/>
+      <point x="78" y="278" type="line" smooth="yes"/>
+      <point x="78" y="208.5"/>
+      <point x="134.5" y="152"/>
+    </contour>
+  </outline>
+</glyph>

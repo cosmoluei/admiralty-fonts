@@ -313,14 +313,15 @@ def draw_letter(name, advance, weight, width):
     return g
 
 
-def letter_outline(name, advance, weight, width):
+def letter_outline(name, advance, weight, width, *, blend_branches=False):
     drawing = draw_letter(name, advance, weight, width)
     path = drawing.path
     path.simplify(clockwise=True)
     # The Black m already has an explicit crotch. Round only the last few
     # units at its floor, retaining the depth and direction of the two flanks.
-    blend = {"m": 33, "a": 27}.get(name, drawing.thickness) if weight == 900 else drawing.thickness
-    path = round_branches(path, blend)
+    if blend_branches:  # The historical word proof predates the independent RADI axis.
+        blend = {"m": 33, "a": 27}.get(name, drawing.thickness) if weight == 900 else drawing.thickness
+        path = round_branches(path, blend)
     if name == "u":
         return path.transform(-1, 0, 0, -1, advance, 520)
     if drawing.vertical_ratio != 1:

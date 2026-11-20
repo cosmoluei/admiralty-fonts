@@ -112,7 +112,7 @@ def recipe(name,base_stroke):
     commands=[]
     for cmd in c.commands:
         kind=cmd[0]
-        if name in ('bell','bell-filled','notification-settings') and kind=='polyline':
+        if name in ('bell','bell-filled','bell-off','notification-settings') and kind=='polyline':
             pts=list(cmd[1])
             y=10.2 if name=='notification-settings' else 10.5
             pts[0]=(pts[0][0],y)

@@ -1,7 +1,7 @@
 """
 Builds all 5 platform delivery packages (REQUIREMENTS.md Section 14 & 17) into dist/:
   1. dist/apple-ios-macos/  - Variable TTFs + Static OTFs + Plain Original SVGs + OFL.txt + README
-  2. dist/android/          - res/font/*.ttf & XML descriptors + 282 Vector Drawables (ic_adm_*.xml) + OFL.txt + README
+  2. dist/android/          - res/font/*.ttf & XML descriptors + symbol Vector Drawables (ic_adm_*.xml) + OFL.txt + README
   3. dist/windows/          - Static RIBBI TTFs (Office/Win32) + Variable TTFs + SVGs + OFL.txt + README
   4. dist/web/              - Variable & Static WOFF2s + Unicode-range Subsets + CLS-zero CSS + SVG Sprite + OFL.txt + README
   5. dist/cross-platform/   - Variable & Static TTFs + admiralty-symbols.json + Flutter IconData Dart map + OFL.txt + README
@@ -20,6 +20,7 @@ from fontTools.pens.transformPen import TransformPen
 from fontTools.subset import Options as SubsetOptions, Subsetter
 from fontTools.ttLib import TTFont
 import ufoLib2
+from build_native_packages import public_symbols
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -216,7 +217,7 @@ def _build_android(ttf_dir: Path, var_dir: Path, meta: dict) -> None:
         "## Fonts and symbols by name (library module)\n"
         "Copy `packages/android/admiralty` from the repository into your project, add `include(\":admiralty\")` to "
         "`settings.gradle.kts` and `implementation(project(\":admiralty\"))` to your app module. "
-        "It holds the text fonts, all 282 vector drawables and the `AdmiraltySymbol` list.\n"
+        f"It holds the text fonts, all {len(meta['symbols'])} vector drawables and the `AdmiraltySymbol` list.\n"
         "```kotlin\n"
         "import io.github.cosmoluei.admiralty.AdmiraltySymbol\n\n"
         "// Jetpack Compose\n"
@@ -229,7 +230,7 @@ def _build_android(ttf_dir: Path, var_dir: Path, meta: dict) -> None:
         "Direction symbols flip by themselves in right-to-left layouts (`android:autoMirrored`). "
         "Colour comes from `tint` (Compose `Icon` uses `LocalContentColor`).\n\n"
         "## Resources Layout\n"
-        "- Copy `res/font/*` into `app/src/main/res/font/` and `res/drawable/ic_adm_*.xml` (282 VectorDrawables, including `android:autoMirrored=\"true\"` on 38 directional icons) into `app/src/main/res/drawable/`.\n"
+        f"- Copy `res/font/*` into `app/src/main/res/font/` and `res/drawable/ic_adm_*.xml` ({len(meta['symbols'])} VectorDrawables, including `android:autoMirrored=\"true\"` on {sum(s['rtlMirror'] for s in meta['symbols'])} directional icons) into `app/src/main/res/drawable/`.\n"
         "- `admiralty_*_wght.ttf` work natively on Android 8+ (API 26+); static files + `<font-family>` XML support older Android releases.\n\n"
         "## Jetpack Compose Example (Accessibility `sp` Ready)\n"
         "```kotlin\n"
@@ -343,6 +344,9 @@ def _build_web(woff2_dir: Path, var_dir: Path, sym_svg_dir: Path, meta: dict) ->
         sid = p.stem
         sprite_syms.append(f'  <symbol id="adm-{sid}" viewBox="0 0 24 24" fill="currentColor">{inner}</symbol>')
 
+    for alias, target in meta.get("aliases", {}).items():
+        sprite_syms.append(f'  <symbol id="adm-{alias}" viewBox="0 0 24 24"><use href="#adm-{target}"/></symbol>')
+
     (d / "admiralty-symbols-sprite.svg").write_text(
         '<svg xmlns="http://www.w3.org/2000/svg" style="display:none">\n'
         + "\n".join(sprite_syms)
@@ -373,7 +377,7 @@ def _build_cross_platform(ttf_dir: Path, var_dir: Path, sym_json: Path, meta: di
         "abstract final class AdmiraltyIcons {\n",
         "  static const String fontFamily = 'AdmiraltySymbols';\n\n",
     ]
-    for rec in meta["symbols"]:
+    for rec in public_symbols(meta):
         ident = re.sub(r"-([a-z0-9])", lambda m: m.group(1).upper(), rec["name"])
         if ident[0].isdigit():
             ident = f"n{ident}"

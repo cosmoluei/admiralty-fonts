@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<glyph name="folder_filled" format="2">
+  <advance width="840"/>
+  <unicode hex="E12D"/>
+  <outline>
+    <contour>
+      <point x="81.5" y="605.5" type="line"/>
+      <point x="81.5" y="62" type="line"/>
+      <point x="758.5" y="62" type="line"/>
+      <point x="758.5" y="512" type="line"/>
+      <point x="413" y="512" type="line"/>
+      <point x="330" y="605.5" type="line"/>
+    </contour>
+  </outline>
+</glyph>

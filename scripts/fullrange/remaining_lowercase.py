@@ -4,7 +4,6 @@ import math
 import pathops
 
 from study_shapes import Drawing
-from stroke_geometry import round_branches
 
 LETTERS = "fjktvwxyz"
 
@@ -25,8 +24,8 @@ def hook(name, advance, stem, bar, weight):
         axis = .55*advance
         g = Drawing(axis, 1, stem, bar/stem)
         low = -224+bar/2
-        reach = max(.48*advance, .8*stem)
-        g.add((0,520),(0,-58),(0,low+55,-.31*reach,low,-.71*reach,low),
+        reach = max(.48*advance, .85*stem)
+        g.add((0,520),(0,-58),(0,low+60,-.31*reach,low,-.71*reach,low),
               (-.83*reach,low,-.92*reach,low+2,-reach,low+6))
     else:
         axis = max(.41*advance, .55*stem)
@@ -42,8 +41,7 @@ def hook(name, advance, stem, bar, weight):
                   (.75*reach,low,.88*reach,low+3,reach,low+11))
         g.add((-.77*axis,top),(.89*reach,top))
     g.path.simplify(clockwise=True)
-    result = round_branches(g.path, stem*.5)
-    result = result.transform(1,0,0,bar/stem)
+    result = g.path.transform(1,0,0,bar/stem)
     if name == "j":
         dot = Drawing(axis, 1, stem, 1)
         dot.dot(0, {100: 654, 400: 656, 900: 666}[weight])

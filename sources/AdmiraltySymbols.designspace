@@ -53,6 +53,9 @@
       <sub name="subtitles" with="subtitles.rvrn700"/>
       <sub name="pie_chart" with="pie_chart.rvrn700"/>
       <sub name="bug" with="bug.rvrn700"/>
+      <sub name="send_check" with="send_check.rvrn700"/>
+      <sub name="send_check.rtl" with="send_check.rtl.rvrn700"/>
+      <sub name="user_remove" with="user_remove.rvrn700"/>
     </rule>
   </rules>
   <sources>

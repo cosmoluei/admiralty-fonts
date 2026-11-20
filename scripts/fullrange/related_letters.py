@@ -1,6 +1,5 @@
 """Draw the bowls and shoulders that share the reviewed d/n proportions."""
 from study_shapes import Drawing, letter_outline
-from stroke_geometry import round_branches
 
 RELATED = "bchopqr"
 
@@ -52,5 +51,4 @@ def related_outline(name, advance, weight, width):
     else:
         raise ValueError(name)
     g.path.simplify(clockwise=True)
-    path = round_branches(g.path, thick) if name in "hr" else g.path
-    return path.transform(1,0,0,horizontal/thick)
+    return g.path.transform(1,0,0,horizontal/thick)
