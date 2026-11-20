@@ -1,0 +1,62 @@
+@font-face {
+  font-family: 'Admiralty Sans Fullrange';
+  src: url('./AdmiraltySans[wght,wdth,RADI].woff2') format('woff2');
+  font-weight: 100 900;
+  font-stretch: 65% 150%;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Admiralty Sans Fullrange';
+  src: url('./AdmiraltySans-Italic[wght,wdth,RADI].woff2') format('woff2');
+  font-weight: 100 900;
+  font-stretch: 65% 150%;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Admiralty Serif Fullrange';
+  src: url('./AdmiraltySerif[wght,wdth,RADI].woff2') format('woff2');
+  font-weight: 100 900;
+  font-stretch: 65% 150%;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Admiralty Serif Fullrange';
+  src: url('./AdmiraltySerif-Italic[wght,wdth,RADI].woff2') format('woff2');
+  font-weight: 100 900;
+  font-stretch: 65% 150%;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Admiralty Mono Fullrange';
+  src: url('./AdmiraltyMono[wght,wdth,RADI].woff2') format('woff2');
+  font-weight: 100 900;
+  font-stretch: 65% 150%;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Admiralty Mono Fullrange';
+  src: url('./AdmiraltyMono-Italic[wght,wdth,RADI].woff2') format('woff2');
+  font-weight: 100 900;
+  font-stretch: 65% 150%;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Admiralty Symbols Fullrange';
+  src: url('./AdmiraltySymbols[wght,wdth,RADI].woff2') format('woff2');
+  font-weight: 100 900;
+  font-stretch: 65% 150%;
+  font-style: normal;
+  font-display: swap;
+}

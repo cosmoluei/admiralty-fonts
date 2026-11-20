@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="zh-CN">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Admiralty Sans · 字形实验</title>
+<style>
+@font-face{font-family:AdmiraltyStudy;src:url(data:font/woff2;base64,{{FONT}}) format("woff2");font-weight:100 900;font-stretch:65% 150%}
+*{box-sizing:border-box}html{background:#f6f4ef;color:#202722;font:16px/1.5 system-ui,sans-serif}
+body{max-width:1100px;margin:auto;padding:36px clamp(16px,4vw,56px) 60px}header,footer{display:flex;align-items:baseline;justify-content:space-between;gap:14px;flex-wrap:wrap}
+h1{font:500 clamp(28px,4vw,50px)/1.15 Georgia,serif;margin:0}a{color:#31564e;text-underline-offset:4px}
+.controls{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;padding:20px 0;border-block:1px solid #b9bcb4;margin:28px 0 8px}
+label{display:grid;grid-template-columns:1fr auto;gap:5px;font-size:14px}output{font-variant-numeric:tabular-nums}
+input[type=range]{width:100%;margin:0;accent-color:#24564b;grid-column:span 2;min-height:28px}
+.sample{font-family:AdmiraltyStudy;line-height:1.35;overflow-wrap:anywhere;font-synthesis:none}
+.hero{font-size:clamp(60px,9vw,116px);padding:15px 0 5px}.words{font-size:clamp(32px,6vw,78px);margin:0;padding-bottom:18px}
+.strip{display:grid;gap:14px;align-items:baseline;border-top:1px solid #b9bcb4;padding:14px 0;grid-template-columns:110px 1fr}
+.tag{font-size:13px;color:#515c54}.reading{font-size:18px}.glyphs{font-size:clamp(27px,4vw,48px)}
+footer{border-top:1px solid #b9bcb4;margin-top:16px;padding-top:12px;font-size:14px}
+@media(max-width:600px){body{padding-top:24px}.controls{grid-template-columns:1fr;gap:7px}.strip{grid-template-columns:1fr;gap:2px}.hero{font-size:65px}}
+</style>
+<header><h1>Admiralty Sans</h1><span>字形实验 · 正体小写</span></header>
+<main>
+<div class="controls">
+<label>字重 <output for="wght" id="weight">400</output><input id="wght" type="range" min="100" max="900" value="400"></label>
+<label>字宽 <output for="wdth" id="width">100%</output><input id="wdth" type="range" min="65" max="150" value="100"></label>
+<label>圆角 <output for="RADI" id="radius">0%</output><input id="RADI" type="range" min="0" max="100" value="0"></label>
+</div>
+<div class="sample hero">a s g</div>
+<p class="sample words">signal <span>shapes</span></p>
+<div class="strip"><span class="tag">18 px 排样</span><div class="sample reading">design signals in a small sea</div></div>
+<div class="strip"><span class="tag">实验字形</span><div class="sample glyphs">{{LETTERS}}</div></div>
+</main>
+<footer><a download href="fonts/AdmiraltySans-AxisStudy.ttf">下载实验字体 TTF</a><a href="word-proof.html">对照 0.300 与极端字形</a></footer>
+<script>
+const axes=['wght','wdth','RADI'];
+function redraw(){
+  const values=axes.map(id=>document.getElementById(id).value);
+  for(const [i,id] of ['weight','width','radius'].entries()) document.getElementById(id).value=values[i]+(i?'%':'');
+  const setting=axes.map((id,i)=>'"'+id+'" '+values[i]).join(', ');
+  document.querySelectorAll(".sample").forEach(el=>el.style.fontVariationSettings=setting);
+}
+document.querySelectorAll('input').forEach(input=>input.addEventListener('input',redraw));redraw();
+</script>
+</html>

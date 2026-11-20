@@ -1,0 +1,136 @@
+<!doctype html><html lang="zh-CN"><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1"><title>Admiralty · 字族校样</title>
+<style>
+/* FONTS */
+*{box-sizing:border-box}html{background:#f8f7f2;color:#1b2723;font:16px/1.48 system-ui,sans-serif}
+body{margin:0 auto;max-width:1240px;padding:30px clamp(18px,4vw,62px) 70px}
+header,.links,.nav{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}h1{font:500 clamp(36px,4.2vw,58px)/1.15 Georgia,serif;margin:0}a{color:#285c4e;text-underline-offset:4px}.controls{display:grid;grid-template-columns:minmax(160px,1.2fr) repeat(3,1fr);gap:20px;border-block:1px solid #bbc5bc;padding:13px 0;margin-top:22px}label{display:grid;grid-template-columns:1fr auto;align-content:start;gap:4px;font-size:14px}label input,label select{grid-column:span 2}input[type=range]{accent-color:#275d49;width:100%;min-height:26px;margin:0}select,input[type=search],button{font:inherit;color:inherit;border:1px solid #acb8ad;background:#fffef9;border-radius:3px;padding:6px 9px}button{cursor:pointer}output{font-variant-numeric:tabular-nums}.ink{font-family:var(--face);font-synthesis:none;font-variation-settings:var(--loc);font-optical-sizing:none}.hero{font-size:clamp(33px,5.8vw,77px);min-height:1.4em;overflow-wrap:anywhere;margin:20px 0 8px;line-height:1.24}.reading{font-size:18px;overflow-wrap:anywhere;margin:0 0 22px}.plate{border-block:1px solid #bbc5bc;padding:18px 0}.nav label{min-width:190px}.nav button{min-width:44px}.glyph{font-size:104px;line-height:1.7}.meta{color:#48594f;font-size:14px}summary{cursor:pointer;min-height:40px}.matrix{display:grid;grid-template-columns:42px repeat(3,1fr);gap:0 6px}.matrix>span{border-bottom:1px solid #d9dfd6;display:flex;align-items:center}.matrix .ink{font-size:42px;min-height:66px}.links{margin-top:18px;font-size:14px}
+@media(max-width:680px){.controls{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 18px}.hero{font-size:38px}.glyph{font-size:78px}.nav{align-items:end}}
+.inventory{display:grid;grid-template-columns:repeat(auto-fill,minmax(57px,1fr));gap:3px}
+.inventory button{height:58px;padding:0;font-size:31px;line-height:1;border-color:#d5ddd3}
+.inventory button[aria-pressed=true]{border-color:#275d49;background:#e2eade}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:12px}.pair>div{min-width:0}.pair .glyph{line-height:1.26;display:block}.ref,#reference{font-variation-settings:var(--regular)}.pair small{color:#48594f}.inventory{grid-template-columns:repeat(auto-fill,minmax(116px,1fr))}.inventory button{height:84px;display:grid;grid-template-columns:1fr 1fr;align-items:center}.inventory .caption{grid-column:span 2;font:11px/1.1 system-ui,sans-serif;overflow:hidden;text-overflow:ellipsis}.inventory .ink{font-size:32px}
+.samplebar{display:flex;align-items:baseline;justify-content:space-between;gap:8px;margin-top:15px}.samplebar select{font-size:14px}.sampleline{margin:3px 0 7px}.reference-text{font-variation-settings:var(--regular)}
+.zoomrow{display:flex;gap:16px;align-items:center;justify-content:space-between;margin:16px 0 8px}.zoomrow label{width:190px;flex:none}.zoomrow span{font-size:13px;color:#546359}.lens{container-type:inline-size;overflow-x:auto;overscroll-behavior-x:contain;max-width:100%;border-block:1px solid #d4dcd3}.comparegrid{--zoom:192px;--column:min(100cqi,calc(var(--zoom)*1.28));display:grid;grid-template-columns:repeat(var(--cols,3),minmax(var(--column),1fr));min-width:max(100%,calc(var(--column)*var(--cols,3)));width:max-content}.colhead,.peerhead{position:relative;font:15px/1.4 system-ui,sans-serif;padding:8px 12px;text-align:center}.peerhead{border:0;background:transparent;color:#285c4e;text-decoration:underline;text-underline-offset:3px}.rowhead{grid-column:1/-1;font:13px system-ui,sans-serif;color:#546359;padding:4px 0}.glass{position:relative;display:flex;justify-content:center;align-items:baseline;font-size:var(--zoom);line-height:1.32;border-inline-end:1px solid #e3e7dd}.specimen{position:relative;z-index:1;white-space:pre}.comparegrid [hidden]{display:none}.zoomrow [hidden]{display:none}@media(max-width:600px){.zoomrow{align-items:end}.zoomrow label{width:42%}.zoomrow span{max-width:53%}}
+#partControl[hidden]{display:none}#partControl{display:block;margin:8px 0} .operator{font-feature-settings:"ss01" 1}
+</style>
+<header><h1>Admiralty</h1><a href="glyph-review.html" id="reviewLink">逐字审稿 →</a></header>
+<main><div class="controls">
+<label>字体<select id="family"></select></label>
+<label>字重<output id="wo"></output><input id="weight" type="range" min="100" max="900" value="100"></label>
+<label>字宽<output id="do"></output><input id="width" type="range" min="65" max="150" step=".5" value="100"></label>
+<label>圆角<output id="ro"></output><input id="radius" type="range" min="0" max="100" value="0"></label></div>
+<div class="samplebar"><small id="sampleWeight">当前字重 100</small><select id="sampleChoice" aria-label="校样文字"><option value="letters">字母</option><option value="figures">数字和符号</option><option value="diagonals">斜画交点</option><option value="sharpS">a 与 ß</option><option value="vowels">æ 与 œ</option><option value="money">货币与斜画</option></select></div>
+<div class="hero ink sampleline" contenteditable="plaintext-only" aria-label="可编辑校样文字" spellcheck="false">ACGJKQRXY acfdkmuxy</div>
+<small>Regular 400</small><div class="hero ink sampleline reference-text" id="sampleReference"></div>
+<p class="reading ink">Stadt &amp; Straße · Maßstab · STRAẞE · Admiralty Quay · Ångström · Việt Nam · Łódź · 0123456789</p>
+<section class="plate"><div class="nav"><label>查找字形或字符<input type="search" id="search" list="choices" value="uni2083"></label><datalist id="choices"></datalist>
+<div><button id="prev" aria-label="上一个字形">←</button> <button id="next" aria-label="下一个字形">→</button></div></div>
+<div class="zoomrow"><label>放大字号 <output id="zoomValue">192 px</output><input id="zoom" type="range" min="96" max="480" step="24" value="192"></label><span id="peerHint">右侧对照字形与所选字形使用相同参数</span></div>
+<label id="partControl" hidden><span><input type="checkbox" id="singlePart"> 只看 GID</span></label>
+<div class="lens" role="region" aria-label="放大字形与同参数对照" tabindex="0"><div class="comparegrid" id="compareGrid">
+<div class="colhead" id="primaryName"></div><button class="peerhead" id="peerName0"></button><button class="peerhead" id="peerName1"></button>
+<small class="rowhead">当前字重 <output id="currentWeight">100</output></small>
+<div class="glass"><span class="ink specimen" id="glyph"></span></div><div class="glass peer"><span class="ink specimen" id="peer0"></span></div><div class="glass peer"><span class="ink specimen" id="peer1"></span></div>
+<small class="rowhead">Regular 400</small>
+<div class="glass"><span class="ink ref specimen" id="reference"></span></div><div class="glass peer"><span class="ink ref specimen" id="peerRef0"></span></div><div class="glass peer"><span class="ink ref specimen" id="peerRef1"></span></div>
+</div></div><p id="meta" class="meta" aria-live="polite"></p>
+<details><summary>当前字形的九档字重和三档字宽</summary><div class="matrix" id="matrix"></div></details>
+<details id="all"><summary>展开全部字形 · 左为当前字重，右为 Regular 400</summary><div class="inventory" id="inventory"></div></details></section></main>
+<footer class="links"><a id="download" download>下载当前字体 TTF</a><a href="axis-study.html">查看 Sans 小写原型</a></footer>
+<script>
+const data=/* DATA */;
+const $=id=>document.getElementById(id),families=Object.keys(data);
+let gid=0,showingSymbols=false,savedText=document.querySelector('.hero').textContent;
+const reading=document.querySelector('.reading'),textSample=reading.textContent;
+const loc=(w,d,r)=>'"wght" '+w+', "wdth" '+d+', "RADI" '+r;
+for(const family of families) $('family').add(new Option(family.replace('Admiralty','').replace('-Italic',' Italic'),family));
+$('family').value='AdmiraltySerif';
+const hero=document.querySelector('[contenteditable]');
+function syncSample(){$('sampleReference').textContent=hero.textContent}
+hero.addEventListener('input',syncSample);
+const samples={letters:hero.textContent,figures:'₃ 4 6 # Ø ₩ ³ ¾ ₾',diagonals:'X x ×   K k Y',sharpS:'Straße  Maßstab  á  æ  ẞ',vowels:'æ  œ   hæve   cœur   encyclopædia',money:'₹  ₽  ₺  ₱  ₦  ₴  ₡   Ł  ł'};
+$('sampleChoice').onchange=()=>{hero.textContent=samples[$('sampleChoice').value];syncSample()};
+function setZoom(){const size=$('zoom').value;$('zoomValue').value=size+' px';$('compareGrid').style.setProperty('--zoom',size+'px')}
+$('zoom').oninput=setZoom;setZoom();
+function displayGlyph(el,f,index,isolated=false){
+ const name=f.order[index],op=f.operators[name];
+ el.classList.toggle('operator',Boolean(op)&&!isolated);
+ el.textContent=op&&!isolated?op:String.fromCodePoint(0xf0000+index);
+}
+$('singlePart').onchange=draw;
+function peers(f){
+ const related=f.peers[gid]||[];
+ $('compareGrid').style.setProperty('--cols',1+related.length);
+ $('primaryName').textContent=f.order[gid]||'';$('peerHint').hidden=!related.length;
+ for(let i=0;i<2;i++){
+  const idx=related[i],name=$('peerName'+i),sample=$('peer'+i),ref=$('peerRef'+i);
+  name.hidden=sample.parentElement.hidden=ref.parentElement.hidden=idx===undefined;
+  name.textContent=f.order[idx]||'';
+  if(idx===undefined){sample.textContent=ref.textContent=''}else{displayGlyph(sample,f,idx);displayGlyph(ref,f,idx)}
+  name.onclick=()=>{gid=idx;$('search').value=f.order[idx];draw();document.querySelector('.lens').scrollLeft=0};
+ }
+}
+function inventory(){
+ if(!$('all').open)return;
+ const key=$('family').value,grid=$('inventory');
+ if(grid.dataset.family!==key){
+  grid.replaceChildren(...data[key].order.map((name,index)=>{
+   const button=document.createElement('button');button.type='button';
+
+   for(const style of ['ink','ink ref']){const sample=document.createElement('span');sample.className=style;displayGlyph(sample,data[key],index);button.append(sample)}
+   const caption=document.createElement('span');caption.className='caption';caption.textContent=name;button.append(caption);button.title=name;button.setAttribute('aria-label',name);
+   button.onclick=()=>{gid=index;$('search').value=name;draw();$('glyph').scrollIntoView({block:'center'})};
+   return button;
+  }));grid.dataset.family=key;
+ }
+ grid.querySelector('[aria-pressed=true]')?.removeAttribute('aria-pressed');
+ grid.children[gid]?.setAttribute('aria-pressed','true');
+}
+$('all').ontoggle=inventory;
+function draw(){
+ $('reviewLink').href=gid<0?'glyph-review.html':'glyph-review.html?glyph='+encodeURIComponent(data[$('family').value].order[gid]);
+ const f=data[$('family').value],w=$('weight').value,d=$('width').value,r=$('radius').value;
+ $('wo').value=w;$('do').value=d+'%';$('ro').value=r+'%';
+ document.body.style.setProperty('--loc',loc(w,d,r));document.body.style.setProperty('--regular',loc(400,d,r));
+ $('currentWeight').value=w;$('sampleWeight').textContent='当前字重 '+w;syncSample();
+ inventory();peers(f);
+ $('partControl').hidden=!f.operators[f.order[gid]];
+ if(gid<0){$('meta').textContent='没有匹配的字形';$('glyph').textContent='';$('reference').textContent='';$('matrix').replaceChildren();return}
+ const n=f.order[gid],one=$('singlePart').checked;
+ displayGlyph($('glyph'),f,gid,one);displayGlyph($('reference'),f,gid,one);
+ const cps=Object.keys(f.cmap).filter(k=>f.cmap[k]===n).map(k=>'U+'+Number(k).toString(16).toUpperCase().padStart(4,'0'));
+ $('meta').textContent=n+' · '+(cps.join(' / ')||'无独立编码')+' · GID '+gid+' / '+(f.order.length-1);
+ let cells=['','65%','100%','150%'].map(t=>{let s=document.createElement('span');s.textContent=t;return s});
+ for(let weight=100;weight<=900;weight+=100){const l=document.createElement('span');l.textContent=weight;cells.push(l);for(const width of [65,100,150]){let s=document.createElement('span');s.className='ink';displayGlyph(s,f,gid,one);s.style.fontVariationSettings=loc(weight,width,r);cells.push(s)}}
+ $('matrix').replaceChildren(...cells);
+}
+function selectFamily(){
+ const k=$('family').value,f=data[k];document.body.style.setProperty('--face','Family'+families.indexOf(k));
+ const symbols=k==='AdmiraltySymbols',hero=document.querySelector('.hero');
+ $('sampleChoice').hidden=symbols;
+ if(symbols!==showingSymbols){
+  if(symbols){
+   savedText=hero.textContent;
+   const marks=names=>names.split(' ').map(n=>Object.keys(f.cmap).find(code=>f.cmap[code]===n)).filter(Boolean).map(x=>String.fromCodePoint(Number(x))).join(' ');
+   hero.textContent=marks('send search settings account');
+   reading.textContent=marks('heart heart_filled star star_filled play play_filled');
+  }else{hero.textContent=savedText;reading.textContent=textSample}
+  showingSymbols=symbols;
+ }
+ $('choices').replaceChildren(...f.order.map(s=>new Option(s)));
+ $('download').href='families/'+f.file;
+ gid=f.order.indexOf($('search').value);
+ if(gid<0)gid=f.order.indexOf(symbols?'send':'a');
+ $('search').value=f.order[gid];draw();
+}
+function lookup(){const f=data[$('family').value],v=$('search').value;gid=f.order.indexOf(v);if(gid<0&&[...v].length===1)gid=f.order.indexOf(f.cmap[v.codePointAt(0)]);draw()}
+function step(n){const order=data[$('family').value].order;gid=(gid+n+order.length)%order.length;$('search').value=order[gid];draw()}
+$('prev').onclick=()=>step(-1);$('next').onclick=()=>step(1);$('search').oninput=lookup;$('family').onchange=selectFamily;
+for(const k of ['weight','width','radius'])$(k).oninput=draw;
+const opening=new URLSearchParams(location.search);
+if(families.includes(opening.get('family'))) $('family').value=opening.get('family');
+if(data[$('family').value].order.includes(opening.get('glyph'))) $('search').value=opening.get('glyph');
+selectFamily();
+if(['ae','oe'].includes(opening.get('glyph'))){$('sampleChoice').value='vowels';$('sampleChoice').onchange()}
+</script></html>

@@ -13,6 +13,7 @@ from __future__ import annotations
 import io
 import math
 from pathlib import Path
+import subprocess
 import sys
 from typing import Dict, List, Tuple
 
@@ -1007,7 +1008,11 @@ def build_all_variable_fonts() -> List[Path]:
 
     total_vf_kb = sum(p.stat().st_size for p in built_woff2.values()) / 1024.0
     print(f"ALL 7 VARIABLE FONTS BUILT & AUDITED (v{VERSION_STR})! Total 7-VF WOFF2 = {total_vf_kb:.1f} KB.")
-    return list(built_ttf.values()) + list(built_woff2.values())
+    # The full-range masters use the completed one-axis default as the
+    # reference for the 0.300 drawings and their layout tables.
+    subprocess.run([sys.executable,str(ROOT/'scripts/fullrange/build.py')],check=True)
+    fullrange=var_dir/'fullrange'
+    return [*built_ttf.values(),*built_woff2.values(),*sorted(fullrange.glob('*.ttf')),*sorted(fullrange.glob('*.woff2'))]
 
 
 if __name__ == "__main__":

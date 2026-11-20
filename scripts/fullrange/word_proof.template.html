@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="zh-Hans">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<!-- FONT LICENSE -->
+<title>Admiralty Sans · 字形对照</title>
+<style>
+/* FONT DATA */
+*{box-sizing:border-box}
+:root{color-scheme:light;--ink:#232721;--muted:#535e52;--paper:#fafaf6;--rule:#d6dbcf;--green:#304f38}
+body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.5 system-ui,sans-serif}
+main{width:min(1040px,100%);margin:auto;padding:32px clamp(16px,4vw,50px) 55px}
+header{display:flex;align-items:baseline;justify-content:space-between;gap:12px;border-bottom:2px solid var(--ink);padding-bottom:15px}
+h1{font-size:clamp(22px,3vw,33px);letter-spacing:-.04em;line-height:1.1;margin:0}
+h2{font-size:16px;margin:0;font-weight:650}
+small,.note,.label{color:var(--muted);font-size:13px}
+.controls{display:flex;gap:16px;flex-wrap:wrap;margin:22px 0 15px;align-items:end}
+.controls label{display:grid;gap:5px;color:var(--muted);font-size:13px}
+.controls label:first-child{flex:1 1 190px}
+input,select{font:inherit;color:var(--ink);background:white;border:1px solid #889482;border-radius:5px;padding:7px 9px;min-height:40px}
+input{width:100%}
+:focus-visible{outline:3px solid #467a5a;outline-offset:2px}
+#status{margin:0 0 13px}.error{color:#942c24}
+.row{display:grid;grid-template-columns:155px 1fr;align-items:baseline;border-top:1px solid var(--rule);padding:18px 12px;gap:10px}
+.row.reference{background:#edf0e7}.row b{font-size:14px;font-weight:650;color:var(--ink)}.row .label div{margin-top:2px}
+.sample{font-size:var(--sz,54px);font-synthesis:none;line-height:1.17;overflow-wrap:anywhere;white-space:pre-wrap;min-width:0}
+[hidden]{display:none!important}
+.reference .sample{font-family:Reference}
+summary{cursor:pointer;font-weight:600;color:var(--green);padding:14px 0}
+details{border-top:1px solid var(--rule);margin-top:14px}
+.overview{display:grid;grid-template-columns:1fr 1fr;gap:0 22px}
+.cell{border-top:1px solid var(--rule);padding:12px 0;min-width:0}
+.cell .sample{font-size:clamp(26px,3.6vw,43px);margin-top:4px}
+@media(max-width:650px){main{padding-top:21px}.row{grid-template-columns:1fr;gap:5px;padding:14px 8px}.row .label{display:flex;align-items:baseline;gap:8px}.row .label div{margin:0}.controls{display:grid;grid-template-columns:minmax(0,1fr) 74px;gap:8px 12px}.controls label:first-child{grid-column:1/-1}.overview{grid-template-columns:1fr}header small{font-size:11px}}
+a{color:var(--green);text-underline-offset:3px}
+#alphabet{margin-top:44px;border-top:2px solid var(--ink);padding-top:17px;scroll-margin:14px}
+.section-head{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap}
+.section-head h2{font-size:23px;line-height:1.25}
+.section-head label{font-size:13px;color:var(--muted)}
+.alphabet-row{display:grid;grid-template-columns:146px minmax(0,1fr);align-items:baseline;gap:12px;border-top:1px solid var(--rule);padding:12px 0}
+.alpha-reference,.alpha-study,.alpha-pilot,.alpha-mixed,.accent-set{font-synthesis:none;overflow-wrap:anywhere}
+.alpha-reference,.accent-set{font-family:Reference}
+.alpha-reference{font-size:clamp(27px,3.8vw,39px);line-height:1.32}
+.alpha-study,.alpha-pilot,.alpha-mixed{font-size:clamp(29px,4vw,44px);line-height:1.32}
+.alpha-pilot,.alpha-mixed{font-variation-settings:"wght" var(--aw,900),"wdth" var(--ad,65)}
+.alpha-pilot{font-family:PilotLetters}
+.alpha-mixed span{display:inline-block;margin-right:.3em}
+.accent-set{font-size:clamp(22px,3vw,30px);line-height:1.65;margin:3px 0 12px}
+#alphabet .note{margin:12px 0 15px}
+#alphabet .review-notes{padding-left:1.25em;color:var(--muted);font-size:14px}
+#alphabet .review-notes li{margin:6px 0}
+@media(max-width:650px){header a{font-size:13px}.alphabet-row{grid-template-columns:minmax(0,1fr);gap:3px}.section-head h2{font-size:21px}}
+</style>
+<main>
+<header id="start"><h1>Admiralty Sans</h1><a href="#alphabet">全字母校样 ↓</a></header>
+<div class="controls">
+<label>样字 · 小写对照<input id="words" value="ananas signals" maxlength="72" spellcheck="false" autocapitalize="none" aria-describedby="status"></label>
+<label>字重 / 字宽<select id="pose">
+<option value="900,65">Black · 65%</option><option value="900,100">Black · 100%</option><option value="900,150">Black · 150%</option>
+<option value="100,65">Thin · 65%</option><option value="100,100">Thin · 100%</option><option value="100,150">Thin · 150%</option></select></label>
+<label>字号<select id="size"><option>18</option><option>32</option><option selected>54</option><option>72</option><option>128</option><option>200</option></select></label>
+</div>
+<p id="status" class="note" aria-live="polite">可输入 a d e g i l m n s u 和空格。</p>
+<div class="row reference"><div class="label"><b>0.300 原型</b><div>Regular · 100%</div></div><div class="sample" lang="en"></div></div>
+<div class="row old"><div class="label"><b id="oldname">上一版</b><select id="oldversion" aria-label="上一版对照"><option value="A">上一版 A</option><option value="B">上一版 B</option></select><div class="where"></div></div><div class="sample" lang="en"></div></div>
+<div class="row revised"><div class="label"><b id="aname">新版 A</b><div class="where"></div></div><div class="sample" lang="en"></div></div>
+<div class="row alternate"><div class="label"><b>新版 B</b><div>m、e 多留字腔</div></div><div class="sample" lang="en" style="font-family:StudyAllowance"></div></div>
+<p id="allowance" class="note">同一字号。B 的 m 比 A 宽 58 单位，e 宽 36 单位。其余字母和词距相同。每 em 为 1000 单位。</p>
+<details><summary>同时看四个极端</summary><div class="overview"></div></details>
+<section id="alphabet" aria-labelledby="alpha-title">
+<div class="section-head"><h2 id="alpha-title">全字母校样</h2>
+<label>试稿字重 / 字宽 <select id="alpha-pose"></select></label></div>
+<p class="note">0.300 Regular 为原型。下方两组试稿可切换字重和字宽。</p>
+<div class="alphabet-row"><b>0.300 Regular</b><div class="alpha-reference" lang="en"><div>ABCDEFGHIJKLMNOPQRSTUVWXYZ</div><div>abcdefghijklmnopqrstuvwxyz</div></div></div>
+<div class="alphabet-row"><b>当前字稿 · 10 字</b><div class="alpha-study" lang="en">{{STUDY_LETTERS}}</div></div>
+<div class="alphabet-row"><b>第 9 轮字稿 · 7 字</b><div class="alpha-pilot" lang="en">{{PILOT_LETTERS}}</div></div>
+<div class="alphabet-row"><b>两组字稿混排</b><div class="alpha-mixed" lang="en"><span>bad dog</span> <span>paragraph</span> <span>minimum</span></div></div>
+<p class="note">26 个大写及小写 <b lang="en">{{MISSING_LETTERS}}</b> 目前只有发布字重的可评字样。</p>
+<details><summary>查看 Regular 的 {{LATIN_COUNT}} 个扩展拉丁字母</summary>
+<p class="accent-set" lang="und-Latn">{{EXTENDED_LATIN}}</p>
+<p class="note">字体还收录了以下其他字母类字符</p><p class="accent-set">{{OTHER_LETTERS}}</p></details>
+<details><summary>这一轮的审字记录</summary>
+<ul class="review-notes">
+<li>Regular 的 O、Q 共用圆形比例，Q 的短尾和 G 的内横仍然清楚。M、W 的斜画密集，是将来绘制窄 Black 大写时优先检查的地方。</li>
+<li>大写 I 的上下短横、小写 l 的弯脚和 i 的圆点，在 Regular 的 Ilil 里区分清楚。宽 Thin 的 i 点在 20 px 下不足半个像素，宽 Black 的 i 两侧各留了 153 单位。</li>
+<li>Black 150% 混排 bad dog 时，旧稿 b 的竖笔为 204 单位，新稿 d 的右竖为 128。这里应连同 p、q、o 一起协调黑度和字腔。</li>
+<li>Black 65% 的 n 紧靠 m 时，两字肩部起笔高度不同。h 仍沿用第 9 轮的拱肩，宜与 n、m、u 并排调整。</li>
+</ul></details>
+</section>
+</main>
+<script>
+const byId = id => document.getElementById(id);
+const words = byId('words'), pose = byId('pose');
+const alphaPose = byId('alpha-pose');
+for (const option of pose.options) alphaPose.add(option.cloneNode(true));
+alphaPose.addEventListener('input', () => {pose.value = alphaPose.value; sync();});
+let lastValid = words.value;
+const cornerPoses = [[100,65],[100,150],[900,65],[900,150]];
+const titleFor = (w,d) => (w===100?'Thin':'Black')+' · '+d+'%';
+for(const [w,d] of cornerPoses){
+  const cell = document.createElement('div');cell.className='cell';
+  const label = document.createElement('div');label.className='label';label.textContent=titleFor(w,d)+(w===900 && d===65?' · B':'');
+  const sample = document.createElement('div');sample.className='sample';sample.lang='en';sample.style.fontFamily=(w===900 && d===65)?'StudyAllowance':'Study'+w+'x'+d;
+  cell.append(label,sample);document.querySelector('.overview').append(cell);
+}
+function sync(){
+  const invalid = /[^adegilmnsu ]/.test(words.value);
+  if(!invalid) lastValid=words.value;
+  words.setAttribute('aria-invalid',String(invalid));
+  byId('status').classList.toggle('error',invalid);
+  byId('status').textContent = invalid?'含有本轮未画的字符，样张暂时保留上次有效输入。可用 a d e g i l m n s u 和空格。':'可输入 a d e g i l m n s u 和空格。';
+  const [w,d]=pose.value.split(',').map(Number);
+  const alternate=w===900 && d===65 && /[me]/.test(lastValid);
+  alphaPose.value=pose.value;
+  const atlas=byId('alphabet');
+  const current='Study'+w+'x'+d;
+  atlas.style.setProperty('--aw',w);
+  atlas.style.setProperty('--ad',d);
+  atlas.querySelector('.alpha-study').style.fontFamily=current;
+  atlas.querySelector('.alpha-mixed').style.fontFamily=current+', PilotLetters';
+  for(const el of document.querySelectorAll('.sample')) el.textContent=lastValid;
+  for(const el of document.querySelectorAll('.where')) el.textContent=titleFor(w,d);
+  document.querySelector('.old .sample').style.fontFamily=alternate && byId('oldversion').value==='B'?'PriorAllowance':'Prior'+w+'x'+d;
+  byId('oldversion').hidden=!alternate;
+  byId('oldname').hidden=alternate;
+  document.querySelector('.revised .sample').style.fontFamily='Study'+w+'x'+d;
+  byId('aname').textContent=alternate?'新版 A':'新版';
+  document.querySelector('.alternate').hidden=byId('allowance').hidden=!alternate;
+  document.documentElement.style.setProperty('--sz',byId('size').value+'px');
+}
+if (matchMedia('(max-width:650px)').matches) byId('size').value='32';
+for(const el of [pose,words,byId('size'),byId('oldversion')]) el.addEventListener('input',sync);
+sync();
+</script>
+</html>

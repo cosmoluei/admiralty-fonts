@@ -11,16 +11,28 @@ Admiralty is a font family made for a personal agent app: a calm, professional l
 | **Admiralty Mono** | A monospaced companion for code, logs and IDs (every character is 600 units wide). Optional programming ligatures are in `ss01`. |
 | **Admiralty Symbols** | 282 interface icons on a 24 × 24 grid in the Private Use Area (`U+E000`–`U+E119`), centred on the height of the capital letters, so they line up with the text. |
 
-Sans, Serif and Mono each have six static styles (Regular, Medium, Bold and their italics) and two variable fonts (`wght` 400–700, with named Regular, Medium, SemiBold and Bold). Symbols has Regular, Medium and Bold and one variable font. The text families cover the Google Fonts Latin Core and Latin Plus sets, Latin Extended-A, Pinyin and Vietnamese. Mono also has the box drawing and block characters (`U+2500`–`U+259F`) for terminal interfaces.
+Sans, Serif and Mono each have six static styles and upright and italic variable fonts. Symbols has three static weights and one variable font. The full-range edition provides weight 100–900, width 65–150% and corner radius 0–100, with a default text design based on 0.300 Regular and revised drawings for æ and ₺. The text families cover the Google Fonts Latin Core and Latin Plus sets, Latin Extended-A, Pinyin and Vietnamese. Mono also has the box drawing and block characters (`U+2500`–`U+259F`) for terminal interfaces.
 
 ## Using the fonts
 
 Ready-to-use font files are in [`fonts/`](fonts):
 
-- `fonts/variable/` — variable fonts (`.ttf` and `.woff2`), best for apps and the web
+- [Full-range variable fonts](fonts/variable/fullrange) — TTF, WOFF2 and a web stylesheet. [Open the family proof](scripts/fullrange/review/family-proof.html) to adjust the three axes and inspect a glyph in context.
+- `fonts/variable/` — the original 400–700 variable fonts used by the platform packages
 - `fonts/ttf/`, `fonts/otf/`, `fonts/woff2/` — static styles
 
 Icons are also available as SVG files in [`symbols/svg/`](symbols/svg), with names and accessibility labels in [`symbols/admiralty-symbols.json`](symbols/admiralty-symbols.json).
+
+For the full-range edition on the web, load `admiralty-fullrange.css` from the same directory as its WOFF2 files.
+
+```css
+.sample {
+  font-family: 'Admiralty Sans Fullrange', sans-serif;
+  font-weight: 650;
+  font-stretch: 82%;
+  font-variation-settings: 'RADI' 35;
+}
+```
 
 Open [`specimens/inspector.html`](specimens/inspector.html) in a browser to try every style, the weight axis, the icons and the kerning. The page loads its styling from the internet. [`specimens/review.html`](specimens/review.html) shows the 0.300 additions: the new symbols, Latin Plus, box drawing and Vietnamese.
 
@@ -51,7 +63,7 @@ python3 scripts/build_inspector.py   # specimens/inspector.html
 python3 scripts/build_review.py      # specimens/review.html
 ```
 
-`build_fonts.py` takes about three minutes. If AFDKO is installed (`pip install afdko`), the OTF files are hinted; if ttfautohint is installed (`pip install ttfautohint-py`), the static TTF files are hinted. The WOFF2 files and the variable fonts stay unhinted.
+`build_fonts.py` builds the static fonts, original variable fonts and full-range edition. With the 0.300 fonts already present, `python3 scripts/fullrange/build.py` rebuilds and audits the full-range edition on its own. If AFDKO is installed (`pip install afdko`), the OTF files are hinted; if ttfautohint is installed (`pip install ttfautohint-py`), the static TTF files are hinted. The WOFF2 files and the variable fonts stay unhinted.
 
 ### Google Fonts build
 

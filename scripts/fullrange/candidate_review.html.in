@@ -1,0 +1,184 @@
+<!doctype html><html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Admiralty · 候选审稿</title>
+<style>
+/* FONTS */
+*{box-sizing:border-box} :root{color-scheme:light;--ink:#1a2924;--muted:#52645a;--rule:#d0d8cb;--paper:#faf9f2;--tint:#e8eee3;--accent:#176451;--alert:#b94c33}
+body{margin:0;background:var(--paper);color:var(--ink);font:14px/1.45 system-ui,-apple-system,sans-serif}
+button,select,input,textarea{font:inherit;color:inherit}button,select{cursor:pointer;background:#fffef8;border:1px solid #b6c3b7;border-radius:5px;padding:5px 10px;min-height:34px}
+button:hover,select:hover{border-color:var(--accent)}button:disabled{opacity:.5;cursor:default}button:focus-visible,select:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid #408cba;outline-offset:2px}a{color:var(--accent)}
+.top{min-height:51px;border-bottom:1px solid var(--rule);display:flex;align-items:center;gap:16px;padding:6px 19px}.brand{font:600 20px Georgia,serif}.top b{font-size:15px}.top .spacer{flex:1}.top button{background:var(--accent);color:white;border-color:var(--accent)}#progress{font-variant-numeric:tabular-nums;color:var(--muted)}
+.layout{display:grid;grid-template-columns:clamp(230px,21vw,330px) minmax(0,1fr);height:calc(100dvh - 51px)}
+aside{display:flex;flex-direction:column;min-height:0;border-right:1px solid var(--rule);padding:10px 0}.filters{display:flex;gap:5px;padding:0 10px 8px}.filters input{width:100%;min-width:55px}.filters input,textarea{border:1px solid #b6c3b7;border-radius:4px;padding:5px 7px;background:#fffef8}
+#list{overflow:auto;padding:0 5px}.group{width:100%;text-align:left;border:0;border-bottom:1px solid var(--rule);border-radius:0;display:grid;grid-template-columns:1fr auto;gap:1px 8px;padding:8px 10px;background:transparent}.group strong{font:600 15px ui-monospace,monospace;overflow-wrap:anywhere}.group small{font-size:12px;color:var(--muted)}.group.active{background:var(--tint);box-shadow:inset 3px 0 var(--accent)}.group .status{font:12px system-ui;align-self:center;color:var(--accent)}
+main{min-width:0;min-height:0;display:flex;flex-direction:column}#empty{padding:32px;color:var(--muted)}[hidden]{display:none!important}
+#panel{height:100%;min-height:0;display:flex;flex-direction:column}.heading,.selector,.decision{padding:8px clamp(12px,2vw,28px)}.heading{display:flex;align-items:center;gap:10px}.heading h1{font-size:clamp(18px,2vw,27px);margin:0;line-height:1.15}.heading h1 span{font-family:ui-monospace,monospace}.heading small{color:var(--muted)}.heading nav{margin-left:auto;display:flex;gap:4px}
+.selector{display:flex;align-items:center;gap:8px;padding-top:0;padding-bottom:8px;border-bottom:1px solid var(--rule)}#case{max-width:100%;min-width:0}.selector label{margin-left:auto;white-space:nowrap}.proof{display:grid;grid-template-columns:1fr 1fr;flex:1;min-height:125px}.proof figure{margin:0;position:relative;min-width:0;min-height:0;overflow:hidden;display:flex;flex-direction:column}.proof figure+figure{border-left:1px solid var(--rule)}figcaption{padding:6px 12px;font-size:12px;display:flex;gap:8px;color:var(--muted)}figcaption b{color:var(--ink)}.sheet{flex:1;min-height:0;overflow:hidden;position:relative}.sheet svg{width:100%;height:100%;display:block;user-select:none;-webkit-user-select:none;touch-action:pan-y;overflow:visible}.sheet text{fill:var(--ink);pointer-events:none;font-synthesis:none;user-select:none;-webkit-user-select:none}
+ellipse{stroke:var(--alert);stroke-width:2;fill:none;vector-effect:non-scaling-stroke;pointer-events:none}ellipse.user{stroke:#1669a1;stroke-dasharray:5 3}.drawing svg{cursor:crosshair;touch-action:none}.evidence{min-height:28px;padding:4px clamp(12px,2vw,28px);color:var(--muted);border-top:1px solid var(--rule);font-size:13px}
+.decision{padding-top:7px;border-top:1px solid var(--rule);background:#f1f4ec}.actions,.notes{display:flex;gap:7px;align-items:center;flex-wrap:wrap}.actions{margin-bottom:6px}.actions strong{font-size:13px}.actions button[data-state].on{color:white;background:var(--accent);border-color:var(--accent)}.actions button[data-state="keep"].on{background:#465548}.actions label{margin-left:auto}.notes textarea{flex:1;min-width:80px;height:33px;resize:vertical}.notes button{font-size:12px}
+#save{font-size:12px;color:var(--muted)}#coverage{border:none;background:transparent;text-decoration:underline;color:var(--muted);padding:3px;font-size:12px}dialog{max-width:min(470px,92vw);border:1px solid var(--rule);border-radius:8px;background:var(--paper);color:var(--ink);padding:18px;box-shadow:0 10px 54px #18282033}dialog::backdrop{background:#13271f55}dialog h2{margin:0 0 8px;font-size:19px}dialog p{line-height:1.7}
+@media(max-width:750px){.top{padding:5px 9px;gap:8px}.brand{font-size:16px}.top b{display:none}.layout{display:flex;flex-direction:column;height:calc(100dvh - 51px)}aside{display:block;padding:5px;border:0;border-bottom:1px solid var(--rule)}.filters{padding:0}.filters select{max-width:36%}.group{width:auto}.group small{display:none}#list{display:none}#mobileGroup{display:block!important;max-width:38%;font-size:13px}.heading,.selector,.decision{padding:5px 8px}.heading small{display:none}.heading h1{font-size:18px}.selector{gap:4px}.selector label{font-size:12px}.selector select{flex:1}.proof{min-height:155px}.notes{gap:4px}.notes textarea{font-size:13px}.actions{gap:4px}.actions label{margin-left:0}.actions button,.actions select{font-size:12px;padding:4px 6px}.evidence{padding:5px 8px}.top #save{display:none}main{flex:1}.heading nav button{min-width:34px}figcaption{font-size:11px;gap:3px;flex-wrap:wrap;padding:4px 7px}}
+@media(max-height:540px){.layout{height:auto;min-height:calc(100dvh - 51px)}.proof{min-height:225px}aside{max-height:90vh}}
+#strip{display:grid;grid-template-columns:repeat(9,minmax(0,1fr));border-top:1px solid var(--rule);text-align:center;user-select:none;-webkit-user-select:none}
+#strip div{padding:3px 0;color:var(--muted);font-size:11px}#strip div.current{background:var(--tint);color:var(--ink);font-weight:650}
+#strip span{display:block;font-synthesis:none;font-weight:400;font-size:clamp(34px,5vw,66px);line-height:1.1;color:var(--ink)}
+#refMode{min-height:28px;padding:2px 5px;font-size:12px}.proof figcaption{align-items:center}.cell-guide{stroke:var(--rule);stroke-width:1;vector-effect:non-scaling-stroke;stroke-dasharray:4 3}
+.width-proof{grid-template-rows:auto minmax(0,1fr)}.width-proof figure{display:grid;grid-row:span 2;grid-template-rows:subgrid}
+.width-proof figure+figure{border-left:0;box-shadow:inset 1px 0 var(--rule)}
+</style>
+<header class="top"><span class="brand">Admiralty</span><b>候选审稿</b><button id="coverage">扫描范围</button><span class="spacer"></span><span id="progress"></span><span id="save" role="status"></span><button id="export">导出决定</button></header>
+<div class="layout"><aside><div class="filters"><select id="scope" aria-label="清单范围"><option value="first">优先核对</option><option value="all">全部候选</option><option value="done">已有决定</option></select><input id="search" type="search" placeholder="查找字形" aria-label="在所有候选中查找字形"><select id="mobileGroup" hidden aria-label="选择问题组"></select></div><nav id="list" aria-label="问题组"></nav></aside>
+<main><div id="empty" hidden>没有符合条件的组。可以切换到「全部候选」，或清除搜索。</div><div id="panel">
+<div class="heading"><h1><span id="glyph"></span> · <b id="rule"></b></h1><small id="summary"></small><nav aria-label="翻组"><button id="prev" aria-label="上一组" title="上一组（←）">←</button><button id="next" aria-label="下一组" title="下一组（→）">→</button></nav></div>
+<div class="selector"><select id="case" aria-label="检查组合，上下键切换"></select><label><input id="marks" type="checkbox" checked>显示圈注</label></div>
+<div class="proof"><figure><figcaption><b>候选</b><span id="spec"></span></figcaption><div class="sheet"><svg id="sample" role="img" aria-label="候选字形"></svg></div></figure><figure><figcaption><b>同字宽对照</b><span id="refLabel">Regular 400</span><select hidden id="refMode" aria-label="选择对照"><option value="percent">同轴 %</option><option value="100">同字形 · Thin 100</option><option value="900">同字形 · Black 900</option></select></figcaption><div class="sheet"><svg id="ref" role="img" aria-label="对照字形"></svg></div></figure></div>
+<div id="strip" role="group" aria-label="同字宽同圆角的九档字重" hidden></div>
+<div class="evidence" id="evidence"></div>
+<div class="decision"><div class="actions"><strong>整组</strong><button data-state="fix">确认要修</button><button data-state="keep">正常</button><button data-state="pending">待审</button><label>此例 <select id="override"><option value="">跟随整组</option><option value="fix">要修</option><option value="keep">正常</option><option value="pending">待审</option></select></label></div>
+<div class="notes"><textarea id="note" rows="1" aria-label="当前组合备注" placeholder="此例备注"></textarea><button id="draw" aria-pressed="false">补圈</button><button id="undo" disabled>撤销圈</button></div></div>
+</div></main></div>
+<dialog id="info"><h2>本次扫描</h2><p id="stats"></p><p>红圈表示自动提示，蓝圈是你补的位置。图标内白闭合时，红圈取自 Regular 的原内白中心。先核对代表例，再从组合菜单抽看其他字型。</p><p>← → 翻组，↑ ↓ 换组合。整组决定适用于该组全部组合；「此例」可以单独覆盖。导出的修复清单只包含已确认的项目。</p><button id="close">关闭</button></dialog>
+<script type="application/json" id="data">/* DATA */</script>
+<script>
+const data=JSON.parse(document.getElementById('data').textContent);
+const $=id=>document.getElementById(id), ns='http://www.w3.org/2000/svg';
+const labels={flat:'收笔变窄','arm-junction':'斜臂接入竖干',corner:'弧线出现折角',counter:'字腔变窄',dot:'圆点比例变化',rail:'横线两侧错层','icon-fragment':'笔画分离','icon-hole':'内白闭合','bowl-waist':'字腰收窄不足'};
+labels['cell-width-dip']='中间字重收窄';labels['cell-width-context']='其余轴值';
+const stateName={fix:'要修',keep:'正常',pending:'待审'};
+const storageKey='admiralty.review.candidates.'+data.id;
+let state={groups:{},cases:{},last:'',index:0}, storageOK=true;
+try{const saved=JSON.parse(localStorage.getItem(storageKey));if(saved?.groups&&saved?.cases)state=saved;}catch{storageOK=false;}
+let group=data.groups.find(g=>g.id===state.last)||data.groups[0], ci=state.index||0, visible=[], drawing=false, drag=null, generation=0;
+const fontLoads=new Map();
+const caseID=c=>[c.f,c.g,c.w,c.d,c.r].join('/');
+const reviewKey=(g,c)=>g.id+'::'+caseID(c);
+const current=()=>group.cases[ci];
+const item=(g,c)=>state.cases[reviewKey(g,c)]||{};
+const verdict=(g,c)=>item(g,c).override||state.groups[g.id]||'pending';
+function persist(){try{localStorage.setItem(storageKey,JSON.stringify(state));}catch{storageOK=false;}$('save').textContent=storageOK?'已本地保存':'请导出保存进度';}
+function setCase(patch){const k=reviewKey(group,current()), rec={...item(group,current()),...patch};
+ if(!rec.override&&!rec.note&&!rec.regions?.length)delete state.cases[k];else state.cases[k]=rec;persist();}
+function hasReview(g){return !!state.groups[g.id]||g.cases.some(c=>Object.keys(item(g,c)).length);}
+function groupStatus(g){const values=new Set(g.cases.map(c=>verdict(g,c)));return values.size===1?stateName[[...values][0]]:'有例外';}
+function elem(tag,attrs={}){const n=document.createElementNS(ns,tag);for(const [k,v] of Object.entries(attrs))n.setAttribute(k,v);return n;}
+function choose(id){group=data.groups.find(g=>g.id===id);ci=0;show();}
+function filters(){
+ const q=$('search').value.trim().toLowerCase(),scope=$('scope').value;
+ visible=data.groups.filter(g=>(q?(g.glyph+' '+labels[g.rule]).toLowerCase().includes(q)||g.cases.some(c=>(c.g+' '+c.u.join(' ')).toLowerCase().includes(q)):scope==='first'?g.first:scope==='done'?hasReview(g):true));
+ if(!visible.includes(group)){group=visible[0];ci=0;}
+ const list=$('list'), mobile=$('mobileGroup');list.replaceChildren();mobile.replaceChildren();
+ for(const g of visible){const b=document.createElement('button');b.className='group'+(g===group?' active':'');b.setAttribute('aria-current',String(g===group));
+  const name=document.createElement('strong'),status=document.createElement('span'),sub=document.createElement('small');
+  name.textContent=g.glyph;status.className='status';status.textContent=groupStatus(g);sub.textContent=labels[g.rule]+' · '+g.cases.length+' 例';
+  b.append(name,status,sub);b.onclick=()=>choose(g.id);list.append(b);mobile.add(new Option(g.glyph+' · '+labels[g.rule],g.id));}
+ if(group)mobile.value=group.id;
+ $('empty').hidden=!!group;$('panel').hidden=!group;
+}
+function updateProgress(){const resolved=data.groups.filter(g=>g.cases.every(c=>verdict(g,c)!=='pending')).length;
+ $('progress').textContent=resolved+' / '+data.groups.length+' 组已审';$('export').disabled=!Object.keys(state.groups).length&&!Object.keys(state.cases).length;}
+function show(){
+ filters();updateProgress();if(!group)return;
+ ci=Math.max(0,Math.min(ci,group.cases.length-1));state.last=group.id;state.index=ci;persist();
+ $('glyph').textContent=group.glyph;$('rule').textContent=labels[group.rule];
+ $('summary').textContent=new Set(group.cases.map(c=>c.f)).size+' 个字型 · '+group.cases.length+' 例';
+ const select=$('case');select.replaceChildren();group.cases.forEach((c,i)=>select.add(new Option((i+1)+'/'+group.cases.length+'　'+c.g+' · '+c.f.slice(9)+'　'+c.w+' / '+c.d+' / '+c.r,i)));select.value=ci;
+ $('prev').disabled=visible.indexOf(group)===0;$('next').disabled=visible.indexOf(group)===visible.length-1;
+ present();
+}
+function metric(c){const p=c.p.reduce((a,b)=>a.score>=b.score?a:b),m=p.metrics;
+ if(data.widthScan){
+  const tag=p.sourceMark?'你的标记'+(p.sourceMark.note?'（'+p.sourceMark.note+'）':'')+'。':'';
+  const peer=m.percentInk===undefined?'':'同轴 % 为 '+m.percentInk+'。';
+  return tag+'去斜墨迹宽 '+m.inkWidth+' / '+m.cell+' 单位。'+peer+'同宽度、同圆角下，Thin 为 '+m.widths[0]+'，Black 为 '+m.widths.at(-1)+'。';
+ }
+ switch(group.rule){
+ case 'flat':return '测得收笔 '+Math.round(m.tipWidth)+' 单位，按笔身直线延伸预计 '+Math.round(m.expectedWidth)+' 单位。';
+ case 'counter':return '此处字腔面积约为同字宽 Regular 的 '+Math.round(m.areaRatio*100)+'%。';
+ case 'corner':return '圈内局部转角约 '+Math.round(m.turn)+'°，Regular 对应区段约 '+Math.round(m.regularTurn)+'°。';
+ case 'dot':return '去斜后圆点宽高比 '+m.aspect+'，Regular 为 '+m.regularAspect+'。';
+ case 'rail':return '横线两侧的中线相差 '+Math.round(m.offset)+' 单位。';
+ case 'arm-junction':return '斜臂边缘在接入竖干时偏离其直线段 '+Math.round(m.normalOffset)+' 单位。';
+ case 'icon-hole':return '同一图样的内白由 '+m.regularCount+' 个减为 '+m.instanceCount+' 个；已在两种渲染尺寸复测。';
+ case 'icon-fragment':return '同一图样的分离墨块由 '+m.regularCount+' 个增至 '+m.instanceCount+' 个；请判断连接是否应保留。';
+ default:return '对照同字宽的 Regular 检查圈内轮廓。';}}
+function drawRing(svg,region,cls){svg.append(elem('ellipse',{cx:1440*(region.x+region.w/2),cy:1440*(region.y+region.h/2),rx:720*region.w,ry:720*region.h,class:cls}));}
+const autoRegion=(p,c)=>{const size=Math.max(26,Math.min(117,Math.min(c.box[2],c.box[3])*.14))/1440;
+ return {x:p.x-size/2,y:p.y-size/2,w:size,h:size};};
+function paint(svg,c,weight,highlight,gid=c.draw){svg.replaceChildren();svg.setAttribute('viewBox',c.box.join(' '));svg.style.transform='';
+ if(data.widthScan)for(const x of [420,1020])svg.append(elem('line',{x1:x,x2:x,y1:205,y2:1085,class:'cell-guide'}));
+ const t=elem('text',{x:720,y:1030,'text-anchor':'middle','font-size':1000});t.style.fontFamily=data.fonts[c.f].css;
+ t.style.fontVariationSettings='"wght" '+weight+', "wdth" '+c.d+', "RADI" '+c.r;t.textContent=String.fromCodePoint(0xf0000+gid);svg.append(t);
+ if(highlight&&$('marks').checked){for(const p of c.p)for(const r of findingRegions(p,c))drawRing(svg,r,'auto');for(const r of item(group,c).regions||[])drawRing(svg,r,'user');}}
+function findingRegions(p,c){return p.scope==='glyph'?(p.sourceMark?.regions||[]):[autoRegion(p,c)];}
+function weightStrip(c){const strip=$('strip');strip.replaceChildren();
+ for(const w of data.grid.wght){const col=document.createElement('div'),glyph=document.createElement('span');
+  col.classList.toggle('current',w===c.w);glyph.style.fontFamily=data.fonts[c.f].css;
+  glyph.style.fontVariationSettings='"wght" '+w+', "wdth" '+c.d+', "RADI" '+c.r;
+  glyph.textContent=String.fromCodePoint(0xf0000+c.draw);col.append(glyph,String(w));strip.append(col);}}
+function present(){const c=current(),entry=item(group,c);drag=null;const tag=++generation;
+ $('spec').textContent=c.f.slice(9)+' · '+c.w+' / '+c.d+' / '+c.r;
+ for(const b of document.querySelectorAll('[data-state]')){const on=(state.groups[group.id]||'pending')===b.dataset.state;b.classList.toggle('on',on);b.setAttribute('aria-pressed',String(on));}
+ $('note').value=entry.note||'';$('override').value=entry.override||'';$('undo').disabled=!entry.regions?.length;
+ const f=data.fonts[c.f];if(!fontLoads.has(f.css))fontLoads.set(f.css,document.fonts.load('400 100px '+f.css).then(v=>{if(!v.length)throw Error();}));
+ $('evidence').textContent='正在载入字形…';$('sample').replaceChildren();$('ref').replaceChildren();
+ fontLoads.get(f.css).then(()=>{if(tag!==generation)return;paint($('sample'),c,c.w,true);
+  if(data.widthScan){const mode=$('refMode'),peer=c.g==='perthousand';mode.options[0].disabled=!peer;
+   if(!peer&&mode.value==='percent')mode.value='100';
+   paint($('ref'),c,mode.value==='percent'?c.w:Number(mode.value),false,mode.value==='percent'?f.percentGid:c.draw);weightStrip(c);
+  }else paint($('ref'),c,400,false);
+  $('evidence').textContent=metric(c);})
+ .catch(()=>{if(tag===generation)$('evidence').textContent='字形载入失败，请重新打开此页。';});
+}
+function stepGroup(n){const g=visible[visible.indexOf(group)+n];if(g){choose(g.id);$('list').querySelector('.active')?.scrollIntoView({block:'nearest'});}}
+function stepCase(n){if(group){ci=Math.min(Math.max(0,ci+n),group.cases.length-1);show();}}
+$('prev').onclick=()=>stepGroup(-1);$('next').onclick=()=>stepGroup(1);$('mobileGroup').onchange=e=>choose(e.target.value);
+$('scope').onchange=$('search').oninput=()=>show();$('case').onchange=e=>{ci=+e.target.value;show();};
+document.querySelectorAll('[data-state]').forEach(b=>b.onclick=()=>{const s=b.dataset.state;if(s==='pending')delete state.groups[group.id];else state.groups[group.id]=s;persist();show();});
+$('override').onchange=e=>{setCase({override:e.target.value});show();};$('note').oninput=e=>{setCase({note:e.target.value});updateProgress();};
+$('marks').onchange=()=>present();
+$('refMode').onchange=()=>present();
+$('coverage').onclick=()=>$('info').showModal();$('close').onclick=()=>$('info').close();
+const gridSize=Object.values(data.grid).reduce((n,v)=>n*v.length,1),faces=Object.values(data.fonts);
+$('stats').textContent='6 款正文字体共 '+faces.filter(f=>!f.directionalForms).reduce((n,f)=>n+f.glyphs,0)+' 个字形条目，另有 '+(faces.find(f=>f.directionalForms)?.glyphs||0)+' 个公开图标。每种抽查 '+gridSize+' 组轴值。共筛出 '+data.cellCount+' 个含提示的字形组合，合并为 '+data.groups.length+' 组。曲线、字腔、收笔和图标各有适用条件；圈注供视觉复核。';
+$('draw').onclick=()=>{drawing=!drawing;$('draw').setAttribute('aria-pressed',String(drawing));$('draw').textContent=drawing?'结束补圈':'补圈';$('sample').parentNode.classList.toggle('drawing',drawing);$('sample').style.transform='';if(drawing){$('marks').checked=true;present();}};
+if(data.widthScan){
+ document.title='Admiralty · Mono 字宽审稿';document.querySelector('.top b').textContent='Mono 字宽审稿';
+ document.querySelector('.proof').classList.add('width-proof');
+ $('refLabel').hidden=true;$('refMode').hidden=false;$('strip').hidden=false;
+ const scan=data.widthScan;
+ $('stats').textContent='扫描了 '+Object.entries(data.fonts).map(([name,f])=>name.slice(9)+' 的 '+f.inkGlyphs+' 个等宽字形').join('、')+'，每字均有墨迹，每个字形取 '+gridSize+' 组轴值。'+
+  '同字宽、同圆角下，若某字重的去斜墨迹宽度比 Thin 和 Black 都至少小 '+scan.minDip+' 单位，就列入「中间字重收窄」。命中 '+scan.hits+' 例。此次标记 '+scan.totalMarks+' 例，审稿页共列出 '+data.cellCount+' 个组合。';
+ $('stats').nextElementSibling.textContent='虚线表示 600 单位字格的两侧。左侧是当前组合，右侧可切换对照。下方九个字样仅改变字重，当前字重带底色。其余轴值可另行决定。';
+}
+$('undo').onclick=()=>{setCase({regions:(item(group,current()).regions||[]).slice(0,-1)});show();};
+function xy(e){const p=new DOMPoint(e.clientX,e.clientY).matrixTransform($('sample').getScreenCTM().inverse());return {x:p.x/1440,y:p.y/1440};}
+function rect(a,b){return {x:Math.min(a.x,b.x),y:Math.min(a.y,b.y),w:Math.abs(a.x-b.x),h:Math.abs(a.y-b.y)};}
+const sample=$('sample');sample.onpointerdown=e=>{if(!drawing||e.button!==0)return;e.preventDefault();drag=xy(e);sample.setPointerCapture(e.pointerId);};
+sample.onpointermove=e=>{if(!drag)return;sample.querySelector('.live')?.remove();drawRing(sample,rect(drag,xy(e)),'user live');};
+sample.onpointercancel=()=>{drag=null;sample.querySelector('.live')?.remove();};
+sample.onpointerup=e=>{if(!drag)return;const box=rect(drag,xy(e));drag=null;if(box.w*1440>4&&box.h*1440>4)setCase({regions:[...(item(group,current()).regions||[]),box]});show();};
+for(const svg of [sample,$('ref')]){const sheet=svg.parentNode;sheet.addEventListener('pointermove',e=>{if(e.pointerType!=='mouse'||drawing||drag)return;const b=sheet.getBoundingClientRect();svg.style.transformOrigin=((e.clientX-b.left)*100/b.width)+'% '+((e.clientY-b.top)*100/b.height)+'%';svg.style.transform='scale(1.65)';});sheet.onpointerleave=()=>{svg.style.transform='';};}
+document.addEventListener('keydown',e=>{if(e.ctrlKey||e.metaKey||e.altKey||$('info').open||e.target.matches('input,textarea,select'))return;
+ const actions={ArrowLeft:()=>stepGroup(-1),ArrowRight:()=>stepGroup(1),ArrowUp:()=>stepCase(-1),ArrowDown:()=>stepCase(1)};
+ if(actions[e.key]){e.preventDefault();actions[e.key]();}});
+$('export').onclick=()=>{
+ const approved=new Map(),reviews=[];
+ for(const g of data.groups){if(!hasReview(g))continue;const exceptions=[];
+  for(const c of g.cases){const entry=item(g,c),key=caseID(c);
+   if(Object.keys(entry).length)exceptions.push({case:key,...entry});
+   if(verdict(g,c)!=='fix')continue;
+   if(!approved.has(key))approved.set(key,{family:c.f,glyph:c.g,glyphID:c.gid,renderedGlyphID:c.draw,unicode:c.u,
+    fontFile:data.fonts[c.f].file,fontSha256:data.fonts[c.f].sha256,wght:c.w,wdth:c.d,RADI:c.r,
+    regions:[],note:'',rules:[],findings:[]});
+   const row=approved.get(key);row.rules.push(g.id);row.findings.push(...c.p);row.regions.push(...c.p.flatMap(p=>findingRegions(p,c)),...(entry.regions||[]));
+   for(const p of c.p)if(p.sourceMark?.note)row.note+=(row.note?'\n':'')+p.sourceMark.note;
+   if(entry.note)row.note+=(row.note?'\n':'')+entry.note;
+  }
+  reviews.push({group:g.id,decision:state.groups[g.id]||'pending',caseCount:g.cases.length,exceptions});}
+ const now=new Date().toISOString();const out={schema:'admiralty-glyph-review/1',reviewPass:'candidate-decisions',scanId:data.id,
+ exportedAt:now,annotationFrame:data.frame,fonts:Object.fromEntries(Object.entries(data.fonts).map(([f,m])=>[f,m.sha256])),
+ issueCount:approved.size,issues:[...approved.values()],reviews};
+ const url=URL.createObjectURL(new Blob([JSON.stringify(out,null,2)],{type:'application/json'}));
+ const a=document.createElement('a');a.href=url;a.download='Admiralty-候选审稿-'+now.replace(/[:.]/g,'-')+'.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),10000);
+};
+if(group&&!group.first)$('scope').value='all';show();
+</script></html>
