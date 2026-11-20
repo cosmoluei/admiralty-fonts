@@ -1,6 +1,6 @@
 # Admiralty
 
-**Version 0.300 — test release.** The design is still being reviewed and may change before 1.000.
+**Version 0.500 — test release.** The design is still being reviewed and may change before 1.000.
 
 Admiralty is a font family made for a personal agent app: a calm, professional look that stays comfortable over long use. It has four families:
 
@@ -11,11 +11,11 @@ Admiralty is a font family made for a personal agent app: a calm, professional l
 | **Admiralty Mono** | A monospaced companion for code, logs and IDs (every character is 600 units wide). Optional programming ligatures are in `ss01`. |
 | **Admiralty Symbols** | 311 interface icons on a 24 × 24 grid in the Private Use Area (`U+E000`–`U+E136`), centred on the height of the capital letters, so they line up with the text. |
 
-Sans, Serif and Mono each have six static styles and upright and italic variable fonts. Symbols has three static weights and one variable font. The full-range edition provides weight 100–900, width 65–150% and corner radius 0–100, with a default text design based on 0.300 Regular and revised drawings for æ and ₺. The text families cover the Google Fonts Latin Core and Latin Plus sets, Latin Extended-A, Pinyin and Vietnamese. Mono also has the box drawing and block characters (`U+2500`–`U+259F`) for terminal interfaces.
+Sans, Serif and Mono each have six static styles and upright and italic variable fonts. Symbols has three static weights and one variable font. The full-range edition provides weight 100–900, width 65–150% and corner radius 0–100, with a default text design based on the 0.300 Regular and revised drawings for æ and ₺. The text families cover the Google Fonts Latin Core and Latin Plus sets, Latin Extended-A, Pinyin and Vietnamese. Mono also has the box drawing and block characters (`U+2500`–`U+259F`) for terminal interfaces.
 
 ## Using the fonts
 
-Ready-to-use font files are in [`fonts/`](fonts):
+[Download Admiralty 0.500](https://github.com/cosmoluei/admiralty-fonts/releases/tag/v0.500) or browse the individual files in [`fonts/`](fonts):
 
 - [Full-range variable fonts](fonts/variable/fullrange) — TTF, WOFF2 and a web stylesheet. [Open the family proof](scripts/fullrange/review/family-proof.html) to adjust the three axes and inspect a glyph in context.
 - `fonts/variable/` — the original 400–700 variable fonts used by the platform packages
@@ -63,7 +63,7 @@ python3 scripts/build_inspector.py   # specimens/inspector.html
 python3 scripts/build_review.py      # specimens/review.html
 ```
 
-`build_fonts.py` builds the static fonts, original variable fonts and full-range edition. With the 0.300 fonts already present, `python3 scripts/fullrange/build.py` rebuilds and audits the full-range edition on its own. If AFDKO is installed (`pip install afdko`), the OTF files are hinted; if ttfautohint is installed (`pip install ttfautohint-py`), the static TTF files are hinted. The WOFF2 files and the variable fonts stay unhinted.
+`build_fonts.py` builds the static fonts, original variable fonts and full-range edition. With the static and single-axis fonts already present, `python3 scripts/fullrange/build.py` rebuilds and audits the full-range edition on its own. If AFDKO is installed (`pip install afdko`), the OTF files are hinted; if ttfautohint is installed (`pip install ttfautohint-py`), the static TTF files are hinted. The WOFF2 files and the variable fonts stay unhinted.
 
 ### Google Fonts build
 
@@ -75,14 +75,13 @@ cd sources
 gftools builder config-sans.yaml     # also config-serif.yaml and config-mono.yaml; output in build/gf/
 ```
 
-These builds have the same outlines and spacing as `build_fonts.py` (checked again for this version). The masters in `sources/` only match point for point after the variable-font step, so run the full `build_fonts.py` (not with `ADMIRALTY_SKIP_VARIABLE=1`) before a Google Fonts build. Descriptions for the Google Fonts pages are in [`documentation/`](documentation). Admiralty Symbols is not meant for Google Fonts, because it only uses Private Use Area code points.
+The previous comparison of these builds and `build_fonts.py` is recorded in [the review notes](docs/REVIEW_NOTES.md). The masters in `sources/` only match point for point after the variable-font step, so run the full `build_fonts.py` (not with `ADMIRALTY_SKIP_VARIABLE=1`) before a Google Fonts build. Descriptions for the Google Fonts pages are in [`documentation/`](documentation). Admiralty Symbols is not meant for Google Fonts, because it only uses Private Use Area code points.
 
 ## Status
 
 Checked automatically (see [`docs/QA_AND_ORIGINALITY_REPORT.md`](docs/QA_AND_ORIGINALITY_REPORT.md) and [`docs/REVIEW_NOTES.md`](docs/REVIEW_NOTES.md)):
 
-- Font Bakery (Google Fonts profile): the only failure is the version number, which must be 1.000 or higher for Google Fonts.
-- OTS passes for every font file.
+- Results from earlier Font Bakery and OTS runs are recorded in the review notes.
 - No glyph breaks between weights in any variable font.
 - The symbol SVG files and Android drawables match the font outlines for all 311 symbols.
 - Shape comparison with open fonts of the same style (Regular, Bold, Italic, Bold Italic): no close copies (see the review notes).

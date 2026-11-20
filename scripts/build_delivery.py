@@ -292,7 +292,7 @@ def _build_web(woff2_dir: Path, var_dir: Path, sym_svg_dir: Path, meta: dict) ->
         return ",".join(f"U+{a:04X}" if a == b else f"U+{a:04X}-{b:04X}" for a, b in out)
     sub_dir = d / "fonts" / "subsets"
     css_blocks: List[str] = [
-        "/* Admiralty Web Fonts v0.300 — Metric-Matched Fallbacks & Variable Unicode-Range Subsets */\n",
+        "/* Admiralty Web Fonts v0.500 — Metric-Matched Fallbacks & Variable Unicode-Range Subsets */\n",
         "@font-face { font-family: 'Admiralty Sans Fallback'; src: local('PingFang HK'), local('Helvetica Neue'), local('Arial'); ascent-override: 98%; descent-override: 32%; line-gap-override: 0%; size-adjust: 100%; }\n",
         "@font-face { font-family: 'Admiralty Serif Fallback'; src: local('Songti TC'), local('Georgia'), local('Times New Roman'); ascent-override: 98%; descent-override: 32%; line-gap-override: 0%; size-adjust: 100%; }\n",
     ]
@@ -372,7 +372,7 @@ def _build_cross_platform(ttf_dir: Path, var_dir: Path, sym_json: Path, meta: di
     shutil.copyfile(sym_json, d / "admiralty-symbols.json")
 
     dart_lines = [
-        "// Auto-generated Admiralty Symbols IconData mapping (v0.300)\n",
+        "// Auto-generated Admiralty Symbols IconData mapping (v0.500)\n",
         "import 'package:flutter/widgets.dart';\n\n",
         "abstract final class AdmiraltyIcons {\n",
         "  static const String fontFamily = 'AdmiraltySymbols';\n\n",

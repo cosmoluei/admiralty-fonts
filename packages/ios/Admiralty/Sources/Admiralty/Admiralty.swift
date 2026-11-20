@@ -1,4 +1,4 @@
-// Generated from admiralty-symbols.json (Admiralty 0.300). Do not edit by hand.
+// Generated from admiralty-symbols.json (Admiralty 0.500). Do not edit by hand.
 // Licensed under the SIL Open Font License 1.1 (see OFL.txt).
 
 import SwiftUI

@@ -4,6 +4,22 @@ All notable pre-release milestones (`0.x` design track) are documented here. All
 
 ---
 
+## `[0.500]` — 2026-11-20
+
+- Added 29 interface symbols for messaging, device control, permissions and travel, bringing the catalog to 311. The new symbols occupy U+E11A through U+E136. Existing names and code points are preserved.
+- Added the aliases `globe`, `pause-filled` and `phone-off` to the platform packages and refreshed the website gallery and downloadable fonts.
+- Refined zero-radius letterforms in the full-range fonts and added regression checks and review specimens.
+
+---
+
+## `[0.400]` — 2026-11-19 (full-range edition and website)
+
+- **Full-range variable fonts** for Sans, Serif, Mono (each with italic) and Symbols: weight 100–900, width 65–150% and corner radius `RADI` 0–100, in `fonts/variable/fullrange/`, with their build tools, audits and proofs in `scripts/fullrange/`. Sans and Serif keep the same letter widths at every setting.
+- **Website** in `site/`: a one-page specimen with a draggable hero, the Serif/Sans divider, a workbench of six interfaces, the symbols and the character set. It uses the full-range fonts and is published to GitHub Pages by `.github/workflows/pages.yml`.
+- Version 0.400 in every font and package. Names and code points of existing symbols are unchanged.
+
+---
+
 ## `[0.300]` — 2026-11-16 (Review 2 refinement, rounds 1–4)
 
 - **New characters** (added to 0.300 before it is tagged):

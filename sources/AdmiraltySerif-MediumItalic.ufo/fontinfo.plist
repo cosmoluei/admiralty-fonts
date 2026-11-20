@@ -39,9 +39,9 @@
     <key>openTypeNamePreferredSubfamilyName</key>
     <string>Medium Italic</string>
     <key>openTypeNameUniqueID</key>
-    <string>0.300;LYT;AdmiraltySerif-MediumItalic</string>
+    <string>0.500;LYT;AdmiraltySerif-MediumItalic</string>
     <key>openTypeNameVersion</key>
-    <string>Version 0.300</string>
+    <string>Version 0.500</string>
     <key>openTypeOS2Panose</key>
     <array>
       <integer>2</integer>
@@ -126,7 +126,7 @@
     <key>versionMajor</key>
     <integer>0</integer>
     <key>versionMinor</key>
-    <integer>300</integer>
+    <integer>500</integer>
     <key>xHeight</key>
     <integer>520</integer>
   </dict>

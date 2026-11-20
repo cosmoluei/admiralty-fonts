@@ -1,0 +1,42 @@
+/*
+  Font files for the site: the full-range Admiralty variable fonts from fonts/variable/fullrange/
+  (weight 100-900, width 65-150%, corner radius RADI 0-100, with real italics).
+  Weight and width use font-weight and font-stretch; radius uses font-variation-settings "RADI".
+  The Symbols file here is reduced to its weight axis (width 100, radius 0) to keep it small.
+  The page refers only to "Admiralty Sans", "Admiralty Serif", "Admiralty Mono" and "Admiralty Symbols".
+*/
+@font-face {
+  font-family: "Admiralty Sans";
+  src: url("fonts/admiralty/AdmiraltySans-VF.woff2") format("woff2");
+  font-weight: 100 900; font-stretch: 65% 150%; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "Admiralty Sans";
+  src: url("fonts/admiralty/AdmiraltySans-Italic-VF.woff2") format("woff2");
+  font-weight: 100 900; font-stretch: 65% 150%; font-style: italic; font-display: swap;
+}
+@font-face {
+  font-family: "Admiralty Serif";
+  src: url("fonts/admiralty/AdmiraltySerif-VF.woff2") format("woff2");
+  font-weight: 100 900; font-stretch: 65% 150%; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "Admiralty Serif";
+  src: url("fonts/admiralty/AdmiraltySerif-Italic-VF.woff2") format("woff2");
+  font-weight: 100 900; font-stretch: 65% 150%; font-style: italic; font-display: swap;
+}
+@font-face {
+  font-family: "Admiralty Mono";
+  src: url("fonts/admiralty/AdmiraltyMono-VF.woff2") format("woff2");
+  font-weight: 100 900; font-stretch: 65% 150%; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "Admiralty Mono";
+  src: url("fonts/admiralty/AdmiraltyMono-Italic-VF.woff2") format("woff2");
+  font-weight: 100 900; font-stretch: 65% 150%; font-style: italic; font-display: swap;
+}
+@font-face {
+  font-family: "Admiralty Symbols";
+  src: url("fonts/admiralty/AdmiraltySymbols-VF.woff2") format("woff2");
+  font-weight: 100 900; font-display: block;
+}
