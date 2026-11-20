@@ -53,7 +53,7 @@
   paintTheme();
 
   /* =========================================================================================
-     1. Hero: drag the handles of the selected word
+     1. Hero: drag the selected word
      ========================================================================================= */
   const word = $("#word"), canvas = $("#canvas"), sel = $("#sel");
   const H = { w: 400, d: 100, r: 0 };
@@ -67,7 +67,7 @@
     apply(word, "sans", H);
     // fit: the word fills the canvas width at its current settings, but never grows taller than the canvas allows
     // The width scales with the font size, so measure at the current size (no reset, so a transition can run).
-    // While a handle is held the size is frozen, so the box edges follow the pointer; it only shrinks if the word would overflow.
+    // While you drag, the size is frozen so the word does not jump; it only shrinks if it would overflow.
     const fs = parseFloat(getComputedStyle(word).fontSize) || 100;
     const w100 = (word.getBoundingClientRect().width / fs) * 100;
     const cs = getComputedStyle(canvas);
@@ -77,46 +77,49 @@
     word.style.fontSize = (frozen ? Math.min(frozen, fit) : fit) + "px";
     const v = { w: Math.round(H.w), d: Math.round(H.d), r: Math.round(H.r) };
     $("#pW").textContent = v.w; $("#pD").textContent = v.d + "%"; $("#pR").textContent = v.r;
-    $("#tipW").textContent = v.w; $("#tipD").textContent = v.d + "%"; $("#tipR").textContent = v.r;
-    [["#hdW", WG, v.w, v.w], ["#hdD", WD, v.d, v.d + "%"], ["#hdR", RD, v.r, v.r]].forEach(([s, [lo, hi], now, txt]) => {
-      const el = $(s); el.setAttribute("aria-valuemin", lo); el.setAttribute("aria-valuemax", hi); el.setAttribute("aria-valuenow", now); el.setAttribute("aria-valuetext", txt); });
+    $("#rW").textContent = v.w; $("#rD").textContent = v.d + "%";
+    hW.value = H.w; hD.value = H.d; hR.value = H.r;
   }
-  const handles = { hdW: "w", hdD: "d", hdR: "r" };
-  const RANGE = { w: WG, d: WD, r: RD };
-  Object.entries(handles).forEach(([id, key]) => {
-    const el = $("#" + id);
-    if (key === "r" && !SAX.radius) { el.hidden = true; return; }
-    let start = null;
-    el.addEventListener("pointerdown", (e) => {
-      e.preventDefault(); el.setPointerCapture(e.pointerId); el.classList.add("drag"); document.body.classList.add("dragging");
-      frozen = parseFloat(getComputedStyle(word).fontSize); word.classList.remove("settle");
-      const hb = el.getBoundingClientRect();
-      start = { x: e.clientX, y: e.clientY, v: H[key], hx: hb.left + hb.width / 2 };
-    });
-    el.addEventListener("pointermove", (e) => {
-      if (!start) return;
-      const [lo, hi] = RANGE[key], span = hi - lo;
-      const dx = e.clientX - start.x, dy = e.clientY - start.y;
-      if (key === "d") {
-        // the width handle sits on the right edge and stays under the pointer: find the width whose right edge lands there
-        const target = start.hx + dx, mid = () => sel.getBoundingClientRect().right;
-        let a = lo, b = hi;
-        for (let i = 0; i < 9; i++) { const m = (a + b) / 2; word.style.fontStretch = m + "%"; if (mid() < target) a = m; else b = m; }
-        H.d = (a + b) / 2;
-      } else H[key] = clamp(start.v + (key === "w" ? -dy / 240 : dx / 280) * span, lo, hi);
-      paintHero();
-    });
-    const end = () => {
-      if (!start) return; start = null; el.classList.remove("drag"); document.body.classList.remove("dragging");
-      frozen = null; word.classList.add("settle"); paintHero(); };
-    el.addEventListener("pointerup", end); el.addEventListener("pointercancel", end);
-    el.addEventListener("keydown", (e) => {
-      const [lo, hi] = RANGE[key], step = (hi - lo) / (e.shiftKey ? 8 : 40);
-      const dir = { ArrowUp: 1, ArrowRight: 1, ArrowDown: -1, ArrowLeft: -1 }[e.key];
-      if (!dir) return; e.preventDefault(); H[key] = clamp(H[key] + dir * step, lo, hi); paintHero();
-    });
+  // The word is the control: drag sideways for width, up or down for weight. Sliders below do the same, plus radius.
+  const hW = $("#hW"), hD = $("#hD"), hR = $("#hR"), readout = $("#readout");
+  [[hW, WG], [hD, WD], [hR, RD]].forEach(([el, [lo, hi]]) => { el.min = lo; el.max = hi; });
+  if (!SAX.radius) $("#hRrow").hidden = true;
+  hW.addEventListener("input", () => { H.w = +hW.value; paintHero(); });
+  hD.addEventListener("input", () => { H.d = +hD.value; paintHero(); });
+  hR.addEventListener("input", () => { H.r = +hR.value; paintHero(); });
+  let drag = null;
+  function placeReadout(e) {
+    const b = canvas.getBoundingClientRect(), rw = readout.offsetWidth, rh = readout.offsetHeight;
+    let x = e.clientX - b.left + 18, y = e.clientY - b.top + 18;
+    if (x + rw > b.width - 8) x = e.clientX - b.left - rw - 18;
+    if (y + rh > b.height - 8) y = e.clientY - b.top - rh - 18;
+    readout.style.transform = `translate(${x}px, ${y}px)`;
+  }
+  sel.addEventListener("pointerdown", (e) => {
+    if (e.button) return;
+    e.preventDefault(); sel.setPointerCapture(e.pointerId); sel.focus({ preventScroll: true });
+    sel.classList.add("drag", "used"); document.body.classList.add("dragging");
+    frozen = parseFloat(getComputedStyle(word).fontSize); word.classList.remove("settle");
+    // a comfortable gain: the full width range over most of the canvas, the full weight range over about 320 px
+    drag = { x: e.clientX, y: e.clientY, w: H.w, d: H.d, gx: (WD[1] - WD[0]) / Math.max(260, canvas.clientWidth * 0.7), gy: (WG[1] - WG[0]) / 320 };
+    readout.classList.add("on"); placeReadout(e);
   });
-  if (matchMedia("(pointer: coarse)").matches) $("#hint").textContent = "Drag the handles on the box: the top one sets the weight, the right one the width, the corner one the radius.";
+  sel.addEventListener("pointermove", (e) => {
+    if (!drag) return;
+    H.d = clamp(drag.d + (e.clientX - drag.x) * drag.gx, WD[0], WD[1]);
+    H.w = clamp(drag.w - (e.clientY - drag.y) * drag.gy, WG[0], WG[1]);
+    paintHero(); placeReadout(e);
+  });
+  const endDrag = () => {
+    if (!drag) return; drag = null; sel.classList.remove("drag"); document.body.classList.remove("dragging");
+    readout.classList.remove("on"); frozen = null; word.classList.add("settle"); paintHero(); };
+  sel.addEventListener("pointerup", endDrag); sel.addEventListener("pointercancel", endDrag);
+  sel.addEventListener("keydown", (e) => {
+    const k = { ArrowLeft: ["d", -1], ArrowRight: ["d", 1], ArrowUp: ["w", 1], ArrowDown: ["w", -1] }[e.key];
+    if (!k) return; e.preventDefault(); sel.classList.add("used");
+    const [key, dir] = k, [lo, hi] = key === "w" ? WG : WD;
+    H[key] = clamp(H[key] + dir * (hi - lo) / (e.shiftKey ? 8 : 40), lo, hi); paintHero();
+  });
   function heroIntro() {
     if (reduce.matches) { paintHero(); return; }
     // one opening move: from Thin Compressed to Regular, then the handles pulse to invite a drag
@@ -124,7 +127,7 @@
     const step = (now) => {
       const k = clamp((now - t0) / dur, 0, 1), e = 1 - Math.pow(1 - k, 3);
       H.w = lerp(from.w, 400, e); H.d = lerp(from.d, 100, e); paintHero();
-      if (k < 1) requestAnimationFrame(step); else $$(".hd-w, .hd-d, .hd-r").forEach((h) => h.classList.add("pulse"));
+      if (k < 1) requestAnimationFrame(step); else $("#dragHint").classList.add("pulse");
     };
     requestAnimationFrame(step);
   }
@@ -491,7 +494,7 @@ export function minutes(a: Date, b: Date): number {
   function inspect(n) {
     const s = SYM.get(n);
     $("#symBig").setAttribute("data-char", ch(n)); $("#symName").textContent = n; $("#symLabel").textContent = `${s.label}, in ${s.cat}`;
-    $("#symWeights").innerHTML = [400, 500, 700].map((w) => `<span><i class="sym" style="font-weight:${w}" data-char="${ch(n)}"></i><small>${w}</small></span>`).join("");
+    $("#symWeights").innerHTML = [100, 400, 700, 900].map((w) => `<span><i class="sym" style="font-weight:${w}" data-char="${ch(n)}"></i><small>${w}</small></span>`).join("");
     $("#symInline").innerHTML = [400, 500, 700].map((w) => `<span style="font-weight:${w}"><i class="sym" style="font-weight:${w}" data-char="${ch(n)}"></i>${s.label}</span>`).join("");
   }
   function choose(n) { chosen = n; inspect(n); btns.forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.n === n))); }
@@ -597,7 +600,7 @@ export function minutes(a: Date, b: Date): number {
 
   /* ---------- start ---------- */
   function layout() { footFit(); rulerLabels(); paintHero(); paintSplit(); measureSplit(); drawChart(); if (cur.id === "sign") fitSign(); if (cur.id === "poster") fitPoster(); }
-  const released = Promise.all(['400 20px "Admiralty Sans Released"', '400 20px "Admiralty Serif Released"'].map((f) => document.fonts.load(f)));
+  const released = Promise.all(['400 20px "Admiralty Sans"', '400 20px "Admiralty Serif"', '400 20px "Admiralty Mono"'].map((f) => document.fonts.load(f)));
   syncBench();
   Promise.all([document.fonts.ready, released]).then(() => { layout(); heroIntro(); });
   let rz; addEventListener("resize", () => { clearTimeout(rz); rz = setTimeout(layout, 120); });

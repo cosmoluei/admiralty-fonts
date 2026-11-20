@@ -1,24 +1,23 @@
 /*
-  What the fonts can do. Change this together with fonts.css when the real fonts arrive.
+  What the fonts can do. Change this together with fonts.css when the fonts change.
 
   axes:   the range of each axis the page offers, per family. Leave an axis out if the family
           does not have it; its slider is then disabled for that family.
-  radius: the axis tag of the radius axis. Custom axes are four capital letters (the stand-in
-          uses ROND). Use Admiralty's own tag here.
+  radius: the axis tag of the radius axis (Admiralty uses RADI).
   italic: "face" = a real italic font file (font-style: italic);
-          "slnt" = an upright font with a slant axis (the stand-in Sans);
+          "slnt" = an upright font with a slant axis;
           null   = no italic.
 */
 window.TYPE = {
-  radiusTag: "ROND",
+  radiusTag: "RADI",
   families: {
     sans:  { css: '"Admiralty Sans", system-ui, sans-serif',  label: "Sans",
-             axes: { wght: [100, 900], wdth: [65, 150], radius: [0, 100] }, italic: "slnt", slnt: -10 },
+             axes: { wght: [100, 900], wdth: [65, 150], radius: [0, 100] }, italic: "face" },
     serif: { css: '"Admiralty Serif", Georgia, serif',         label: "Serif",
-             axes: { wght: [100, 900], wdth: [65, 150] }, italic: "face" },
+             axes: { wght: [100, 900], wdth: [65, 150], radius: [0, 100] }, italic: "face" },
     mono:  { css: '"Admiralty Mono", ui-monospace, monospace', label: "Mono",
-             axes: { wght: [400, 700] }, italic: "face" },
+             axes: { wght: [100, 900], wdth: [65, 150], radius: [0, 100] }, italic: "face" },
   },
-  // Shown in the footer while stand-ins are in use. Set to "" when the real fonts are in.
-  standinNote: "Preview: until the full Admiralty variable fonts are ready, this page uses open stand-in fonts with the same kinds of axes (Google Sans Flex and Roboto Serif, under the SIL Open Font License). Mono, the icons and the same-width demo already use the released Admiralty fonts.",
+  // A note shown in the footer (for example while preview fonts are in use). Empty: no note.
+  standinNote: "",
 };

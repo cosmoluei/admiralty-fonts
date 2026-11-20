@@ -29,24 +29,23 @@
 <section id="hero" class="hero" aria-label="Admiralty">
   <div class="ruler" aria-hidden="true" id="ruler"></div>
   <div class="hero-canvas" id="canvas">
-    <div class="sel" id="sel">
+    <div class="sel" id="sel" tabindex="0" role="group" aria-label="The word Admiralty. Drag it sideways to change the width and up or down to change the weight; the arrow keys do the same.">
       <h1 class="word" id="word">Admiralty</h1>
       <span class="sel-box" aria-hidden="true"></span>
-      <span class="hdx hdx-tl" aria-hidden="true"></span><span class="hdx hdx-tr" aria-hidden="true"></span><span class="hdx hdx-br" aria-hidden="true"></span>
-      <div class="hd hd-w" id="hdW" role="slider" tabindex="0" aria-label="Weight. Drag up or down, or use the arrow keys."><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1.5v13M4.5 5 8 1.5 11.5 5M4.5 11 8 14.5 11.5 11"/></svg><span class="hl">Weight</span><span id="tipW">400</span></div>
-      <div class="hd hd-d" id="hdD" role="slider" tabindex="0" aria-label="Width. Drag left or right, or use the arrow keys."><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M1.5 8h13M5 4.5 1.5 8 5 11.5M11 4.5 14.5 8 11 11.5"/></svg><span class="hl">Width</span><span id="tipD">100%</span></div>
-      <div class="hd hd-r" id="hdR" role="slider" tabindex="0" aria-label="Radius. Drag left or right, or use the arrow keys."><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2.5 14V9a6 6 0 0 1 6-6h5"/></svg><span class="hl">Radius</span><span id="tipR">0</span></div>
+      <span class="hdx hdx-tl" aria-hidden="true"></span><span class="hdx hdx-tr" aria-hidden="true"></span><span class="hdx hdx-bl" aria-hidden="true"></span><span class="hdx hdx-br" aria-hidden="true"></span>
+      <p class="drag-hint" id="dragHint" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M8 1.5v13M1.5 8h13M5.5 4 8 1.5 10.5 4M5.5 12 8 14.5 10.5 12M4 5.5 1.5 8 4 10.5M12 5.5 14.5 8 12 10.5"/></svg>Drag the word</p>
     </div>
+    <div class="readout" id="readout" aria-hidden="true"><span>Width <b id="rD">100%</b></span><span>Weight <b id="rW">400</b></span></div>
   </div>
   <div class="hero-bottom">
     <p class="lede">A type family in three voices, <span class="v-sans">Sans</span>, <span class="v-serif">Serif</span> and <span class="v-mono">Mono</span>, for interfaces, reading, code, data, brands and signs.</p>
     <div class="hero-meta">
-      <p class="hint" id="hint">Drag the handles on the box: drag the top one up or down for weight, the right one left or right for width, the corner one for radius.</p>
-      <dl class="props" aria-live="off">
-        <div><dt>Weight</dt><dd id="pW">400</dd></div>
-        <div><dt>Width</dt><dd id="pD">100%</dd></div>
-        <div><dt>Radius</dt><dd id="pR">0</dd></div>
-      </dl>
+      <p class="hint" id="hint">Drag the word sideways for width and up or down for weight, or use the sliders.</p>
+      <div class="hero-ctls">
+        <div class="hctl"><label for="hW">Weight</label><input id="hW" type="range"><output id="pW" for="hW">400</output></div>
+        <div class="hctl"><label for="hD">Width</label><input id="hD" type="range" step="0.5"><output id="pD" for="hD">100%</output></div>
+        <div class="hctl" id="hRrow"><label for="hR">Radius</label><input id="hR" type="range"><output id="pR" for="hR">0</output></div>
+      </div>
       <div class="cta">
         <a class="btn solid" href="#work">Put it to work</a>
         <a class="btn" href="#get">Get the fonts</a>
@@ -263,7 +262,7 @@
     <div class="sym-side">
       <div class="sym-bar">
         <label class="search"><i class="sym" data-sym="search" aria-hidden="true"></i><input type="search" id="symSearch" placeholder="Search: like, lock, chart, send" aria-label="Search symbols"></label>
-        <div class="ctl"><label for="symW">Weight</label><input id="symW" type="range" min="400" max="700" value="400"><output id="oSW">400</output></div>
+        <div class="ctl"><label for="symW">Weight</label><input id="symW" type="range" min="100" max="900" value="400"><output id="oSW">400</output></div>
       </div>
       <p class="sym-count" id="symCount" aria-live="polite"></p>
       <div class="sym-grid" id="symGrid"></div>

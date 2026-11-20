@@ -88,24 +88,31 @@ input[type="range"] { accent-color: var(--blue); width: 100%; }
 .sel-box { position: absolute; inset: 0; border: 1.5px solid var(--blue); pointer-events: none; }
 .hdx { position: absolute; width: 10px; height: 10px; background: var(--surface); border: 1.5px solid var(--blue); transform: translate(-50%, -50%); pointer-events: none; }
 .hdx-tl { left: 0; top: 0; } .hdx-tr { left: 100%; top: 0; } .hdx-br { left: 100%; top: 100%; }
-/* Handles are labelled pills on the box: weight on the top edge (drag up and down), width on the right edge
-   (drag left and right; the edge follows the pointer), radius on the bottom-left corner (drag left and right). */
-.hd { position: absolute; z-index: 2; display: inline-flex; align-items: center; gap: 7px; height: 34px; padding: 0 13px 0 11px; border-radius: 17px;
-  background: var(--blue); color: #fff; border: 2px solid var(--surface); font: 600 12.5px/1 var(--mono); white-space: nowrap; font-variant-numeric: tabular-nums;
-  box-shadow: 0 0 0 1px var(--blue), 0 6px 18px rgba(58,134,212,.32); touch-action: none; -webkit-user-select: none; user-select: none; transition: box-shadow .15s; }
-.hd svg { width: 15px; height: 15px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
-.hd::before { content: ""; position: absolute; inset: -8px; }  /* a bigger area to grab */
-.hd-w { left: 28px; top: 0; transform: translateY(-50%); cursor: ns-resize; }
-.hd-d { left: 100%; top: 50%; transform: translate(-50%, -50%); writing-mode: vertical-rl; height: auto; width: 34px; padding: 11px 0 13px; cursor: ew-resize; }
-.hd-r { left: 0; top: 100%; transform: translate(-17px, -50%); cursor: ew-resize; }
-.hd:hover, .hd.drag { box-shadow: 0 0 0 1px var(--blue), 0 0 0 7px color-mix(in srgb, var(--blue) 22%, transparent); }
-.hd.drag { cursor: grabbing; }
-.hd.pulse { animation: pulse 1.6s ease-out 2; }
-@keyframes pulse { 0% { box-shadow: 0 0 0 1px var(--blue), 0 0 0 0 rgba(58,134,212,.5); } 100% { box-shadow: 0 0 0 1px var(--blue), 0 0 0 16px rgba(58,134,212,0); } }
-@media (prefers-reduced-motion: reduce) { .hd.pulse { animation: none; } }
+/* The word itself is the control: drag sideways for width, up or down for weight. */
+.sel { cursor: move; outline: none; }
+.sel:focus-visible .sel-box { outline: 3px solid color-mix(in srgb, var(--blue) 35%, transparent); outline-offset: 4px; }
+.sel.drag { cursor: grabbing; }
+.sel.drag .sel-box { background: color-mix(in srgb, var(--blue) 5%, transparent); }
+.hdx-bl { left: 0; top: 100%; }
+.hero-canvas { position: relative; }
+.drag-hint { position: absolute; left: 50%; top: 100%; transform: translate(-50%, -50%); margin: 0; display: inline-flex; align-items: center; gap: 8px;
+  padding: 8px 14px 8px 11px; border-radius: 99px; background: var(--blue); color: #fff; font: 600 13px/1 var(--sans); white-space: nowrap; pointer-events: none;
+  box-shadow: 0 6px 18px rgba(58,134,212,.3); transition: opacity .3s; }
+.drag-hint svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.drag-hint.pulse { animation: hint 1.6s ease-out 2; }
+@keyframes hint { 0% { box-shadow: 0 0 0 0 rgba(58,134,212,.5); } 100% { box-shadow: 0 0 0 16px rgba(58,134,212,0); } }
+.sel.used .drag-hint { opacity: 0; }
+.readout { position: absolute; left: 0; top: 0; z-index: 3; display: grid; gap: 2px; padding: 8px 11px; border-radius: 9px; background: var(--ink); color: var(--surface);
+  font: 500 12px/1.3 var(--mono); pointer-events: none; opacity: 0; transition: opacity .15s; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.readout b { font-weight: 700; }
+.readout.on { opacity: 1; }
+.hero-ctls { display: grid; gap: 10px; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; max-width: 460px; }
+.hctl { display: grid; grid-template-columns: 4.6em minmax(0, 1fr) 4.2em; gap: 12px; align-items: center; }
+.hctl label { font: 500 14px var(--sans); color: var(--ink-2); }
+.hctl output { font: 700 18px/1 var(--mono); color: var(--ink); text-align: right; font-variant-numeric: tabular-nums; }
+@media (prefers-reduced-motion: reduce) { .drag-hint.pulse { animation: none; } }
+@media (max-width: 640px) { .hero-canvas { padding-left: max(24px, var(--gutter)); padding-right: max(24px, var(--gutter)); } .word { padding: 0.3em 0.08em 0.4em; } }
 .word.settle { transition: font-size .3s ease; }
-.hd .hl { color: rgba(255,255,255,.82); font-weight: 500; }
-@media (max-width: 640px) { .hd .hl { display: none; } .hd { height: 30px; padding: 0 10px 0 8px; gap: 5px; font-size: 12px; } .hd-d { width: 30px; height: auto; padding: 8px 0 9px; } .hd-w { left: 20px; } .hd-r { transform: translate(-15px, -50%); } .hero-canvas { padding-left: max(24px, var(--gutter)); padding-right: max(24px, var(--gutter)); } .word { padding: 0.32em 0.3em 0.36em 0.08em; } }
 @media (prefers-reduced-motion: reduce) { .word.settle { transition: none; } }
 .hero-bottom { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 24px 56px; align-items: end; padding: 0 var(--gutter) 44px; }
 .lede { margin: 0; font: 400 clamp(22px, 2.5vw, 34px)/1.25 var(--sans); max-width: 26ch; text-wrap: balance; }
@@ -129,8 +136,8 @@ input[type="range"] { accent-color: var(--blue); width: 100%; }
 /* ---------- two voices ---------- */
 .split { position: relative; background: var(--surface); border-radius: 18px; padding: clamp(28px, 5vw, 72px); border: 1px solid var(--line); overflow: hidden; touch-action: pan-y; }
 .split-text { margin: 0; font-size: clamp(42px, 8.2vw, 132px); line-height: 1.1; letter-spacing: -0.01em; text-wrap: pretty; }
-.split-text.sans { font-family: "Admiralty Sans Released", var(--sans); }
-.split-text.serif { font-family: "Admiralty Serif Released", var(--serif); position: absolute; top: clamp(28px, 5vw, 72px); left: clamp(28px, 5vw, 72px); right: clamp(28px, 5vw, 72px); color: var(--ink); }
+.split-text.sans { font-family: var(--sans); }
+.split-text.serif { font-family: var(--serif); position: absolute; top: clamp(28px, 5vw, 72px); left: clamp(28px, 5vw, 72px); right: clamp(28px, 5vw, 72px); color: var(--ink); }
 .split-bar { position: absolute; top: 0; bottom: 0; left: 50%; width: 2px; background: var(--blue); cursor: ew-resize; touch-action: none; }
 .split-bar::before { content: ""; position: absolute; inset: 0 -14px; }
 .split-knob { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 40px; height: 40px; border-radius: 50%; background: var(--blue); color: #fff; display: grid; place-items: center; font-size: 20px; box-shadow: 0 4px 16px rgba(58,134,212,.5); }
@@ -342,8 +349,8 @@ input[type="range"] { accent-color: var(--blue); width: 100%; }
 .insp-row { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
 .insp-name { font: 600 16px var(--mono); overflow-wrap: anywhere; }
 .insp-label { margin: 0; font-size: 14px; color: var(--ink-2); }
-.insp-weights { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
-.insp-weights span { display: grid; justify-items: center; gap: 4px; padding: 10px 0; background: var(--canvas); border-radius: 8px; font-size: 30px; }
+.insp-weights { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+.insp-weights span { display: grid; justify-items: center; gap: 4px; padding: 10px 0; background: var(--canvas); border-radius: 8px; font-size: 26px; }
 .insp-weights small { font: 500 11px var(--mono); color: var(--ink-2); }
 .insp-inline { margin: 0; font-size: 15px; display: flex; flex-wrap: wrap; gap: 8px; }
 .insp-inline span { display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--line); border-radius: 8px; padding: 6px 10px; }
