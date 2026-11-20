@@ -5,7 +5,7 @@
     "version": "0.300",
     "license": "SIL Open Font License 1.1 (No Reserved Font Name)",
     "designer": "Lei Yutian",
-    "scriptCoverage": "GF Latin Core + Latin Plus + Latin Extended-A (128/128) + Pinyin + Vietnamese + 282 Symbols; Mono box drawing U+2500-259F"
+    "scriptCoverage": "GF Latin Core + Latin Plus + Latin Extended-A (128/128) + Pinyin + Vietnamese + 311 Symbols; Mono box drawing U+2500-259F"
   },
   "metrics": {
     "unitsPerEm": 1000,
@@ -47,8 +47,8 @@
     "symbols": {
       "name": "Admiralty Symbols",
       "cssStack": "'Admiralty Symbols', sans-serif",
-      "puaRange": "U+E000-U+E119",
-      "count": 282
+      "puaRange": "U+E000-U+E136",
+      "count": 311
     }
   },
   "roles": {
