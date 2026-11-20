@@ -61,8 +61,8 @@ from glyphs_serif_figs_ext import SERIF_REGULAR, build_all_serif_glyphs
 from spacing_kerning import apply_class_kerning, attach_ufo_anchors_and_composites
 import uharfbuzz as hb
 
-VERSION_MINOR = 300
-VERSION_STR = "0.300"
+VERSION_MINOR = 400
+VERSION_STR = "0.400"
 
 
 def autohint_otf(otf_path) -> bool:

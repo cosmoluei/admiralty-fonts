@@ -17,7 +17,7 @@ Character coverage: Latin (Google Fonts Latin Core and Latin Plus), Latin Extend
 Vietnamese. **No Chinese, Japanese or Korean**: always put a CJK fallback after Admiralty
 (for Hong Kong: `PingFang HK`, then `Noto Sans CJK TC`).
 
-Version 0.300 is a test release; names and code points of existing symbols will not change.
+Version 0.400 is a test release; names and code points of existing symbols will not change.
 
 ## Where things are
 

@@ -1,6 +1,6 @@
 # Admiralty
 
-**Version 0.300 — test release.** The design is still being reviewed and may change before 1.000.
+**Version 0.400 — test release.** The design is still being reviewed and may change before 1.000.
 
 Admiralty is a font family made for a personal agent app: a calm, professional look that stays comfortable over long use. It has four families:
 
@@ -11,7 +11,7 @@ Admiralty is a font family made for a personal agent app: a calm, professional l
 | **Admiralty Mono** | A monospaced companion for code, logs and IDs (every character is 600 units wide). Optional programming ligatures are in `ss01`. |
 | **Admiralty Symbols** | 282 interface icons on a 24 × 24 grid in the Private Use Area (`U+E000`–`U+E119`), centred on the height of the capital letters, so they line up with the text. |
 
-Sans, Serif and Mono each have six static styles and upright and italic variable fonts. Symbols has three static weights and one variable font. The full-range edition provides weight 100–900, width 65–150% and corner radius 0–100, with a default text design based on 0.300 Regular and revised drawings for æ and ₺. The text families cover the Google Fonts Latin Core and Latin Plus sets, Latin Extended-A, Pinyin and Vietnamese. Mono also has the box drawing and block characters (`U+2500`–`U+259F`) for terminal interfaces.
+Sans, Serif and Mono each have six static styles and upright and italic variable fonts. Symbols has three static weights and one variable font. The full-range edition provides weight 100–900, width 65–150% and corner radius 0–100, with a default text design based on the 0.300 Regular and revised drawings for æ and ₺. The text families cover the Google Fonts Latin Core and Latin Plus sets, Latin Extended-A, Pinyin and Vietnamese. Mono also has the box drawing and block characters (`U+2500`–`U+259F`) for terminal interfaces.
 
 ## Using the fonts
 
