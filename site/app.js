@@ -90,7 +90,6 @@
     el.addEventListener("pointerdown", (e) => {
       e.preventDefault(); el.setPointerCapture(e.pointerId); el.classList.add("drag"); document.body.classList.add("dragging");
       frozen = parseFloat(getComputedStyle(word).fontSize); word.classList.remove("settle");
-      // width: the handle sits in the middle of the top edge, so it moves half as far as the right edge
       const hb = el.getBoundingClientRect();
       start = { x: e.clientX, y: e.clientY, v: H[key], hx: hb.left + hb.width / 2 };
     });
@@ -99,8 +98,8 @@
       const [lo, hi] = RANGE[key], span = hi - lo;
       const dx = e.clientX - start.x, dy = e.clientY - start.y;
       if (key === "d") {
-        // the width handle stays under the pointer: find the width whose top-edge middle lands at the pointer
-        const target = start.hx + dx, mid = () => { const r = sel.getBoundingClientRect(); return r.left + r.width / 2; };
+        // the width handle sits on the right edge and stays under the pointer: find the width whose right edge lands there
+        const target = start.hx + dx, mid = () => sel.getBoundingClientRect().right;
         let a = lo, b = hi;
         for (let i = 0; i < 9; i++) { const m = (a + b) / 2; word.style.fontStretch = m + "%"; if (mid() < target) a = m; else b = m; }
         H.d = (a + b) / 2;
@@ -117,7 +116,7 @@
       if (!dir) return; e.preventDefault(); H[key] = clamp(H[key] + dir * step, lo, hi); paintHero();
     });
   });
-  if (matchMedia("(pointer: coarse)").matches) $("#hint").textContent = "Drag the handles on the box: the top one sets the width, the left one the weight, the corner one the radius.";
+  if (matchMedia("(pointer: coarse)").matches) $("#hint").textContent = "Drag the handles on the box: the top one sets the weight, the right one the width, the corner one the radius.";
   function heroIntro() {
     if (reduce.matches) { paintHero(); return; }
     // one opening move: from Thin Compressed to Regular, then the handles pulse to invite a drag

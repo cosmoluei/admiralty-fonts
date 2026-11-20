@@ -88,15 +88,15 @@ input[type="range"] { accent-color: var(--blue); width: 100%; }
 .sel-box { position: absolute; inset: 0; border: 1.5px solid var(--blue); pointer-events: none; }
 .hdx { position: absolute; width: 10px; height: 10px; background: var(--surface); border: 1.5px solid var(--blue); transform: translate(-50%, -50%); pointer-events: none; }
 .hdx-tl { left: 0; top: 0; } .hdx-tr { left: 100%; top: 0; } .hdx-br { left: 100%; top: 100%; }
-/* Handles are labelled pills that sit on the box edges which stay still while you drag:
-   width on the top edge (left and right), weight on the left edge (up and down), radius on the bottom-left corner. */
+/* Handles are labelled pills on the box: weight on the top edge (drag up and down), width on the right edge
+   (drag left and right; the edge follows the pointer), radius on the bottom-left corner (drag left and right). */
 .hd { position: absolute; z-index: 2; display: inline-flex; align-items: center; gap: 7px; height: 34px; padding: 0 13px 0 11px; border-radius: 17px;
   background: var(--blue); color: #fff; border: 2px solid var(--surface); font: 600 12.5px/1 var(--mono); white-space: nowrap; font-variant-numeric: tabular-nums;
   box-shadow: 0 0 0 1px var(--blue), 0 6px 18px rgba(58,134,212,.32); touch-action: none; -webkit-user-select: none; user-select: none; transition: box-shadow .15s; }
 .hd svg { width: 15px; height: 15px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
 .hd::before { content: ""; position: absolute; inset: -8px; }  /* a bigger area to grab */
-.hd-d { left: 50%; top: 0; transform: translate(-50%, -50%); cursor: ew-resize; }
-.hd-w { left: 0; top: 50%; transform: translate(-50%, -50%) rotate(180deg); writing-mode: vertical-rl; height: auto; width: 34px; padding: 13px 0 11px; cursor: ns-resize; }
+.hd-w { left: 28px; top: 0; transform: translateY(-50%); cursor: ns-resize; }
+.hd-d { left: 100%; top: 50%; transform: translate(-50%, -50%); writing-mode: vertical-rl; height: auto; width: 34px; padding: 11px 0 13px; cursor: ew-resize; }
 .hd-r { left: 0; top: 100%; transform: translate(-17px, -50%); cursor: ew-resize; }
 .hd:hover, .hd.drag { box-shadow: 0 0 0 1px var(--blue), 0 0 0 7px color-mix(in srgb, var(--blue) 22%, transparent); }
 .hd.drag { cursor: grabbing; }
@@ -105,7 +105,7 @@ input[type="range"] { accent-color: var(--blue); width: 100%; }
 @media (prefers-reduced-motion: reduce) { .hd.pulse { animation: none; } }
 .word.settle { transition: font-size .3s ease; }
 .hd .hl { color: rgba(255,255,255,.82); font-weight: 500; }
-@media (max-width: 640px) { .hd .hl { display: none; } .hd { height: 30px; padding: 0 10px 0 8px; gap: 5px; font-size: 12px; } .hd-w { width: 30px; height: auto; padding: 9px 0 8px; } .hd-r { transform: translate(-15px, -50%); } .hero-canvas { padding-left: max(24px, var(--gutter)); padding-right: max(24px, var(--gutter)); } .word { padding: 0.32em 0.06em 0.36em 0.3em; } }
+@media (max-width: 640px) { .hd .hl { display: none; } .hd { height: 30px; padding: 0 10px 0 8px; gap: 5px; font-size: 12px; } .hd-d { width: 30px; height: auto; padding: 8px 0 9px; } .hd-w { left: 20px; } .hd-r { transform: translate(-15px, -50%); } .hero-canvas { padding-left: max(24px, var(--gutter)); padding-right: max(24px, var(--gutter)); } .word { padding: 0.32em 0.3em 0.36em 0.08em; } }
 @media (prefers-reduced-motion: reduce) { .word.settle { transition: none; } }
 .hero-bottom { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 24px 56px; align-items: end; padding: 0 var(--gutter) 44px; }
 .lede { margin: 0; font: 400 clamp(22px, 2.5vw, 34px)/1.25 var(--sans); max-width: 26ch; text-wrap: balance; }
