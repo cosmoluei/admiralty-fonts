@@ -1,6 +1,6 @@
 name: admiralty
 description: Admiralty Sans, Serif, Mono and Symbols fonts, with the symbols as IconData.
-version: 0.500.0
+version: 0.600.0
 homepage: https://github.com/cosmoluei/admiralty-fonts
 environment:
   sdk: '>=3.0.0 <4.0.0'

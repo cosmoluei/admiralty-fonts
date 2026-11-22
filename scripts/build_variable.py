@@ -39,6 +39,7 @@ from build_fonts import (
     audit_ufo_geometry,
 )
 from glyphs_mono import MONO_WIDTH
+from punctuation_spacing import apply_punctuation_spacing
 from symbols_engine import SYMBOL_ADVANCE_WIDTH
 
 
@@ -913,6 +914,7 @@ def build_all_variable_fonts() -> List[Path]:
             vf["OS/2"].xAvgCharWidth = SYMBOL_ADVANCE_WIDTH
             vf["post"].isFixedPitch = 1
         _add_canonical_stat(vf, is_italic=is_italic, has_italic_axis=not is_symbols)
+        apply_punctuation_spacing(vf)
 
         ttf_path = var_dir / f"{out_stem}.ttf"
         vf.save(str(ttf_path))

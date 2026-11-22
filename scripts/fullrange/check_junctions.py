@@ -162,14 +162,14 @@ def check_lira_foot(get):
     )
 
 
-def check_operator(font, tt, get, slope):
+def check_operator(font, tt, get):
     worst = 0.0
     for op, pair in PAIRS.items():
         glyphs = shape(font, op, {"ss01": True})
         assert tuple(tt.getGlyphName(row[0]) for row in glyphs) == pair and all(
             row[1] == 600 for row in glyphs
         ), (op, glyphs)
-        seam = 600 - 260 * slope
+        seam = 600
         a = section(get(pair[0]), seam - 2, vertical=True)
         b = section(get(pair[1]), seam + 2 - 600, vertical=True)
         count = 6 if op in ("<=", ">=") else 2 if op in ("<-", "->") else 4
@@ -188,7 +188,7 @@ def examine(directory, family):
     with TTFont(path) as tt:
 
         def get(name):
-            return unsheared(font, tt.getGlyphID(name), slope)
+            return unsheared(font, tt.getGlyphID(name), 0 if ".lig_" in name else slope)
 
         for weight, width, radius in product(
             (100, 175, 300, 400, 550, 700, 900), (65, 82.5, 100, 125, 150), (0, 100)
@@ -203,7 +203,7 @@ def examine(directory, family):
                 check_lira_foot(get)
                 check_joined_vowels(get, "Mono" in family and weight >= 700)
                 if "Mono" in family:
-                    worst_seam = max(worst_seam, check_operator(font, tt, get, slope))
+                    worst_seam = max(worst_seam, check_operator(font, tt, get))
             except AssertionError as e:
                 raise AssertionError((family, weight, width, radius, *e.args)) from e
     print(

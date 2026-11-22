@@ -1,5 +1,5 @@
 """
-Generates the Milestone 8 Interactive Font Inspector HTML (v0.500):
+Generates the Milestone 8 Interactive Font Inspector HTML:
   - All 7 Variable WOFF2 fonts embedded (font-weight: 400..700):
       * Sans, Serif, Mono (Upright & Italic -9.5°) + Symbols (wght 400..700 w/ rvrn & rtlm)
   - Live continuous Variable Weight (wght 400-700) range slider + 400/500/700 presets + Upright/Italic toggle
@@ -13,6 +13,7 @@ import json
 from pathlib import Path
 from fontTools.pens.svgPathPen import SVGPathPen
 import ufoLib2
+from release_version import VERSION_STR
 
 ROOT = Path(__file__).resolve().parent.parent
 
@@ -126,7 +127,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Admiralty Font Inspector — v0.500 (7 Variable Fonts + 21 Static + __SYMBOL_COUNT__ Symbols)</title>
+  <title>Admiralty Font Inspector — v__VERSION__ (7 Variable Fonts + 21 Static + __SYMBOL_COUNT__ Symbols)</title>
   <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
   <style id="admiralty-font-face"></style>
   <style>
@@ -167,7 +168,7 @@ __STANDALONE_VARS__</head>
       <div class="space-y-1">
         <div class="flex flex-wrap items-center gap-2.5">
           <h1 id="hdr-family-title" class="text-lg font-semibold tracking-tight adm-active">Admiralty Serif Regular</h1>
-          <span class="px-2 py-0.5 text-xs rounded-full bg-[var(--secondary)] text-[var(--secondary-foreground)] font-mono">v0.500 · 7 Variable Fonts (__VF_KB__ KB) + 21 Static (__STATIC_KB__ KB)</span>
+          <span class="px-2 py-0.5 text-xs rounded-full bg-[var(--secondary)] text-[var(--secondary-foreground)] font-mono">v__VERSION__ · 7 Variable Fonts (__VF_KB__ KB) + 21 Static (__STATIC_KB__ KB)</span>
           <span class="px-2 py-0.5 text-xs rounded-full bg-[var(--card)] border border-[var(--border)] text-[var(--muted-foreground)] font-mono">Sym VF __SYM_KB__ KB</span>
         </div>
         <p class="text-xs text-[var(--muted-foreground)]">Designer: Lei Yutian · SIL OFL 1.1 · 1000 UPM · Continuous wght 400..700 Variable Axes · Upright &amp; -9.5° Cursive Italic</p>
@@ -702,6 +703,7 @@ Il1 O0 rn/m   $1,480.95 €290 £75 ¥3,600   § © ª ← ↑ → ↓ ↩</div>
     let activeStyle = 'normal';
     let curGlyphName = 'g';
     let lastRenderedMasterKey = '';
+    let lastRenderedGlyphName = '';
 
     function nearestMasterWeight(w) {
       const n = +w;
@@ -753,10 +755,13 @@ Il1 O0 rn/m   $1,480.95 €290 £75 ¥3,600   § © ª ← ↑ → ↓ ↩</div>
         curGlyphName = store.glyphs[2] ? store.glyphs[2].name : store.glyphs[0].name;
       }
       const fullKey = `${activeFam}:${mKey}:${effStyle}`;
-      if (fullKey !== lastRenderedMasterKey) {
-        lastRenderedMasterKey = fullKey;
+      const masterChanged = fullKey !== lastRenderedMasterKey;
+      if (masterChanged || curGlyphName !== lastRenderedGlyphName) {
         renderGlyphSelector();
         renderMicroscope();
+      }
+      if (masterChanged) {
+        lastRenderedMasterKey = fullKey;
         renderKerning();
       }
       if (typeof renderSymbolsCatalog === 'function') renderSymbolsCatalog();
@@ -936,6 +941,7 @@ Il1 O0 rn/m   $1,480.95 €290 £75 ¥3,600   § © ª ← ↑ → ↓ ↩</div>
     function renderMicroscope() {
       const store = activeGlyphStore();
       const g = store.byName[curGlyphName] || store.glyphs[2];
+      lastRenderedGlyphName = g.name;
       const curKey = activeStoreKey();
       const masterW = nearestMasterWeight(activeWeight);
       const ghostFam = activeFam === 'serif' ? 'sans' : activeFam === 'sans' ? 'serif' : activeFam;
@@ -1205,7 +1211,10 @@ Il1 O0 rn/m   $1,480.95 €290 £75 ¥3,600   § © ª ← ↑ → ↓ ↩</div>
         `;
         card.addEventListener('click', () => {
           activeFam = 'symbols';
-          curGlyphName = name;
+          const store = activeGlyphStore();
+          const base = store.glyphs.find(g => g.cp === cp);
+          const glyph = (rtlOn && rtlFlag && store.byName[base.name + '.rtl']) || base;
+          curGlyphName = glyph.name;
           document.querySelector('[data-tab="microscope"]').click();
           updateHeaderAndControls();
         });
@@ -1297,6 +1306,7 @@ def main() -> None:
     catalog = json.loads(payload_str)["symbolCatalog"]
     filled = (
         HTML_TEMPLATE.replace("__PAYLOAD_JSON__", payload_str)
+        .replace("__VERSION__", VERSION_STR)
         .replace("__N_GLYPHS__", str(n_glyphs))
         .replace("__SYMBOL_COUNT__", str(len(catalog)))
         .replace("__LAST_PUA__", f"U+{catalog[-1][1]:04X}")
@@ -1309,7 +1319,7 @@ def main() -> None:
     out_path = ROOT / "specimens" / "inspector.html"
     out_path.write_text(standalone_html, encoding="utf-8")
     print(
-        f"Built Milestone 8 Inspector v0.500 (7 VF {vf_kb:.1f} KB + 21 Static {static_kb:.1f} KB, "
+        f"Built Milestone 8 Inspector v{VERSION_STR} (7 VF {vf_kb:.1f} KB + 21 Static {static_kb:.1f} KB, "
         f"{len(catalog)} Symbols, {n_kern} class rules) -> {out_path} ({out_path.stat().st_size // 1024} KB)"
     )
 

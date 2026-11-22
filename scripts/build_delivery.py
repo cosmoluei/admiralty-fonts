@@ -109,6 +109,7 @@ def _subset_woff2(src_ttf: Path, out_woff2: Path, unicode_range_str: str) -> Non
     subsetter = Subsetter(options=opts)
     subsetter.populate(unicodes=unicodes)
     subsetter.subset(font)
+    font.flavor = opts.flavor
     out_woff2.parent.mkdir(parents=True, exist_ok=True)
     font.save(str(out_woff2))
 
@@ -292,7 +293,7 @@ def _build_web(woff2_dir: Path, var_dir: Path, sym_svg_dir: Path, meta: dict) ->
         return ",".join(f"U+{a:04X}" if a == b else f"U+{a:04X}-{b:04X}" for a, b in out)
     sub_dir = d / "fonts" / "subsets"
     css_blocks: List[str] = [
-        "/* Admiralty Web Fonts v0.500 — Metric-Matched Fallbacks & Variable Unicode-Range Subsets */\n",
+        f"/* Admiralty Web Fonts v{meta['version']} — Metric-Matched Fallbacks & Variable Unicode-Range Subsets */\n",
         "@font-face { font-family: 'Admiralty Sans Fallback'; src: local('PingFang HK'), local('Helvetica Neue'), local('Arial'); ascent-override: 98%; descent-override: 32%; line-gap-override: 0%; size-adjust: 100%; }\n",
         "@font-face { font-family: 'Admiralty Serif Fallback'; src: local('Songti TC'), local('Georgia'), local('Times New Roman'); ascent-override: 98%; descent-override: 32%; line-gap-override: 0%; size-adjust: 100%; }\n",
     ]
@@ -313,6 +314,13 @@ def _build_web(woff2_dir: Path, var_dir: Path, sym_svg_dir: Path, meta: dict) ->
         ext_name = f"{clean_stem}-latin-ext.woff2"
         _subset_woff2(vf_ttf, sub_dir / lat_name, latin_rng)
         _subset_woff2(vf_ttf, sub_dir / ext_name, ext_rng)
+        if style_val == "italic":
+            # Punctuation and accented italic letters need one shaping run for kerning.
+            css_blocks.append(
+                f"@font-face {{\n  font-family: '{fam_label}';\n  src: url('fonts/variable/{stem_base}.woff2') format('woff2');\n"
+                f"  font-weight: {weight_rng};\n  font-style: italic;\n  font-display: swap;\n}}\n"
+            )
+            continue
         css_blocks.append(
             f"@font-face {{\n  font-family: '{fam_label}';\n  src: url('fonts/subsets/{ext_name}') format('woff2');\n"
             f"  font-weight: {weight_rng};\n  font-style: {style_val};\n  font-display: swap;\n  unicode-range: {ext_rng};\n}}\n"
@@ -357,7 +365,7 @@ def _build_web(woff2_dir: Path, var_dir: Path, sym_svg_dir: Path, meta: dict) ->
     (d / "README.md").write_text(
         "# Admiralty for Web & Electron/Tauri\n\n"
         "## Quick Start\n"
-        "1. Import `admiralty-fonts.css` — loads Unicode-range Variable WOFF2 subsets (`fonts/subsets/`), full static fallbacks (`fonts/static/`), CLS-zero fallback metrics, and `zh-Hant` / `zh-Hans` CJK stacks.\n"
+        "1. Import `admiralty-fonts.css` for upright Unicode-range subsets and complete italic variable fonts. The latter preserve punctuation spacing across Latin and extended Latin. Static fonts are available in `fonts/static/`.\n"
         "2. Use `admiralty-symbols-sprite.svg` (`<svg><use href=\"#adm-send\"/></svg>`) or font glyphs via `.icon { font-family: var(--adm-symbols); font-weight: 500; }`.\n",
         encoding="utf-8",
     )
@@ -372,7 +380,7 @@ def _build_cross_platform(ttf_dir: Path, var_dir: Path, sym_json: Path, meta: di
     shutil.copyfile(sym_json, d / "admiralty-symbols.json")
 
     dart_lines = [
-        "// Auto-generated Admiralty Symbols IconData mapping (v0.500)\n",
+        f"// Auto-generated Admiralty Symbols IconData mapping (v{meta['version']})\n",
         "import 'package:flutter/widgets.dart';\n\n",
         "abstract final class AdmiraltyIcons {\n",
         "  static const String fontFamily = 'AdmiraltySymbols';\n\n",

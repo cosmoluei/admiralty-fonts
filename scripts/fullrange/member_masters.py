@@ -93,7 +93,8 @@ def handles(design, name):
 
 @lru_cache(maxsize=160)
 def base_masters(design, name):
-    return design.design_glyph(name)
+    # Fitted parts inside another glyph follow that glyph's own design axes.
+    return design.native_glyph(name)
 
 
 @lru_cache(maxsize=1500)

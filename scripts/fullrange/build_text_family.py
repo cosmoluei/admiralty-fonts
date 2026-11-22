@@ -35,16 +35,26 @@ from attachments import ATTACHED, Attachments
 from capital_masters import DIAGONALS, SLASHED_ZEROS, capital_tracks, slashed_zero_tracks
 from cross_masters import cross_tracks, multiply_tracks
 from cursive_masters import MONO_BOWLS, cursive_tracks, inherited_italic_tracks
-from punctuation_masters import PUNCT, punctuation_coords
+from punctuation_masters import PUNCT, period_coords, punctuation_coords, round_dots
 from serif_letters import LETTERS as SERIF_LETTERS, letter_tracks
 from serif_t import serif_t_tracks
 from mark_interpolation import refine_marks
+from punctuation_scope import DOT_ROLES, punctuation_names
+from punctuation_spacing import apply_punctuation_spacing, remove_punctuation_spacing
 
 ROOT = RELEASE.parents[2]
 TEXT = [f"Admiralty{family}{style}" for family in ("Sans","Serif","Mono") for style in ("","-Italic")]
 OUTPUT = REVIEW / "families"
 AXIS_NAMES = {"wght":"Weight","wdth":"Width","RADI":"Corner radius"}
 WEIGHTS = ("Thin","ExtraLight","Light","Regular","Medium","SemiBold","Bold","ExtraBold","Black")
+# The widest of the duplexed Thin drawings plus 20 units between repeated dashes.
+THIN_DASH_ADVANCES = {"endash": 599, "emdash": 918}
+
+
+def fullrange_unique_id(font, postscript_name):
+    version = font["head"].fontRevision
+    vendor = font["OS/2"].achVendID.strip()
+    return f"{version:.3f};{vendor};{postscript_name}"
 
 
 def study_instances():
@@ -80,15 +90,29 @@ class TextDesign:
         self.family = family
         self.study = study
         release = TTFont(RELEASE.with_name(family+"[wght].ttf"),recalcTimestamp=False)
+        # Reapply punctuation spacing once after varLib has merged the native
+        # layout. A baked one-axis lookup would otherwise be scaled by width.
+        remove_punctuation_spacing(release)
         self.regular = instantiateVariableFont(release,{"wght":400},optimize=False)
         self.bold = instantiateVariableFont(release,{"wght":700},optimize=False)
         self.mono = "Mono" in family
         self.serif = "Serif" in family
         self.slant = math.tan(math.radians(9.5)) if "Italic" in family else 0
         self.unicode = {n:cp for cp,n in self.regular.getBestCmap().items()}
+        self.punctuation = punctuation_names(self.regular.getBestCmap(), self.regular.getGlyphOrder())
         self.advance0 = {n:x[0] for n,x in self.regular["hmtx"].metrics.items()}
         self.restore_accent_components()
         self.attachments = Attachments(self)
+
+    @functools.cached_property
+    def upright(self):
+        return TextDesign(self.family.removesuffix("-Italic"), self.study) if self.slant else self
+
+    def punctuation_advance(self, name, weight):
+        dash = name.removesuffix(".case")
+        if not self.mono and weight == 100 and dash in THIN_DASH_ADVANCES:
+            return THIN_DASH_ADVANCES[dash]
+        return self.upright.advance(name, weight, 100)
 
     def restore_accent_components(self):
         # The legacy one-axis compiler flattened some Vietnamese capitals
@@ -167,7 +191,8 @@ class TextDesign:
 
     def set_layout(self, font, w, d):
         for name,(width,lsb) in font["hmtx"].metrics.items():
-            font["hmtx"][name] = (self.advance(name,w,d),lsb)
+            advance = self.punctuation_advance(name, w) if name in self.punctuation else self.advance(name, w, d)
+            font["hmtx"][name] = (advance, lsb)
         # Prevent tagged anchors shared by several glyphs in memory from
         # being transformed twice.
         def transform_anchor(anchor, name):
@@ -246,8 +271,40 @@ class TextDesign:
         return font
 
     def design_glyph(self,name):
+        if name in self.punctuation:
+            return self.design_punctuation(name)
+        return self.native_glyph(name)
+
+    def design_punctuation(self, name):
+        # At normal width and zero radius only the pure weight tuples are active.
+        glyph, variations = self.upright.native_glyph(name)
+        by_peak = {v.axes["wght"][1]: v for v in variations if set(v.axes) == {"wght"}}
+        masters = {}
+        for weight, peak in ((100, -1), (400, 0), (900, 1)):
+            points = np.asarray(glyph.coordinates, dtype=int)
+            if peak in by_peak:
+                points = points + np.asarray(by_peak[peak].coordinates[:-4])
+            ends, flags = glyph.endPtsOfContours, glyph.flags
+            if name != "period" and name.removesuffix(".case") in DOT_ROLES:
+                regular = self.upright.regular["glyf"][name]
+                points, ends, flags = round_dots(name, points, ends, flags, regular, weight)
+            advance = self.punctuation_advance(name, weight)
+            extra = advance - self.upright.advance(name, weight, 100)
+            points = points + [round(extra / 2), 0]
+            masters[weight] = np.vstack([points, [[0, 0], [advance, 0], [0, 0], [0, 0]]])
+        points = [masters[w] for w, d in CELLS for _ in (0, 100)]
+        return simple(masters[400][:-4], ends, flags), var_tuples(points)
+
+    def native_glyph(self,name):
         rg = self.regular["glyf"][name]
         coords = []
+        if name == "period":
+            for w, d in CELLS:
+                points = period_coords(rg, self.slant, w, *self.transform(name, w, d))
+                advance = self.advance(name, w, d)
+                master = np.vstack([points, [[0, 0], [advance, 0], [0, 0], [0, 0]]])
+                coords.extend([master, master])  # Roundness already has its full value at both ends.
+            return simple(coords[0][:-4], [7], [0] * 8), var_tuples(coords)
         case = self.family=="AdmiraltySans" and (name in LETTERS and len(name)==1 or name in ("dotlessi","dotlessj"))
         cp = self.unicode.get(name,-1)
         grid = self.mono and 0x2500<=cp<=0x259f
@@ -407,14 +464,17 @@ class TextDesign:
         builder = FontBuilder(font=font)
         builder.setupGvar(variations)
         refine_marks(font)
+        apply_punctuation_spacing(font)
         title = self.family.replace("Admiralty","Admiralty ").replace("-Italic","")
         italic = "Italic" in self.family
         family_name = title+" Fullrange"
         style = "Italic" if italic else "Regular"
+        postscript_name = self.family+"-Fullrange"
+        unique_id = fullrange_unique_id(font,postscript_name)
         names = font["name"]
         for rec in list(names.names):
-            value = {1:family_name,2:style,3:self.family+"-Fullrange",4:family_name+" "+style,
-                     6:self.family+"-Fullrange",16:family_name,17:style}.get(rec.nameID)
+            value = {1:family_name,2:style,3:unique_id,4:family_name+" "+style,
+                     6:postscript_name,16:family_name,17:style}.get(rec.nameID)
             if value:
                 names.setName(value,rec.nameID,rec.platformID,rec.platEncID,rec.langID)
         font.recalcTimestamp=False

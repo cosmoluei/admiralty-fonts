@@ -4,6 +4,15 @@ All notable pre-release milestones (`0.x` design track) are documented here. All
 
 ---
 
+## `[0.600]` — 2026-11-22
+
+- Sans, Serif and Mono use the same upright punctuation drawings and advances in both styles at each weight. Width and corner radius preserve those drawings, including case-sensitive punctuation and both halves of Mono programming ligatures.
+- Full stops and the detached dots in colons, semicolons, ellipses, exclamation marks and question marks are circular throughout the design space.
+- Adjusted spacing around upright punctuation, including repeated Thin dashes and italic letters next to brackets or quotes. Mono keeps its 600-unit cells.
+- The web package loads each italic face as one variable font so spacing also works between extended Latin letters and punctuation. The glyph reviewer and the family proof include the updated fonts.
+
+---
+
 ## `[0.500]` — 2026-11-20
 
 - Added 29 interface symbols for messaging, device control, permissions and travel, bringing the catalog to 311. The new symbols occupy U+E11A through U+E136. Existing names and code points are preserved.

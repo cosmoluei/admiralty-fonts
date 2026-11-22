@@ -69,7 +69,7 @@ def thin_sections(font, tt, family):
         upright = unsheared(font, tt.getGlyphID('germandbls'), slope)
         widths = [np.diff(section(upright, y)[:2])[0] for y in (120, 260, 460)]
         assert min(widths) > 19 and max(widths) < 30, ('Eszett shaft', width, radius, widths)
-        dot = unsheared(font, tt.getGlyphID('period'), slope)
+        dot = unsheared(font, tt.getGlyphID('period'), 0)
         diameter = np.ptp(dot.imag)
         assert 38 <= diameter <= 43, ('Thin period diameter', width, radius, diameter)
         # Division and minus are read together. Preserve the length of the
@@ -78,7 +78,7 @@ def thin_sections(font, tt, family):
         minus = unsheared(font, tt.getGlyphID('minus'), slope)
         assert np.ptp(divide.real) > .65*np.ptp(minus.real), ('short division bar', width, radius)
         assert np.ptp(divide.imag) > 280, ('division dot spacing', width, radius)
-        amp = unsheared(font, tt.getGlyphID('ampersand'), slope)
+        amp = unsheared(font, tt.getGlyphID('ampersand'), 0)
         heights = np.arange(179, 272, 4)
         cuts = [section(amp, y) for y in heights]
         assert all(len(row) == 6 for row in cuts), ('ampersand exit', width, radius)

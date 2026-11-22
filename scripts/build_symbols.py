@@ -40,10 +40,9 @@ from symbols_phase1_b import SYMBOLS_PHASE1_B
 from symbols_refine_r2 import SYMBOL_OVERRIDES_R2
 from symbols_phase2 import SYMBOLS_PHASE2
 from symbols_client import SYMBOLS_CLIENT, ALIASES
+from release_version import VERSION_MAJOR, VERSION_MINOR, VERSION_STR
 
 PUA_START = 0xE000
-SYMBOLS_VERSION_MINOR = 500
-SYMBOLS_VERSION_STR = "0.500"
 
 
 _LABEL_OVERRIDES = {
@@ -130,11 +129,11 @@ def _populate_symbols_metadata(ufo: ufoLib2.Font, style_name: str, weight_class:
         info.styleMapFamilyName = "Admiralty Symbols"
         info.styleMapStyleName = style_name.lower()
     info.postscriptFontName = f"{ps_family}-{style_name}"
-    info.openTypeNameUniqueID = f"{SYMBOLS_VERSION_STR};LYT;{ps_family}-{style_name}"
+    info.openTypeNameUniqueID = f"{VERSION_STR};LYT;{ps_family}-{style_name}"
 
-    info.versionMajor = 0
-    info.versionMinor = SYMBOLS_VERSION_MINOR
-    info.openTypeNameVersion = f"Version {SYMBOLS_VERSION_STR}"
+    info.versionMajor = VERSION_MAJOR
+    info.versionMinor = VERSION_MINOR
+    info.openTypeNameVersion = f"Version {VERSION_STR}"
     info.copyright = (
         "Copyright 2026 The Admiralty Project Authors "
         "(https://github.com/cosmoluei/admiralty-fonts)"
@@ -294,7 +293,7 @@ def build_all_symbols() -> Tuple[Path, Path, Path, Path]:
     json_path = ROOT / "symbols" / "admiralty-symbols.json"
     json_payload = {
         "family": "Admiralty Symbols",
-        "version": SYMBOLS_VERSION_STR,
+        "version": VERSION_STR,
         "grid": 24,
         "advanceWidth": SYMBOL_ADVANCE_WIDTH,
         "strokeWidths": {"regular": STROKE_REGULAR, "medium": STROKE_MEDIUM, "bold": STROKE_BOLD},
@@ -443,7 +442,7 @@ def build_all_symbols() -> Tuple[Path, Path, Path, Path]:
             n_map = {r.nameID: r.toUnicode() for r in tt["name"].names if r.platformID == 3}
             assert n_map.get(1) == "Admiralty Symbols Medium" and n_map.get(16) == "Admiralty Symbols" and n_map.get(17) == "Medium"
         assert bool(tt["OS/2"].fsSelection & (1 << 7))
-        assert round(tt["head"].fontRevision, 3) == float(SYMBOLS_VERSION_STR)
+        assert round(tt["head"].fontRevision, 3) == float(VERSION_STR)
         assert tt["post"].isFixedPitch == 1
         widths = {w for _, (w, _) in tt["hmtx"].metrics.items()}
         assert widths == {SYMBOL_ADVANCE_WIDTH}, f"Non-uniform symbol widths: {widths}"

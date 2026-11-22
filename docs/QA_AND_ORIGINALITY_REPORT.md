@@ -1,4 +1,4 @@
-# Admiralty Font Family — Final QA, Measured Consistency & Originality Report (`v0.500`)
+# Admiralty Font Family — Final QA, Measured Consistency & Originality Report (`v0.600`)
 
 > Audit run across **77 compiled font binaries** (21 Static OTF, 21 Static TTF, 21 Static WOFF2, 7 Variable TTF, 7 Variable WOFF2) and **5 platform packages** in `dist/`.
 > *Tooling note*: the checks below run with `fontTools`, `uharfbuzz`, `freetype` and `pathops`. Run Font Bakery (`fontbakery check-googlefonts fonts/variable/*.ttf`) and OTS (`pip install opentype-sanitizer`) separately; see `docs/REVIEW_NOTES.md` for the last results.
@@ -12,28 +12,28 @@
 | Unified Vertical Metrics (980/-320/0) & OFL Metadata | **PASS** | 49 OTF/TTF/VF-TTF binaries verified |
 | Forbidden Trademark Tokens Check (MTR / HongKong / Kowloon / SF Symbols) | **PASS** | 0 matches across all name tables |
 | gasp + prep Non-Hinting & CFF Private Zones | **PASS** | 28 TTFs (gasp=0x000F + prep) & 21 OTFs verified |
-| WOFF2 Decompression & Section 14 Size Budgets | **PASS** | Static 21=539.7 KB, Variable 7=428.8 KB, Combined=968.5 KB / 1536.0 KB |
+| WOFF2 Decompression & Section 14 Size Budgets | **PASS** | Static 21=552.1 KB, Variable 7=429.7 KB, Combined=981.9 KB / 1536.0 KB |
 | FreeType Full-Glyph Rasterization Audit (every GID @16px) | **PASS** | 31,724 glyphs loaded & rasterized across 49 binaries with 0 errors |
 | Variable Font Tables (fvar, gvar, HVAR, STAT) | **PASS** | All 7 Variable TTFs pass wght 400..700 + STAT verification |
 | 5-Platform Delivery Packages (dist/) | **PASS** | All 5 folders verified w/ OFL.txt + README (Android=311 VDs, Web=12 subsets, Apple=1050 SVGs) |
 
 ### File Size Summary vs Section 14 Targets
 
-- **21 Static WOFF2 total**: `539.7 KB`
-- **7 Variable WOFF2 total**: `428.8 KB` (`< 100 KB` per Latin VF, `< 150 KB` Symbols VF)
-- **Combined WOFF2 budget**: `968.5 KB / 1536.0 KB` (`63.1%`)
+- **21 Static WOFF2 total**: `552.1 KB`
+- **7 Variable WOFF2 total**: `429.7 KB` (`< 100 KB` per Latin VF, `< 150 KB` Symbols VF)
+- **Combined WOFF2 budget**: `981.9 KB / 1536.0 KB` (`63.9%`)
 
 ### Variable Font Size Breakdown
 
 | Variable Font Binary | TTF Size | WOFF2 Size | Axes |
 | --- | --- | --- | --- |
-| `AdmiraltyMono-Italic[wght]` | `132.0 KB` | `49.1 KB` | `wght (400..700)` |
-| `AdmiraltyMono[wght]` | `122.0 KB` | `43.8 KB` | `wght (400..700)` |
-| `AdmiraltySans-Italic[wght]` | `131.0 KB` | `53.7 KB` | `wght (400..700)` |
-| `AdmiraltySans[wght]` | `118.5 KB` | `46.5 KB` | `wght (400..700)` |
-| `AdmiraltySerif-Italic[wght]` | `152.8 KB` | `61.3 KB` | `wght (400..700)` |
-| `AdmiraltySerif[wght]` | `136.0 KB` | `52.1 KB` | `wght (400..700)` |
-| `AdmiraltySymbols[wght]` | `356.7 KB` | `122.3 KB` | `wght (400..700)` |
+| `AdmiraltyMono-Italic[wght]` | `131.1 KB` | `48.5 KB` | `wght (400..700)` |
+| `AdmiraltyMono[wght]` | `121.9 KB` | `44.0 KB` | `wght (400..700)` |
+| `AdmiraltySans-Italic[wght]` | `134.1 KB` | `54.6 KB` | `wght (400..700)` |
+| `AdmiraltySans[wght]` | `118.4 KB` | `46.4 KB` | `wght (400..700)` |
+| `AdmiraltySerif-Italic[wght]` | `155.7 KB` | `62.1 KB` | `wght (400..700)` |
+| `AdmiraltySerif[wght]` | `135.7 KB` | `52.0 KB` | `wght (400..700)` |
+| `AdmiraltySymbols[wght]` | `356.7 KB` | `122.2 KB` | `wght (400..700)` |
 
 ---
 
@@ -66,7 +66,7 @@
 
 ## 4. Pre-1.0 Release Human & Legal Gate Checklist (Section 15, 17, 23)
 
-- [x] Automated outline, extrema, interpolation, FreeType rasterization, zero-reflow duplex (`0.0u`), Mono column lock (`48000u`), and 5-platform packaging checks passed (`v0.500`).
+- [x] Automated outline, extrema, interpolation, FreeType rasterization, zero-reflow duplex (`0.0u`), Mono column lock (`48000u`), and 5-platform packaging checks passed (`v0.600`).
 - Prior Font Bakery and OTS results are recorded in `docs/REVIEW_NOTES.md`. They are checked separately from this audit.
 - The prior `gftools builder` comparison for Sans, Serif and Mono is recorded in `docs/REVIEW_NOTES.md`.
 - [ ] **Owner review** of every style in real use (chat app, phone, desktop) before 1.000.

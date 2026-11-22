@@ -18,7 +18,7 @@ from fontTools.varLib.featureVars import addFeatureVariations
 from fontTools.varLib.instancer import instantiateVariableFont
 from fontTools.varLib.models import normalizeLocation,normalizeValue
 
-from build_text_family import AXES, AXIS_NAMES, WEIGHTS, ROOT, OUTPUT, ints, simple
+from build_text_family import AXES, AXIS_NAMES, WEIGHTS, ROOT, OUTPUT, fullrange_unique_id, ints, simple
 from compatible import OutlinePen, Profile, compatible_points
 from symbol_masters import CATALOG, by_name, glyph_parts
 
@@ -323,8 +323,9 @@ def compile_cached(directory):
     addOpenTypeFeaturesFromString(font,'languagesystem DFLT dflt; feature rtlm {'+' '.join(rtl_rules)+'} rtlm;')
     regions=[([{k:interval(i,cell[i]) for i,k in enumerate(KEYS)}],mapping) for cell,mapping in zip(CELLS,substitutions) if mapping]
     if regions:addFeatureVariations(font,regions,featureTag='rvrn')
+    unique_id=fullrange_unique_id(font,'AdmiraltySymbols-Fullrange')
     for rec in list(font['name'].names):
-        value={1:'Admiralty Symbols Fullrange',3:'AdmiraltySymbols-Fullrange',4:'Admiralty Symbols Fullrange',
+        value={1:'Admiralty Symbols Fullrange',3:unique_id,4:'Admiralty Symbols Fullrange',
                6:'AdmiraltySymbols-Fullrange',16:'Admiralty Symbols Fullrange'}.get(rec.nameID)
         if value:font['name'].setName(value,rec.nameID,rec.platformID,rec.platEncID,rec.langID)
     font.recalcTimestamp=False

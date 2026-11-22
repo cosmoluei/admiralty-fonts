@@ -14,6 +14,7 @@ from scipy.spatial import cKDTree
 
 from build_text_family import OUTPUT, TEXT
 from check_optical_inventory import unsheared
+from punctuation_scope import punctuation_names
 from check_word_proof import section
 
 GRID = tuple(product((65, 82.5, 100, 125, 150), (0, 100)))
@@ -130,6 +131,7 @@ def inspect(arguments):
     font = hb.Font(hb.Face(path.read_bytes()))
     with TTFont(path) as tt:
         order = tt.getGlyphOrder()
+        punctuation = punctuation_names(tt.getBestCmap(), order)
         slant = np.tan(np.deg2rad(9.5)) if "Italic" in family else 0.0
         for width, radius in GRID:
             for face, w in zip(faces, (100, 400)):
@@ -140,7 +142,7 @@ def inspect(arguments):
             font.set_variations(dict(wght=100, wdth=width, RADI=radius))
 
             def get(n):
-                return unsheared(font, tt.getGlyphID(n), slant)
+                return unsheared(font, tt.getGlyphID(n), 0 if n in punctuation else slant)
 
             try:
                 check_stations(get, "Serif" in family, "Mono" in family)

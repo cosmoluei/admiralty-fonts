@@ -5,6 +5,7 @@ kern, mark, mkmk), and compiled OTF / TTF / WOFF2 binaries for Admiralty Sans.
 """
 
 from __future__ import annotations
+from math import sqrt
 from pathlib import Path
 import shutil
 import sys
@@ -22,7 +23,7 @@ import ufoLib2
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-from design_system import METRICS, SANS_REGULAR, TABULAR_FIG_WIDTH, clean_contour_nicks
+from design_system import METRICS, SANS_REGULAR, TABULAR_FIG_WIDTH, ContourBuilder, clean_contour_nicks, humanist_oval_contour
 from glyphs_bold import (
     apply_bold_class_kerning,
     attach_bold_anchors_and_composites,
@@ -59,10 +60,10 @@ from glyphs_mono import (
 from glyphs_sans import OPEN_TYPE_FEATURES_FEA, build_all_sans_glyphs
 from glyphs_serif_figs_ext import SERIF_REGULAR, build_all_serif_glyphs
 from spacing_kerning import apply_class_kerning, attach_ufo_anchors_and_composites
+from punctuation_scope import DOT_ROLES, dot_contours, punctuation_names
+from punctuation_spacing import apply_punctuation_spacing, clearance_pairs
+from release_version import VERSION_MAJOR, VERSION_MINOR, VERSION_STR
 import uharfbuzz as hb
-
-VERSION_MINOR = 500
-VERSION_STR = "0.500"
 
 
 def autohint_otf(otf_path) -> bool:
@@ -148,7 +149,7 @@ def populate_ufo_metadata(
     info.postscriptFontName = f"{ps_family}-{ps_style}"
     info.openTypeNameUniqueID = f"{VERSION_STR};LYT;{ps_family}-{ps_style}"
 
-    info.versionMajor = 0
+    info.versionMajor = VERSION_MAJOR
     info.versionMinor = VERSION_MINOR
     info.openTypeNameVersion = f"Version {VERSION_STR}"
 
@@ -519,6 +520,48 @@ def _write_weight_designspace(
     return ds_path
 
 
+def _circle(cx, cy, radius):
+    # Cubic handles for a 90-degree circular arc.
+    kappa = 0.5522847498307936
+    return humanist_oval_contour(cx, cy, radius, radius, kappa, kappa)
+
+
+def _round_period(info: ufoLib2.objects.Info, width: float) -> ContourBuilder:
+    """Center a circular period in the upright punctuation cell after weight expansion."""
+    family = info.familyName
+    weight = info.openTypeOS2WeightClass
+    # Match the original dot footprints using half their geometric-mean diameter.
+    radii = {
+        "Admiralty Sans": {400: 54, 500: 61, 700: 73},
+        "Admiralty Serif": {400: 54, 500: 60, 700: 69},
+        "Admiralty Mono": {400: 62, 500: 66, 700: 73},
+    }
+    radius = radii[family][weight]
+    bottom = -2
+    if family == "Admiralty Mono":
+        bottom = -6 if weight == 400 else -7
+    cy = bottom + radius
+    cx = width / 2
+    return _circle(cx, cy, radius)
+
+
+def _round_punctuation_dots(glyphs):
+    for name, (width, cp, contours) in glyphs.items():
+        if name == "period" or name.removesuffix(".case") not in DOT_ROLES:
+            continue
+        bounds = []
+        for contour in contours:
+            pen = BoundsPen(None)
+            contour.draw_to_pen(pen)
+            bounds.append(pen.bounds)
+        updated = list(contours)
+        for i in dot_contours(name, bounds):
+            left, bottom, right, top = bounds[i]
+            radius = round(sqrt((right - left) * (top - bottom)) / 2)
+            updated[i] = _circle(round((left + right) / 2), round((bottom + top) / 2), radius)
+        glyphs[name] = (width, cp, updated)
+
+
 def _populate_ufo_and_compile(
     ufo: ufoLib2.Font,
     stem: str,
@@ -540,6 +583,8 @@ def _populate_ufo_and_compile(
         if uni is not None:
             g.unicodes = [uni]
         pen = g.getPen()
+        if gname == "period":
+            contours = [_round_period(ufo.info, width)]
         for cb in contours:
             clean_contour_nicks(cb).draw_to_pen(pen)
 
@@ -559,6 +604,7 @@ def _populate_ufo_and_compile(
     print(f"[{stem}] Saved UFO source ({len(ufo)} glyphs{kern_note}) -> {ufo_path}")
 
     otf_font: TTFont = ufo2ft.compileOTF(ufo, removeOverlaps=True, optimizeCFF=True)
+    apply_punctuation_spacing(otf_font)
     if fixed_width is not None:
         otf_font["OS/2"].xAvgCharWidth = fixed_width
     otf_path = otf_dir / f"{stem}.otf"
@@ -566,6 +612,7 @@ def _populate_ufo_and_compile(
     autohint_otf(otf_path)
 
     ttf_font: TTFont = ufo2ft.compileTTF(ufo, removeOverlaps=True)
+    apply_punctuation_spacing(ttf_font)
     if fixed_width is not None:
         ttf_font["OS/2"].xAvgCharWidth = fixed_width
     apply_ttf_nonhinting_tables(ttf_font)
@@ -581,6 +628,25 @@ def _populate_ufo_and_compile(
         autohint_ttf(ttf_path)
     print(f"[{stem}] Compiled OTF / TTF / WOFF2 -> {woff2_path}")
     return ufo_path, otf_path, ttf_path, woff2_path
+
+
+def _prepare_text_styles(style_specs, family):
+    """Finish derived glyphs before sharing each weight's upright punctuation with italics."""
+    upright = {}
+    for _, weight, italic, glyphs in style_specs:
+        glyphs.update(build_latin_plus(glyphs, family, weight, italic))
+        if family == "mono":
+            glyphs.update(build_box_glyphs(weight))
+        if not italic:
+            _round_punctuation_dots(glyphs)
+            upright[weight] = glyphs
+
+    for _, weight, italic, glyphs in style_specs:
+        if italic:
+            source = upright[weight]
+            cmap = {cp: name for name, (_, cp, _) in source.items() if cp is not None}
+            for name in punctuation_names(cmap, source):
+                glyphs[name] = source[name]
 
 
 def build_duplex_family_all_styles(
@@ -600,9 +666,8 @@ def build_duplex_family_all_styles(
     ds_upright: list[tuple[str, int, Path]] = []
     ds_italic: list[tuple[str, int, Path]] = []
 
+    _prepare_text_styles(style_specs, "serif" if "Serif" in family_name else "sans")
     for style_name, weight_class, is_italic, glyph_data in style_specs:
-        # 0.300: Google Fonts Latin Plus characters, built from this style's own glyphs
-        glyph_data.update(build_latin_plus(glyph_data, "serif" if "Serif" in family_name else "sans", weight_class, is_italic))
         ps_style = style_name.replace(" ", "")
         stem = f"{ps_family}-{ps_style}"
         ufo = ufoLib2.Font()
@@ -698,10 +763,12 @@ def verify_duplex_zero_reflow(
             w_raw = _hb_adv(fpath, pair, {"kern": False})
             assert w_kern - w_raw == 24, f"{fname} kern({pair!r}) expected +24, got {w_kern - w_raw}"
         if is_italic:
-            for pair in ("(f", "[f", "{f"):
+            optical = clearance_pairs("proportional")
+            for pair, glyph in (("(f", "parenleft"), ("[f", "bracketleft"), ("{f", "braceleft")):
                 w_kern = _hb_adv(fpath, pair, {"kern": True})
                 w_raw = _hb_adv(fpath, pair, {"kern": False})
-                assert w_kern - w_raw == 28, f"{fname} kern({pair!r}) expected +28, got {w_kern - w_raw}"
+                expected = 28 + optical.get(glyph, {}).get("f", 0)
+                assert w_kern - w_raw == expected, f"{fname} kern({pair!r}) expected +{expected}, got {w_kern - w_raw}"
 
     print(
         f"Duplex Zero-Reflow Audit PASSED ({style_label}): all {len(sans_order)} glyphs and "
@@ -733,10 +800,8 @@ def build_admiralty_mono() -> dict[str, tuple[Path, Path]]:
     ds_upright: list[tuple[str, int, Path]] = []
     ds_italic: list[tuple[str, int, Path]] = []
 
+    _prepare_text_styles(mono_specs, "mono")
     for style_name, weight_class, is_italic, glyph_data in mono_specs:
-        # 0.300: box drawing and block elements (upright in every style, as terminals expect)
-        glyph_data.update(build_latin_plus(glyph_data, "mono", weight_class, is_italic))
-        glyph_data.update(build_box_glyphs(weight_class))
         ps_style = style_name.replace(" ", "")
         stem = f"{ps_family}-{ps_style}"
         ufo = ufoLib2.Font()

@@ -35,9 +35,9 @@
     <key>openTypeNamePreferredSubfamilyName</key>
     <string>Medium</string>
     <key>openTypeNameUniqueID</key>
-    <string>0.500;LYT;AdmiraltySymbols-Medium</string>
+    <string>0.600;LYT;AdmiraltySymbols-Medium</string>
     <key>openTypeNameVersion</key>
-    <string>Version 0.500</string>
+    <string>Version 0.600</string>
     <key>openTypeOS2Panose</key>
     <array>
       <integer>5</integer>
@@ -118,7 +118,7 @@
     <key>versionMajor</key>
     <integer>0</integer>
     <key>versionMinor</key>
-    <integer>500</integer>
+    <integer>600</integer>
     <key>xHeight</key>
     <integer>520</integer>
   </dict>

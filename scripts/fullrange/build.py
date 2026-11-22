@@ -13,7 +13,7 @@ from fontTools.ttLib import TTFont
 
 from audit_symbol_family import BY_NAME, SAMPLES
 from audit_text_family import BETWEEN_MASTERS, LOCATIONS
-from build_text_family import OUTPUT, REVIEW, ROOT, TEXT
+from build_text_family import OUTPUT, REVIEW, ROOT, TEXT, fullrange_unique_id
 from check_optical_inventory import SAMPLES as OPTICAL_GRID
 from glyph_peers import reference_names
 from magnified_audit import GRID as MAGNIFIED_GRID, PPEM
@@ -61,7 +61,10 @@ def package():
                         raise ValueError('Refresh the per-glyph magnified proof for '+family)
                 if names!=expected or sorted(map(tuple,report['sample_grid']))!=sorted(grid):
                     raise ValueError('Incomplete glyph or axis coverage for '+family)
-                for tag in ('cmap','GSUB','gvar','fvar','hmtx'):
+                tables = ('cmap','GSUB','gvar','fvar','hmtx')
+                if not symbols:
+                    tables += ('GPOS',)
+                for tag in tables:
                     if native.getTableData(tag)!=compressed.getTableData(tag):
                         raise ValueError(f'{family} TTF and WOFF2 differ in {tag}')
                 # WOFF2 may re-encode flags and padding. Check the drawing
@@ -77,6 +80,15 @@ def package():
                                and [f&1 for f in a.flags]==[f&1 for f in b.flags])
                     if not match:
                         raise ValueError(f'{family} TTF and WOFF2 differ in {glyph}')
+                with TTFont(PACKAGE.parent/(family+'[wght].ttf'),lazy=True) as release:
+                    version=release['head'].fontRevision
+                    version_name=release['name'].getDebugName(5)
+                for artifact in (native,compressed):
+                    names=artifact['name']
+                    unique=fullrange_unique_id(artifact,names.getDebugName(6))
+                    values={(r.nameID,r.toUnicode()) for r in names.names if r.nameID in (3,5)}
+                    if artifact['head'].fontRevision!=version or values!={(3,unique),(5,version_name)}:
+                        raise ValueError(f'{family} version does not match its release source')
                 name=native['name'].getDebugName(16) or native['name'].getDebugName(1)
             for source in (font,web):
                 shutil.copyfile(source,stage/source.name)
@@ -111,6 +123,8 @@ def main():
             run('audit_text_family.py',family,'--strict','--out',REVIEW/'audits'/(family+'.json'))
         run('audit_symbol_family.py','--strict','--workers',args.workers)
         run('check_text_layout.py')
+        run('check_period.py', *(OUTPUT / (family + '[wght,wdth,RADI].ttf') for family in TEXT))
+        run('check_punctuation.py', OUTPUT)
         run('check_serif_t.py')
         run('check_serif_letters.py')
         run('check_optical_inventory.py')

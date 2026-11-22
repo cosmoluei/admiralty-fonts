@@ -520,9 +520,19 @@ def build_web_package(meta: dict, dist_web: Path, var_dir: Path, out_root: Path,
         shutil.rmtree(web)
     (web / "fonts").mkdir(parents=True)
     shutil.copytree(dist_web / "fonts" / "subsets", web / "fonts" / "subsets")
-    shutil.copyfile(dist_web / "admiralty-fonts.css", web / "admiralty-fonts.css")
+    italic_dir = web / "fonts" / "variable"
+    italic_dir.mkdir()
+    for italic in var_dir.glob("*-Italic*.woff2"):
+        shutil.copyfile(italic, italic_dir / italic.name)
+    # Both stylesheets in the standalone package use the same Symbols font URL.
+    symbol_file = "AdmiraltySymbols[wght].woff2"
+    symbol_url = "fonts/AdmiraltySymbols-VF.woff2"
+    text_css = (dist_web / "admiralty-fonts.css").read_text(encoding="utf-8")
+    (web / "admiralty-fonts.css").write_text(
+        text_css.replace(f"fonts/variable/{symbol_file}", symbol_url), encoding="utf-8"
+    )
     shutil.copyfile(dist_web / "admiralty-symbols-sprite.svg", web / "admiralty-symbols-sprite.svg")
-    shutil.copyfile(var_dir / "AdmiraltySymbols[wght].woff2", web / "fonts" / "AdmiraltySymbols-VF.woff2")
+    shutil.copyfile(var_dir / symbol_file, web / symbol_url)
     shutil.copyfile(ROOT / "OFL.txt", web / "OFL.txt")
     rules = []
     for s_ in public_symbols(meta):
@@ -532,7 +542,7 @@ def build_web_package(meta: dict, dist_web: Path, var_dir: Path, out_root: Path,
         f"/* Admiralty Symbols {version}: icons by name. SIL Open Font License 1.1.\n"
         "   <i class=\"adm-icon adm-heart-filled\" aria-hidden=\"true\"></i>\n"
         "   The icon takes the text colour and size; set font-weight 400 / 500 / 700 to match the text. */\n"
-        "@font-face {\n  font-family: 'Admiralty Symbols';\n  src: url('fonts/AdmiraltySymbols-VF.woff2') format('woff2');\n"
+        f"@font-face {{\n  font-family: 'Admiralty Symbols';\n  src: url('{symbol_url}') format('woff2');\n"
         "  font-weight: 400 700;\n  font-style: normal;\n  font-display: block;\n}\n"
         ".adm-icon {\n  font-family: 'Admiralty Symbols';\n  font-style: normal;\n  font-weight: inherit;\n"
         "  line-height: 1;\n  display: inline-block;\n  speak: never;\n  -webkit-font-smoothing: antialiased;\n}\n"

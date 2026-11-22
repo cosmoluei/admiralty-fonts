@@ -6,7 +6,6 @@ import hashlib
 import json
 from pathlib import Path
 
-import numpy as np
 import pathops
 import uharfbuzz as hb
 from fontTools.ttLib import TTFont
@@ -42,13 +41,11 @@ def shaped(font,text):
     return [(g.codepoint,p.x_advance,p.x_offset,p.y_offset) for g,p in zip(b.glyph_infos,b.glyph_positions)]
 
 
-def mono_perthousand_fits(path, slant, width):
-    # Measure in the writing direction: an italic shear adds to screen width
-    # even when a ring is pinched. The merged outline must retain its holes.
-    upright = path.transform(1, 0, -slant, 1, 0, 0)
-    left, _, right, _ = upright.bounds
-    holes = [c.bounds for c in upright.contours if c.clockwise]
-    return (540 + .30 * (width - 65) <= right - left <= 600 and len(holes) == 3
+def mono_perthousand_fits(path):
+    # All styles use the upright normal-width sign in their fixed 600-unit cell.
+    left, _, right, _ = path.bounds
+    holes = [c.bounds for c in path.contours if c.clockwise]
+    return (550.5 <= right - left <= 600 and len(holes) == 3
             and all(x1 - x0 >= 60 and (x1 - x0) >= .45 * (y1 - y0)
                     for x0, y0, x1, y1 in holes))
 
@@ -62,7 +59,6 @@ def inspect(family, locations):
     gids = tt.getGlyphOrder()
     face = hb.Font(hb.Face(dest.read_bytes()))
     mono_permille = tt.getGlyphID('perthousand') if 'Mono' in family else None
-    slant = np.tan(np.deg2rad(-tt['post'].italicAngle))
     old = hb.Font(hb.Face(reference.read_bytes()))
     base = [stats(pen_shape(old,i)) for i in range(len(gids))]
     # These three glyphs have revised skeletons and retain their native advances.
@@ -71,7 +67,7 @@ def inspect(family, locations):
     if mono_permille is not None:
         # Compare the encoded default with the approved redrawn master using
         # the same ink-area tolerance as the other redesigned defaults.
-        tracks, ends = mono_perthousand_tracks(slant, [(400, 100)])
+        tracks, ends = mono_perthousand_tracks(0, [(400, 100)])
         points = ints(tracks[0])
         reference_path = pathops.Path()
         simple(points, ends, [1, 0] * (len(points) // 2)).draw(reference_path.getPen(), None)
@@ -107,7 +103,7 @@ def inspect(family, locations):
         ncont,wind,area = stats(form)
         ref = base[i]
         if ((ncont,wind)!=ref[:2] or abs(area-ref[2])>max(70,.004*ref[2])
-                or (i == mono_permille and not mono_perthousand_fits(form, slant, 100))
+                or (i == mono_permille and not mono_perthousand_fits(form))
                 or face.get_glyph_h_advance(i)!=base_adv[i]):
             defaults[n] = [ncont,wind,round(area,1),ref[:2],round(ref[2],1)]
     previous = {}
@@ -118,7 +114,7 @@ def inspect(family, locations):
             orig = base[i]
             path = pen_shape(face,i)
             count,wind,area = stats(path)
-            if i == mono_permille and not mono_perthousand_fits(path, slant, d):
+            if i == mono_permille and not mono_perthousand_fits(path):
                 problems["perthousand_proportions"][n].append(loc)
             target=mark_targets.get(i,orig[:2])
             release_position=(w,d)==(400,100) and (count,wind)==orig[:2]

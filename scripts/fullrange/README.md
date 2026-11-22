@@ -28,6 +28,8 @@ python3 scripts/fullrange/build_candidate_review.py scripts/fullrange/review/aud
 
 The candidates live in [review/families](review/families). They have native OpenType axes `wght` 100–900, `wdth` 65–150 and `RADI` 0–100. Default text drawings are based on 0.300. Width changes preserve duplex Sans/Serif layout, the 600-unit Mono cells and the 840-unit Symbols cells. The symbol builder reconstructs icon strokes and knockouts from the source drawing commands. The reports in [review/audits](review/audits) identify the audited font by SHA-256 and list individual instances requiring inspection.
 
+At each weight, punctuation uses the upright, normal-width outline and advance in both styles across the width and corner-radius ranges. This includes case-sensitive forms, the visible soft hyphen and the paired cells of Mono programming ligatures. Detached punctuation dots stay circular.
+
 Serif upright and italic use the approved `t` construction as their reference for stroke weight and corner treatment. The alphabet masters follow the cubic landmarks of the 0.300 drawings. The upright `g` has two independently drawn bowls and a curved link. The italic keeps its single-storey `a` and `g` and its rising `e` crossbar. The dedicated checks compare the exported defaults with 0.300 and measure oval walls, diagonals, the crossbar and the link through the width and radius axes.
 
 Curved outlines without a letter-specific drawing use paired ink edges and shared tangents. The Serif `S`, `ß` and `ẞ` have explicit spine, bowl and terminal landmarks. The straight Sans and Mono capitals share physical bars and stems across widths. The sloping cuts of `Z` and `7` are measured perpendicular to the stroke.
@@ -45,6 +47,7 @@ python3 scripts/fullrange/build_symbol_family.py
 python3 scripts/fullrange/build_family_proof.py
 python3 scripts/fullrange/measure_sans_strokes.py
 python3 scripts/fullrange/check_text_layout.py
+python3 scripts/fullrange/check_punctuation.py
 python3 scripts/fullrange/check_serif_t.py
 python3 scripts/fullrange/check_serif_letters.py
 python3 scripts/fullrange/check_optical_inventory.py
