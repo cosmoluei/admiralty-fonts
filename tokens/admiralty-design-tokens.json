@@ -1,8 +1,8 @@
 {
-  "$schema": "https://github.com/cosmoluei/admiralty-fonts/tokens/v0.600",
+  "$schema": "https://github.com/cosmoluei/admiralty-fonts/tokens/v0.601",
   "meta": {
     "familyPrefix": "Admiralty",
-    "version": "0.600",
+    "version": "0.601",
     "license": "SIL Open Font License 1.1 (No Reserved Font Name)",
     "designer": "Lei Yutian",
     "scriptCoverage": "GF Latin Core + Latin Plus + Latin Extended-A (128/128) + Pinyin + Vietnamese + 311 Symbols; Mono box drawing U+2500-259F"

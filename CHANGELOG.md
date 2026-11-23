@@ -4,6 +4,13 @@ All notable pre-release milestones (`0.x` design track) are documented here. All
 
 ---
 
+## `[0.601]` — 2026-11-23
+
+- In full-range Sans upright and italic, the crossbar of thin `e` now meets the bowl cleanly and its lower curve flows into the terminal. Upright Sans also has a rounder lower bowl on `a`. Accented forms inherit these corrections, including `è` and `ầ`.
+- Across the full-range Sans, Serif and Mono, cleaned up related curves and stroke ends in `æ`, `œ`, `℮`, the feminine ordinal `ª`, numerals, fractions and selected signs. New regression checks exercise the joins and terminal cuts across weights, widths and corner radii.
+
+---
+
 ## `[0.600]` — 2026-11-22
 
 - Sans, Serif and Mono use the same upright punctuation drawings and advances in both styles at each weight. Width and corner radius preserve those drawings, including case-sensitive punctuation and both halves of Mono programming ligatures.

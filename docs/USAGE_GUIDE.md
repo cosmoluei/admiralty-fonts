@@ -1,4 +1,4 @@
-# Admiralty Font Family — App Team Usage Guide (`v0.600`)
+# Admiralty Font Family — App Team Usage Guide (`v0.601`)
 
 Machine-readable tokens: [`admiralty-design-tokens.json`](../tokens/admiralty-design-tokens.json) · License: **SIL Open Font License 1.1** (no Reserved Font Name) · Latin (Google Fonts Latin Core and Latin Plus, Latin Extended-A, Pinyin, Vietnamese) + **311 original PUA UI icons** (`U+E000–U+E136`). Ready-made packages for iOS, Android, Flutter and the web are in [`packages/`](../packages); the short guide for coding agents is [`AGENTS.md`](../AGENTS.md).
 

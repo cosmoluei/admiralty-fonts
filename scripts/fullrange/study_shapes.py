@@ -153,12 +153,13 @@ def draw_thin_a(drawing, high, low, width):
         (tip+reach/drawing.span, tip_height+slope*reach, .323, high, crown, high),
         (.789, high, 1, 441, 1, 348),
         (1, 0))
-    foot = {65: .392, 100: .383, 150: .378}[width]
-    # A single sweep climbs from the left flank to the stem at the waist.
+    foot = {65: .406, 100: .397, 150: .392}[width]
+    # Turn down earlier at the waist and carry the left flank further into
+    # the floor, so the counter stays round as the thin bowl gets wider.
     drawing.add((1, 285),
-        (.616, 277, -.052, 231, -.052, 145),
-        (-.052, 59, foot-.235, low, foot-.045, low),
-        (.622, low, .922, 67, 1, 123))
+        (.55, 274, -.052, 254, -.052, 124),
+        (-.052, 48, foot-.252, low, foot, low),
+        (foot+.234, low, .923, 64, 1, 123))
 
 
 def draw_thin_m(add, high, height, width):
@@ -186,7 +187,10 @@ def draw_e(add, high, low, radius_y, weight, width, span):
     # Keep the cut angled and let the lower lip draw back from the crossbar.
     tip = {65: .91, 100: .93, 150: .94}[width] if weight == 100 else {65: .85, 100: .89, 150: .89}[width]
     lift = {65: 71, 100: 78, 150: 85}[width] if weight == 100 else {65: 48, 100: 55, 150: 59}[width]
-    tip_slope = .83 if weight == 100 else .77
+    # In a condensed bowl the same lift happens over a much shorter run.
+    # Continue turning towards the cut so the lip never flattens back out.
+    run = (tip - .53) * span
+    tip_slope = max(.83 if weight == 100 else .77, 1.8 * lift / run)
     end_handle = min(.11*span, .53*lift/tip_slope)
     add((0, bar), (1, bar))
     add((1, bar-radius_y), (1, bar+10),

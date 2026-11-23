@@ -30,6 +30,7 @@ import reviewed_capitals
 import reviewed_strokes
 from operator_masters import operator_tracks
 from optical_master import OpticalMaster
+from compatible import grid_slanted_walls
 from accent_masters import accent_name, accent_tracks
 from attachments import ATTACHED, Attachments
 from capital_masters import DIAGONALS, SLASHED_ZEROS, capital_tracks, slashed_zero_tracks
@@ -412,7 +413,10 @@ class TextDesign:
                     g = self.study[w,d,r]["glyf"][letter]
                     xy = np.rint(np.asarray(g.coordinates)[mask]/4).astype(int)
                 elif special:
-                    xy = ints(designed_points[len(coords)])
+                    points = designed_points[len(coords)]
+                    if self.slant and w == 100 and name in ("ae", "oe"):
+                        points = grid_slanted_walls(points, ends, self.slant)
+                    xy = ints(points)
                 elif grid:
                     xy = np.asarray(rg.coordinates, dtype=float)
                     if varying_grid:

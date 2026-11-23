@@ -3,7 +3,7 @@ import numpy as np
 import pathops
 from fontTools.pens.transformPen import TransformPen
 
-from compatible import Contour, OutlinePen, Profile, compatible_points, ordered_contours
+from compatible import Contour, OutlinePen, Profile, compatible_points, e_points, ordered_contours
 
 NAMES = {
     "grave","acute","circumflex","tilde","macron","breve","dotaccent","dieresis","ringabove",
@@ -240,7 +240,8 @@ def tracks_for(reference,all_shapes,cells,radii,bar=False):
             reg=all_shapes[j][i].registered(b,bar=bar) if j else (b,[0,1],[0,1])
             for r in (0,radii[w]):
                 profiles.append(Profile(*reg,r))
-        for track,z in zip(out,compatible_points(profiles,.20)):
+        paths = e_points(profiles) if bar else compatible_points(profiles,.20)
+        for track,z in zip(out,paths):
             track.extend(z)
         ends.append(len(out[0])-1)
     return [np.asarray(z) for z in out],ends

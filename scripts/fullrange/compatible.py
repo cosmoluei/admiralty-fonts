@@ -115,11 +115,17 @@ class Contour:
                                & (self.turns < math.radians(122)))
         if bar:
             # Both borders of e's crossbar must stay horizontal through
-            # interpolation, including where a straight enters a softened join.
-            horizontals = np.ptp(self.pieces.imag, axis=1) < .001
-            widths = np.ptp(self.pieces.real, axis=1) * horizontals
-            i = int(np.argmax(widths))
-            nodes = np.unique(np.r_[nodes,i,(i+1)%len(widths)])
+            # interpolation. The stroke union can split one straight edge at
+            # the bowl's wall. Register its real ends, never that internal seam.
+            flat = np.ptp(self.pieces.imag, axis=1) < .001
+            starts = np.flatnonzero(flat & ~np.roll(flat, 1))
+            if len(starts):
+                stops = np.flatnonzero(~flat & np.roll(flat, 1))
+                # A contour need not start at the bar, so a run can wrap.
+                after = stops[np.searchsorted(stops, starts) % len(stops)]
+                x = self.pieces[:, 0].real
+                longest = np.argmax(abs(x[after] - x[starts]))
+                nodes = np.unique(np.r_[nodes, starts[longest], after[longest]])
         return nodes
 
     def roll(self, index):
@@ -228,7 +234,7 @@ def ordered_contours(reference, other):
     return [other[i] for i in order]
 
 
-def compact_quadratics(tracks,marks,tolerance):
+def compact_quadratics(tracks,marks,tolerance,protected=()):
     """Remove shared subdivisions while bounding the entire curve in every master."""
     pts=np.array(tracks)
     starts,handles=pts[:,::2],pts[:,1::2]
@@ -255,12 +261,13 @@ def compact_quadratics(tracks,marks,tolerance):
             return q[:,0]
         return None
     points=[]
+    boundaries=np.searchsorted(marks,np.r_[protected,1.])
     i=0
     while i<starts.shape[1]:
         best=i+1
         handle=handles[:,i]
         step=2
-        limit=starts.shape[1]
+        limit=boundaries[np.searchsorted(boundaries,i,side="right")]
         while best<limit:
             j=min(i+step,limit)
             test=join(i,j)
@@ -281,9 +288,9 @@ def compact_quadratics(tracks,marks,tolerance):
     return np.array(points).T
 
 
-def compatible_points(profiles, tolerance=.25, compact=0):
+def compatible_points(profiles, tolerance=.25, compact=0, protected=()):
     """Fit corresponding quadratic spans, checking seven interior positions against every master."""
-    marks = np.unique(np.r_[0., 1., np.concatenate([p.stops for p in profiles])])
+    marks = np.unique(np.r_[0., 1., protected, np.concatenate([p.stops for p in profiles])])
     # Only merge stops separated by less than a thousandth of a design unit.
     marks = marks[np.r_[True,np.diff(marks)>1e-8]]
     marks[-1] = 1.
@@ -300,6 +307,60 @@ def compatible_points(profiles, tolerance=.25, compact=0):
             bad |= np.max(abs(fitted-samples),axis=1)>tolerance
             results.append(np.column_stack([a,control]).ravel())
         if not np.any(bad):
-            return compact_quadratics(results,marks,compact) if compact else results
+            return compact_quadratics(results,marks,compact,protected) if compact else results
         marks = np.sort(np.r_[marks,(marks[:-1]+marks[1:])[bad]/2])
     raise ValueError("Quadratic fit did not converge")
+
+
+def e_points(profiles):
+    # Sub-unit moves on a narrow wall turn into a staircase when rounded to
+    # the production font's 1000-unit em. Fit longer quadratic arcs, keeping
+    # the exact stations for the crossbar and the cut on the lower lip.
+    base = profiles[0].contour
+    stations = base.knots[base.terminals(bar=True)]
+    tracks = compatible_points(profiles, tolerance=.19, compact=.9, protected=stations)
+    # The upper counter has two stations on its horizontal bar. The outer
+    # contour has two more on the diagonal lip cut, the shortest station span.
+    if len(stations) == 4:
+        span = np.diff(np.r_[stations, 1.])
+        j = int(np.argmin(span))
+        endpoints = base.eval(stations[[j, (j+1) % len(stations)]])
+        a, b = [int(np.argmin(abs(tracks[0, ::2]-z))) for z in endpoints]
+        # With square corners, encode the cut as one straight segment. Short
+        # subdivisions used by the rounded cuts would each round to a slightly
+        # different slope on the integer grid. Keep their points at the ends
+        # so both radius masters still have the same topology.
+        if a < b:
+            mid = (a+b-1)//2
+            for sharp in tracks[::2]:
+                sharp[2*a:2*mid+2] = sharp[2*a]
+                sharp[2*mid+2:2*b] = sharp[2*b]
+    return tracks
+
+
+def grid_slanted_walls(points, ends, slant):
+    """Keep interior samples on a straight italic stem after integer rounding."""
+    out = points.copy()
+    first = 0
+    for last in ends:
+        ring = out[first:last+1]
+        upright_x = ring.real - slant * ring.imag
+        x, control = upright_x[::2], upright_x[1::2]
+        straight = (abs(x-np.roll(x, -1)) < .075) & (abs(x-control) < .075)
+        starts = np.flatnonzero(straight & ~np.roll(straight, 1))
+        stops = np.flatnonzero(~straight & np.roll(straight, 1))
+        for start in starts:
+            stop = stops[np.searchsorted(stops, start) % len(stops)]
+            count = (stop-start) % len(x)
+            y0, y1 = ring[2*start].imag, ring[2*stop].imag
+            if count < 2 or abs(y1-y0) < 25:
+                continue
+            # Move along the stroke to a point that lands on the integer
+            # x grid. Its sides and both junctions keep the authored position.
+            inside = (2*start + np.arange(1, 2*count)) % len(ring)
+            z = ring[inside]
+            y = np.rint(z.imag + (np.rint(z.real)-z.real)/slant)
+            y = np.clip(y, min(y0,y1), max(y0,y1))
+            ring[inside] = z + (slant+1j)*(y-z.imag)
+        first = last + 1
+    return out

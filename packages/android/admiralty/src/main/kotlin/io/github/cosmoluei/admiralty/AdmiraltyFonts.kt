@@ -1,4 +1,4 @@
-// Generated (Admiralty 0.600). Licensed under the SIL Open Font License 1.1.
+// Generated (Admiralty 0.601). Licensed under the SIL Open Font License 1.1.
 package io.github.cosmoluei.admiralty
 
 /**

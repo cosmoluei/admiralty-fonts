@@ -53,6 +53,8 @@ python3 scripts/fullrange/check_serif_letters.py
 python3 scripts/fullrange/check_optical_inventory.py
 python3 scripts/fullrange/check_thin_reference.py
 python3 scripts/fullrange/check_cross_heavy.py
+python3 scripts/fullrange/check_bowl_joins.py
+python3 scripts/fullrange/check_figure_cuts.py
 python3 scripts/fullrange/magnified_audit.py
 python3 scripts/fullrange/audit_text_family.py AdmiraltySans --out scripts/fullrange/review/audits/AdmiraltySans.json --strict
 python3 scripts/fullrange/audit_symbol_family.py --strict

@@ -14,7 +14,7 @@ from fontTools.ttLib.tables._g_l_y_f import Glyph, GlyphCoordinates
 from fontTools.varLib.models import VariationModel, normalizeLocation
 
 from build_word_proof import HERE, RELEASE, REVIEW, WIDTHS, make_instance
-from compatible import OutlinePen, Profile, compatible_points, ordered_contours
+from compatible import OutlinePen, Profile, compatible_points, e_points, ordered_contours
 from study_shapes import LETTERS as WORD_LETTERS
 from related_letters import RELATED, related_outline
 from remaining_lowercase import LETTERS as EXTRA, remaining_outline
@@ -85,7 +85,7 @@ def compile_glyph(name, sources):
             registered = c.registered(base, bar=name == "e") if j else (base, [0, 1], [0, 1])
             max_radius = 0 if name == ".notdef" else {100: 9, 400: 30, 900: 49}[weight]
             profiles.extend(Profile(*registered, radius) for radius in (0, max_radius))
-        paths = compatible_points(profiles, tolerance=.19)
+        paths = e_points(profiles) if name == "e" else compatible_points(profiles, tolerance=.19)
         for track, path in zip(tracks, paths):
             track.extend(path)
         ends.append(len(tracks[0])-1)

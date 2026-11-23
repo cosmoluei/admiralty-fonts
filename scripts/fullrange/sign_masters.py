@@ -85,7 +85,7 @@ def fit_box(path, box):
     return path.transform(sx, 0, 0, sy, l - sx * x0, b - sy * y0)
 
 
-def figure_black(rings, sx, dx):
+def figure_black(rings, sx, dx, *, miter_limit=4):
     # Add ink normal to the two sides of the released drawing. A single
     # offset around each complete curve keeps its extents and smooth joins.
     # Separately fitted fraction digits keep their baseline and clearance.
@@ -96,7 +96,9 @@ def figure_black(rings, sx, dx):
     ry = 16 * size
     for _ in range(8):
         nib = native.transform(1 / rx, 0, 0, 1 / ry, 0, 0)
-        nib.stroke(2, pathops.LineCap.BUTT_CAP, pathops.LineJoin.MITER_JOIN, 2)
+        # Measuring the join in elliptical nib space makes an ordinary cut
+        # look acute, especially at expanded widths. Keep its two real corners.
+        nib.stroke(2, pathops.LineCap.BUTT_CAP, pathops.LineJoin.MITER_JOIN, miter_limit)
         nib.convertConicsToQuads(0.002)
         expanded = pathops.op(native, nib.transform(rx, 0, 0, ry, 0, 0), pathops.PathOp.UNION)
         result = outlined(fit_box(expanded, (l, b, r, t)))
@@ -116,6 +118,10 @@ def black_numeral(name, reference, sx, dx):
         l,b,r,t = to_path(rings).bounds
         return outlined(black_digit(number, (l*sx+dx,b,r*sx+dx,t)))
     if name not in FRACTIONS:
+        if name == "ordfeminine":
+            # The miniature a places both ends of its cut on its own shoulders.
+            # Keep the shoulders available to black_feminine_ordinal.
+            return figure_black(reference, sx, dx, miter_limit=2)
         return digit(reference, FIGURES.get(name))
     slash = max(reference, key=lambda ring: np.ptp(ring.pieces[:, 0].imag))
     high = [r for r in reference if r is not slash and r.center.imag > 285]
@@ -530,6 +536,7 @@ def master_tracks(design, name, cells):
     ends = []
     for i, ref in enumerate(reference):
         profiles = []
+        ordinal_body = name == "ordfeminine" and ref is max(reference, key=lambda c: abs(c.area))
         nominal = {w: register_figure(ref, drawings[w, 100][i]) for w in (100, 900)}
         for w, d in cells:
             ring = drawings[w, d][i]
@@ -547,6 +554,8 @@ def master_tracks(design, name, cells):
                     ring, c, e = width_station_map(source, ring)
                     stations = np.unique(np.r_[b, c])
                     a, b = np.interp(stations, b, a), np.interp(stations, c, e)
+            if ordinal_body:
+                a, b = member_masters.register_ordinal_cut(ref, ring, a, b)
             radius = {100: 8, 400: 28, 900: 43}[w]
             if w==900 and name in NUMERALS and (FIGURES.get(name) in (3,8) or
                     any(n in (3,8) for n in FRACTIONS.get(name,()))):
@@ -555,7 +564,11 @@ def master_tracks(design, name, cells):
                 radius=min(radius, .041*np.ptp(ring.pieces.imag))
             for fillet in (0, radius):
                 profiles.append(Profile(ring, a, b, fillet))
-        for irow, (row, z) in enumerate(zip(rows, compatible_points(profiles, 0.17, compact=0.16))):
+        # The estimated sign has a long, near-vertical inner wall. Merge short
+        # spans before integer quantization. The upright Mono sign uses the
+        # tighter fit for its fixed-width bowl.
+        compact = .85 if name == "uni212E" and ref.area < 0 and (not design.mono or design.slant) else .16
+        for irow, (row, z) in enumerate(zip(rows, compatible_points(profiles, 0.17, compact=compact))):
             z = z + design.slant * z.imag
             row.extend(round_default(z, ref.area) if irow == 0 else z)
         ends.append(len(rows[0]) - 1)

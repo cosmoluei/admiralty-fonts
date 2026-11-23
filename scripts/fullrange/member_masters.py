@@ -727,6 +727,72 @@ def eng_letter(design, name, native, w, d):
     return p.shape
 
 
+def ordinal_cut_corners(ring):
+    """The top and bottom corners of the miniature a's open terminal."""
+    points = ring.pieces[:, 0]
+    left, bottom = points.real.min(), points.imag.min()
+    corners = ring.corners
+    tips = corners[(points[corners].real < left + .45 * np.ptp(points.real))
+                   & (points[corners].imag > bottom + .55 * np.ptp(points.imag))]
+    return tips[np.argmax(points[tips].imag)], tips[np.argmin(points[tips].imag)]
+
+
+def register_ordinal_cut(reference, ring, a, b):
+    # Match the terminal as a single edge. Independent nearest-point fits of
+    # the two shoulders allow a corner to slide onto the face of the cut.
+    a0, a1 = sorted(reference.knots[list(ordinal_cut_corners(reference))])
+    b0, b1 = sorted(ring.knots[list(ordinal_cut_corners(ring))])
+    before, after = (a < a0) & (b < b0), (a > a1) & (b > b1)
+    return np.r_[a[before], a0, a1, a[after]], np.r_[b[before], b0, b1, b[after]]
+
+
+def black_ordinal_terminal(body):
+    from compatible import Contour
+
+    # Follow the open end from the top shoulder to the inner lip.
+    top, lip = ordinal_cut_corners(body)
+    reverse = (body.knots[lip] - body.knots[top]) % 1 > .5
+    if reverse:
+        body = Contour(body.pieces[::-1, ::-1])
+        top, lip = ordinal_cut_corners(body)
+    segments = body.roll(top).pieces
+    last = (lip - top) % len(segments)
+    face = max(segments[:last], key=lambda p: abs(p[-1] - p[0]))
+    direction = face[-1] - face[0]
+    # Meet the broad face at its intended angle. At narrow widths the lip
+    # itself sets the lower endpoint; extending the miter there makes a spur.
+    start = segments[0, 0]
+    tangent = start - segments[-1, 2]
+    offset = ((face[0] - start).conjugate() * direction).imag / (tangent.conjugate() * direction).imag
+    tip = start + tangent * offset
+    cut = [np.linspace(tip, segments[last, 0], 4)]
+    if abs(tip - start) > .001:
+        cut.insert(0, np.linspace(start, tip, 4))
+    pieces = np.vstack([cut, segments[last:]])
+    return Contour(pieces[::-1, ::-1] if reverse else pieces)
+
+
+def black_feminine_ordinal(rings):
+    from sign_masters import to_path
+
+    # Offsetting the miniature a nearly closes its eye at the left. Draw the
+    # counter at ordinal size, keeping its stem wall, underline and bearings.
+    body = max(rings, key=lambda c: abs(c.area))
+    eye = next(c for c in rings if c.area * body.area < 0)
+    left, bottom, right, top = to_path([eye]).bounds
+    bottom -= 4
+    top += 12
+    width, height = right - left, top - bottom
+    counter = pathops.Path()
+    counter.moveTo(right, top)
+    counter.cubicTo(right - .23 * width, top - 1, left, bottom + .92 * height, left, bottom + .49 * height)
+    counter.cubicTo(left, bottom + .19 * height, left + .18 * width, bottom, left + .41 * width, bottom)
+    counter.cubicTo(left + .67 * width, bottom, right, bottom + .20 * height, right, bottom + .55 * height)
+    counter.close()
+    outside = to_path([black_ordinal_terminal(c) if c is body else c for c in rings if c is not eye])
+    return pathops.op(outside, counter, pathops.PathOp.DIFFERENCE)
+
+
 def small_sign(design, name, native, w, d):
     sx, dx = design.transform(name, w, d)
     if w == 900:
@@ -762,7 +828,8 @@ def small_sign(design, name, native, w, d):
             left = left.transform(1, 0, 0, 1, -shift, 0)
             left.addPath(right.transform(1, 0, 0, 1, shift, 0))
             return left
-        return to_path(black_numeral(name, outlined(native), sx, dx))
+        rings = black_numeral(name, outlined(native), sx, dx)
+        return black_feminine_ordinal(rings) if name == "ordfeminine" else to_path(rings)
     contours = sorted(native.contours, key=lambda c: c.bounds[0])
     if name.startswith("ord"):
         import junction_drawings

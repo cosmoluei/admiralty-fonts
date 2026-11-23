@@ -556,7 +556,10 @@ def ae_tracks(design, name, cells):
     rows = [[] for i in range(2 * len(cells))]
     ends = []
     for group in profiles:
-        for row, z in zip(rows, compatible_points(group, 0.15, compact=0.16)):
+        # Use longer arcs on the shared outer wall so the slanted Thin stem
+        # has enough run between its controls to survive the integer grid.
+        compact = {"ae": .6, "oe": .85}[name] if design.slant and group[0].contour.area < 0 else .16
+        for row, z in zip(rows, compatible_points(group, 0.15, compact=compact)):
             row.extend(z + design.slant * z.imag)
         ends.append(len(rows[0]) - 1)
     return list(map(np.asarray, rows)), ends

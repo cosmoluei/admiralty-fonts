@@ -1,4 +1,4 @@
-// Generated from admiralty-symbols.json (Admiralty 0.600). Do not edit by hand.
+// Generated from admiralty-symbols.json (Admiralty 0.601). Do not edit by hand.
 // Licensed under the SIL Open Font License 1.1 (see OFL.txt).
 package io.github.cosmoluei.admiralty
 

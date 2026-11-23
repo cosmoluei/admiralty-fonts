@@ -1,6 +1,6 @@
 # Admiralty
 
-**Version 0.600 — test release.** The design is still being reviewed and may change before 1.000.
+**Version 0.601 — test release.** The design is still being reviewed and may change before 1.000.
 
 Admiralty is a font family made for a personal agent app: a calm, professional look that stays comfortable over long use. It has four families:
 
@@ -15,7 +15,7 @@ Sans, Serif and Mono each have six static styles and upright and italic variable
 
 ## Using the fonts
 
-[Download Admiralty 0.600](https://github.com/cosmoluei/admiralty-fonts/releases/tag/v0.600) or browse the individual files in [`fonts/`](fonts):
+[Download Admiralty 0.601](https://github.com/cosmoluei/admiralty-fonts/releases/tag/v0.601) or browse the individual files in [`fonts/`](fonts):
 
 - [Full-range variable fonts](fonts/variable/fullrange) — TTF, WOFF2 and a web stylesheet. [Open the family proof](scripts/fullrange/review/family-proof.html) to adjust the three axes or [compare one glyph across all styles](scripts/fullrange/review/glyph-review.html).
 - `fonts/variable/` — the original 400–700 variable fonts used by the platform packages

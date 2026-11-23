@@ -131,6 +131,8 @@ def main():
         run('check_thin_reference.py')
         run('check_cross_heavy.py')
         run('check_junctions.py')
+        run('check_bowl_joins.py', *(OUTPUT / (family + '[wght,wdth,RADI].ttf') for family in TEXT))
+        run('check_figure_cuts.py', *(OUTPUT / (family + '[wght,wdth,RADI].ttf') for family in TEXT))
         run('check_zero_radius.py')
         run('magnified_audit.py')
         run('build_family_proof.py')
